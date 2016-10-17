@@ -1,0 +1,2 @@
+module PokedexesHelper
+end
