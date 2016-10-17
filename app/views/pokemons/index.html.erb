@@ -1,0 +1,36 @@
+<div class="panel panel-primary">
+	<div class="panel-heading">Pokemons</div>
+	<div class="panel-body">
+		<a href="<%= new_pokemon_path %>" class="btn btn-primary">New</a>
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<td>#</td>
+					<td>Name</td>
+					<td>Level</td>
+					<td>Health Point</td>
+					<td>Attack</td>
+					<td>Defence</td>
+					<td>Speed</td>
+					<td>Current Experience</td>
+					<td>Image</td>
+				</tr>
+			</thead>
+			<tbody>
+				<% @decorated_pokemons.each_with_index do |pokemon, index| %>
+					<tr class="clickable-row" data-href="<%= pokemon_path(pokemon.id) %>">
+						<td><%= index + 1 %></td>
+						<td><%= pokemon.name %></td>
+						<td><%= pokemon.level %></td>
+						<td><%= pokemon.current_health_point %></td>
+						<td><%= pokemon.attack %></td>
+						<td><%= pokemon.defence %></td>
+						<td><%= pokemon.speed %></td>
+						<td><%= pokemon.current_experience %></td>
+						<td><%= pokemon.image_small %></td>
+					</tr>
+				<% end %>
+			</tbody>
+		</table>
+	</div>
+</div>

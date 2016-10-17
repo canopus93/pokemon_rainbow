@@ -1,0 +1,59 @@
+<div class="panel panel-primary">
+	<div class="panel-heading">Pokemon</div>
+	<div class="panel-body">
+		<div class="col-sm-12">
+			<a href="<%= new_pokemon_path %>" class="btn btn-primary">New</a>
+			<%= @decorated_pokemon.link_to_edit %>
+			<%= @decorated_pokemon.link_to_delete %>
+		</div>
+
+		<div class="col-sm-offset-2 col-sm-8">
+			<div class="row center-block">
+				<div class="col-sm-6">
+					<%= @decorated_pokemon.image %>	
+				</div>
+
+				<div class="col-sm-6">
+					<table align="center">
+						<br><br><br><br>
+						<tr>
+							<td>Name</td>
+							<td>&nbsp:&nbsp</td>
+							<td><%= @decorated_pokemon.name %></td>
+						</tr>
+						<tr>
+							<td>Level</td>
+							<td>&nbsp:&nbsp</td>
+							<td><%= @decorated_pokemon.level %></td>
+						</tr>
+						<tr>
+							<td>Health point</td>
+							<td>&nbsp:&nbsp</td>
+							<td><%= @decorated_pokemon.current_health_point %></td>
+						</tr>
+						<tr>
+							<td>Attack</td>
+							<td>&nbsp:&nbsp</td>
+							<td><%= @decorated_pokemon.attack %></td>
+						</tr>
+						<tr>
+							<td>Defence</td>
+							<td>&nbsp:&nbsp</td>
+							<td><%= @decorated_pokemon.defence %></td>
+						</tr>
+						<tr>
+							<td>Speed</td>
+							<td>&nbsp:&nbsp</td>
+							<td><%= @decorated_pokemon.speed %></td>
+						</tr>
+						<tr>
+							<td>Current experience</td>
+							<td>&nbsp:&nbsp</td>
+							<td><%= @decorated_pokemon.current_experience %></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

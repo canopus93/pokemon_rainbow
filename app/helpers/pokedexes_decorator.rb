@@ -58,12 +58,12 @@ class PokedexesDecorator
 		end
 
 		def link_to_edit(pokedex)
-			@context.helpers.link_to 'Edit', edit_pokedex_path(pokedex.id), class: 'btn btn-primary btn-xs'
+			@context.helpers.link_to 'Edit', edit_pokedex_path(pokedex.id), class: 'btn btn-warning'
 		end
 
 		def link_to_delete(pokedex)
 			@context.helpers.link_to 'Remove', pokedex_path(pokedex.id),
 										method: :delete, 
-										data: { confirm: "Are you sure to remove #{pokedex.name}?"}, class: 'btn btn-primary btn-xs'
+										data: { confirm: "Are you sure to remove #{pokedex.name}?"}, class: 'btn btn-danger'
 		end
 end

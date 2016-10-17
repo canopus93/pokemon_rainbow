@@ -2,47 +2,53 @@
 	<div class="panel-heading">Pokedex</div>
 	<div class="panel-body">
 		<div class="col-sm-12">
-			<a href="<%= new_pokedex_path %>" class="btn btn-primary btn-xs">New</a>
+			<a href="<%= new_pokedex_path %>" class="btn btn-primary">New</a>
 			<%= @decorated_pokedex.link_to_edit %>
 			<%= @decorated_pokedex.link_to_delete %>
 		</div>
 
 		<div class="col-sm-offset-2 col-sm-8">
-			<table align="center">
-				<tr>
-					<td colspan="3"><%= @decorated_pokedex.image %></td>
-				</tr>
-				<tr>
-					<td>Name</td>
-					<td>&nbsp:&nbsp</td>
-					<td><%= @decorated_pokedex.name %></td>
-				</tr>
-				<tr>
-					<td>Base health point</td>
-					<td>&nbsp:&nbsp</td>
-					<td><%= @decorated_pokedex.base_health_point %></td>
-				</tr>
-				<tr>
-					<td>Base attack</td>
-					<td>&nbsp:&nbsp</td>
-					<td><%= @decorated_pokedex.base_attack %></td>
-				</tr>
-				<tr>
-					<td>Base defence</td>
-					<td>&nbsp:&nbsp</td>
-					<td><%= @decorated_pokedex.base_defence %></td>
-				</tr>
-				<tr>
-					<td>Base speed</td>
-					<td>&nbsp:&nbsp</td>
-					<td><%= @decorated_pokedex.base_speed %></td>
-				</tr>
-				<tr>
-					<td>Element type</td>
-					<td>&nbsp:&nbsp</td>
-					<td><%= @decorated_pokedex.element_type %></td>
-				</tr>
-			</table>
+			<div class="row center-block">
+				<div class="col-sm-6">
+					<%= @decorated_pokedex.image %>	
+				</div>
+				
+				<div class="col-sm-6">
+					<table align="center">
+						<br><br><br><br>
+						<tr>
+							<td>Name</td>
+							<td>&nbsp:&nbsp</td>
+							<td><%= @decorated_pokedex.name %></td>
+						</tr>
+						<tr>
+							<td>Base health point</td>
+							<td>&nbsp:&nbsp</td>
+							<td><%= @decorated_pokedex.base_health_point %></td>
+						</tr>
+						<tr>
+							<td>Base attack</td>
+							<td>&nbsp:&nbsp</td>
+							<td><%= @decorated_pokedex.base_attack %></td>
+						</tr>
+						<tr>
+							<td>Base defence</td>
+							<td>&nbsp:&nbsp</td>
+							<td><%= @decorated_pokedex.base_defence %></td>
+						</tr>
+						<tr>
+							<td>Base speed</td>
+							<td>&nbsp:&nbsp</td>
+							<td><%= @decorated_pokedex.base_speed %></td>
+						</tr>
+						<tr>
+							<td>Element type</td>
+							<td>&nbsp:&nbsp</td>
+							<td><%= @decorated_pokedex.element_type %></td>
+						</tr>
+					</table>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>

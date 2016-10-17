@@ -1,0 +1,35 @@
+<div class="panel panel-primary">
+	<div class="panel-heading">Skill</div>
+	<div class="panel-body">
+		<div class="col-sm-12">
+			<a href="<%= new_skill_path %>" class="btn btn-primary">New</a>
+			<%= @decorated_skill.link_to_edit %>
+			<%= @decorated_skill.link_to_delete %>
+		</div>
+
+		<div class="col-sm-offset-2 col-sm-8">
+			<table align="center">
+				<tr>
+					<td>Name</td>
+					<td>&nbsp:&nbsp</td>
+					<td><%= @decorated_skill.name %></td>
+				</tr>
+				<tr>
+					<td>Power</td>
+					<td>&nbsp:&nbsp</td>
+					<td><%= @decorated_skill.power %></td>
+				</tr>
+				<tr>
+					<td>Max PP</td>
+					<td>&nbsp:&nbsp</td>
+					<td><%= @decorated_skill.max_pp %></td>
+				</tr>
+				<tr>
+					<td>Element type</td>
+					<td>&nbsp:&nbsp</td>
+					<td><%= @decorated_skill.element_type %></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</div>
