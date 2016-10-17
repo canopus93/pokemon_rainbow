@@ -3,21 +3,33 @@
 		<%= form_for @skill do |f| %>
 			<%= render 'layouts/error_message', error_object: @skill.errors %>
 
-			<div class="form-group">
+			<div class="form-group <%= 'has-error' if @skill.errors.include?(:name) %>">
 				<%= f.label :name %>
 	    	<%= f.text_field :name, class: 'form-control' %>
+	    	<% if @skill.errors.include?(:name) %>
+	    		<p class="error-message"><%= 'Name ' + @skill.errors.messages[:name].join(' and ') %></p>
+	    	<% end %>
 			</div>
-			<div class="form-group">
+			<div class="form-group <%= 'has-error' if @skill.errors.include?(:power) %>">
 				<%= f.label :power %>
 	    	<%= f.text_field :power, class: 'form-control' %>
+	    	<% if @skill.errors.include?(:power) %>
+	    		<p class="error-message"><%= 'Power ' + @skill.errors.messages[:power].join(' and ') %></p>
+	    	<% end %>
 			</div>
-			<div class="form-group">
+			<div class="form-group <%= 'has-error' if @skill.errors.include?(:max_pp) %>">
 				<%= f.label :max_pp %>
 	    	<%= f.text_field :max_pp, class: 'form-control' %>
+	    	<% if @skill.errors.include?(:max_pp) %>
+	    		<p class="error-message"><%= 'Max PP ' + @skill.errors.messages[:max_pp].join(' and ') %></p>
+	    	<% end %>
 			</div>
-			<div class="form-group">
+			<div class="form-group <%= 'has-error' if @skill.errors.include?(:element_type) %>">
 				<%= f.label :element_type %>
 	    	<%= f.text_field :element_type, class: 'form-control' %>
+	    	<% if @skill.errors.include?(:element_type) %>
+	    		<p class="error-message"><%= 'Element type ' + @skill.errors.messages[:element_type].join(' and ') %></p>
+	    	<% end %>
 			</div>
 			<%= f.submit yield(:submit_text), class: 'btn btn-primary center-block' %>
 		<% end %>

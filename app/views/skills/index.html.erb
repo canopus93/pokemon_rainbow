@@ -14,9 +14,9 @@
 			</thead>
 			<tbody>
 				<% @decorated_skills.each_with_index do |skill, index| %>
-					<tr class="clickable-row" data-href="<%= skill_path(skill.id) %>">
+					<tr>
 						<td><%= index + 1 %></td>
-						<td><%= skill.name %></td>
+						<td><%= skill.link_to_show %></td>
 						<td><%= skill.power %></td>
 						<td><%= skill.max_pp %></td>
 						<td><%= skill.element_type %></td>

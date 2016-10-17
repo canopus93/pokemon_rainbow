@@ -45,8 +45,8 @@ class PokedexesDecorator
 			result.base_defence = pokedex.base_defence
 			result.base_speed = pokedex.base_speed
 			result.element_type = pokedex.element_type
-			result.image = image_tag(pokedex.image_url, alt: pokedex.name)
-			result.image_small = image_tag(pokedex.image_url, alt: pokedex.name, class: "pokemon-img")
+			result.image = image_tag(pokedex.image_url)
+			result.image_small = image_tag(pokedex.image_url, class: "pokemon-img")
 			result.link_to_show = link_to_show(pokedex)
 			result.link_to_edit = link_to_edit(pokedex)
 			result.link_to_delete = link_to_delete(pokedex)

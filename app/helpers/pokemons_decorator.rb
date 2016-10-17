@@ -51,8 +51,8 @@ class PokemonsDecorator
 			result.defence = pokemon.defence
 			result.speed = pokemon.speed
 			result.current_experience = pokemon.current_experience
-			result.image = image_tag(pokemon.pokedex.image_url, alt: pokemon.name)
-			result.image_small = image_tag(pokemon.pokedex.image_url, alt: pokemon.name, class: "pokemon-img")
+			result.image = image_tag(pokemon.pokedex.image_url)
+			result.image_small = image_tag(pokemon.pokedex.image_url, class: "pokemon-img")
 			result.link_to_show = link_to_show(pokemon)
 			result.link_to_edit = link_to_edit(pokemon)
 			result.link_to_delete = link_to_delete(pokemon)

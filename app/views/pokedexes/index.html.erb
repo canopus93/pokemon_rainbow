@@ -17,9 +17,9 @@
 			</thead>
 			<tbody>
 				<% @decorated_pokedexes.each_with_index do |pokedex, index| %>
-					<tr class="clickable-row" data-href="<%= pokedex_path(pokedex.id) %>">
+					<tr>
 						<td><%= index + 1 %></td>
-						<td><%= pokedex.name %></td>
+						<td><%= pokedex.link_to_show %></td>
 						<td><%= pokedex.base_health_point %></td>
 						<td><%= pokedex.base_attack %></td>
 						<td><%= pokedex.base_defence %></td>
