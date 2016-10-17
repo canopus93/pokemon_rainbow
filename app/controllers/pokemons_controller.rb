@@ -13,6 +13,11 @@ class PokemonsController < ApplicationController
 		@pokemon = Pokemon.new
 	end
 
+	def new_details
+		pokedex = Pokedex.find(params[:q])
+		@pokemon = Pokemon.new(pokedex: pokedex, name: pokedex.name, level: 0, current_health_point: pokedex.base_health_point, max_health_point: pokedex.base_health_point, attack: pokedex.base_attack, defence: pokedex.base_defence, speed: pokedex.base_speed, current_experience: 0)
+	end
+
 	def edit
 		@pokemon = Pokemon.find(params[:id])
 	end
@@ -23,7 +28,7 @@ class PokemonsController < ApplicationController
 		if @pokemon.save
 			redirect_to @pokemon
 		else
-			render 'new'
+			render 'new_details'
 		end
 	end
 
