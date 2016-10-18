@@ -40,7 +40,7 @@
 			</div>
 			<div class="form-group <%= 'has-error' if @pokedex.errors.include?(:element_type) %>">
 				<%= f.label :element_type %>
-	    	<%= f.text_field :element_type, class: 'form-control' %>
+	    	<%= f.select :element_type, Pokedex.element_type.options, {prompt: '-- Select --'}, class: 'form-control' %>
 	    	<% if @pokedex.errors.include?(:element_type) %>
 	    		<p class="error-message"><%= 'Element type ' + @pokedex.errors.messages[:element_type].join(' and ') %></p>
 	    	<% end %>

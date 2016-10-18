@@ -1,4 +1,10 @@
 class Pokedex < ApplicationRecord
+	extend Enumerize
+
+	ELEMENT_TYPE_LIST = [:normal, :fighting, :flying, :poison, :ground, :rock, :bug, :ghost, :steel, :fire, :water, :grass, :electric, :psychic, :ice, :dragon, :dark, :fairy]
+
+	enumerize :element_type, in: ELEMENT_TYPE_LIST
+
 	has_many :pokemon, dependent: :destroy
 
 	validates :name, presence: true, uniqueness: true,

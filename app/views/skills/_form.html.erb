@@ -26,7 +26,7 @@
 			</div>
 			<div class="form-group <%= 'has-error' if @skill.errors.include?(:element_type) %>">
 				<%= f.label :element_type %>
-	    	<%= f.text_field :element_type, class: 'form-control' %>
+	    	<%= f.select :element_type, Skill.element_type.options, {prompt: '-- Select --'}, class: 'form-control' %>
 	    	<% if @skill.errors.include?(:element_type) %>
 	    		<p class="error-message"><%= 'Element type ' + @skill.errors.messages[:element_type].join(' and ') %></p>
 	    	<% end %>
