@@ -1,4 +1,7 @@
 class Skill < ApplicationRecord
+	has_many :pokemon_skills, dependent: :destroy
+	has_many :pokemons, through: :pokemon_skills
+
 	extend Enumerize
 
 	ELEMENT_TYPE_LIST = [:normal, :fighting, :flying, :poison, :ground, :rock, :bug, :ghost, :steel, :fire, :water, :grass, :electric, :psychic, :ice, :dragon, :dark, :fairy]

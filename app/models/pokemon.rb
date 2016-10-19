@@ -1,5 +1,8 @@
 class Pokemon < ApplicationRecord
 	belongs_to :pokedex
+	has_many :pokemon_battles, dependent: :destroy
+	has_many :pokemon_skills, dependent: :destroy
+	has_many :skills, through: :pokemon_skills
 
 	validates :name, presence: true, uniqueness: true,
 					 								length: { maximum: 45 }

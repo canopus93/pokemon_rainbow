@@ -6,51 +6,37 @@
 			<div class="form-group <%= 'has-error' if @pokedex.errors.include?(:name) %>">
 				<%= f.label :name %>
 	    	<%= f.text_field :name, class: 'form-control' %>
-	    	<% if @pokedex.errors.include?(:name) %>
-	    		<p class="error-message"><%= 'Name ' + @pokedex.errors.messages[:name].join(' and ') %></p>
-	    	<% end %>
+	    	<p class="error-message"><%= @pokedex.errors.messages[:name].join(' and ') %></p>
 			</div>
 			<div class="form-group <%= 'has-error' if @pokedex.errors.include?(:base_health_point) %>">
 				<%= f.label :base_health_point %>
 	    	<%= f.text_field :base_health_point, class: 'form-control' %>
-	    	<% if @pokedex.errors.include?(:base_health_point) %>
-	    		<p class="error-message"><%= 'Base health point ' + @pokedex.errors.messages[:base_health_point].join(' and ') %></p>
-	    	<% end %>
+	    	<p class="error-message"><%= @pokedex.errors.messages[:base_health_point].join(' and ') %></p>
 			</div>
 			<div class="form-group <%= 'has-error' if @pokedex.errors.include?(:base_attack) %>">
 				<%= f.label :base_attack %>
 	    	<%= f.text_field :base_attack, class: 'form-control' %>
-	    	<% if @pokedex.errors.include?(:base_attack) %>
-	    		<p class="error-message"><%= 'Base attack ' + @pokedex.errors.messages[:base_attack].join(' and ') %></p>
-	    	<% end %>
+	    	<p class="error-message"><%= @pokedex.errors.messages[:base_attack].join(' and ') %></p>
 			</div>
 			<div class="form-group <%= 'has-error' if @pokedex.errors.include?(:base_defence) %>">
 				<%= f.label :base_defence %>
 	    	<%= f.text_field :base_defence, class: 'form-control' %>
-	    	<% if @pokedex.errors.include?(:base_defence) %>
-	    		<p class="error-message"><%= 'Base defence ' + @pokedex.errors.messages[:base_defence].join(' and ') %></p>
-	    	<% end %>
+	    	<p class="error-message"><%= @pokedex.errors.messages[:base_defence].join(' and ') %></p>
 			</div>
 			<div class="form-group <%= 'has-error' if @pokedex.errors.include?(:base_speed) %>">
 				<%= f.label :base_speed %>
 	    	<%= f.text_field :base_speed, class: 'form-control' %>
-	    	<% if @pokedex.errors.include?(:base_speed) %>
-	    		<p class="error-message"><%= 'Base speed ' + @pokedex.errors.messages[:base_speed].join(' and ') %></p>
-	    	<% end %>
+	    	<p class="error-message"><%= @pokedex.errors.messages[:base_speed].join(' and ') %></p>
 			</div>
 			<div class="form-group <%= 'has-error' if @pokedex.errors.include?(:element_type) %>">
 				<%= f.label :element_type %>
 	    	<%= f.select :element_type, Pokedex.element_type.options, {prompt: '-- Select --'}, class: 'form-control' %>
-	    	<% if @pokedex.errors.include?(:element_type) %>
-	    		<p class="error-message"><%= 'Element type ' + @pokedex.errors.messages[:element_type].join(' and ') %></p>
-	    	<% end %>
+	    	<p class="error-message"><%= @pokedex.errors.messages[:element_type].join(' and ') %></p>
 			</div>
 			<div class="form-group <%= 'has-error' if @pokedex.errors.include?(:image_url) %>">
 				<%= f.label :image_url %>
 	    	<%= f.text_field :image_url, class: 'form-control' %>
-	    	<% if @pokedex.errors.include?(:image_url) %>
-	    		<p class="error-message"><%= 'Image url ' + @pokedex.errors.messages[:image_url].join(' and ') %></p>
-	    	<% end %>
+	    	<p class="error-message"><%= @pokedex.errors.messages[:image_url].join(' and ') %></p>
 			</div>
 			<%= f.submit yield(:submit_text), class: 'btn btn-primary center-block' %>
 		<% end %>

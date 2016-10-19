@@ -14,11 +14,13 @@ class PokemonsDecorator
 		:defence,
 		:speed,
 		:current_experience,
+		:pokemon_skills,
 		:image,
 		:image_small,
 		:link_to_show,
 		:link_to_edit,
-		:link_to_delete
+		:link_to_delete,
+		:errors
 	)
 
 	def initialize(context)
@@ -51,11 +53,13 @@ class PokemonsDecorator
 			result.defence = pokemon.defence
 			result.speed = pokemon.speed
 			result.current_experience = pokemon.current_experience
-			result.image = image_tag(pokemon.pokedex.image_url)
-			result.image_small = image_tag(pokemon.pokedex.image_url, class: "pokemon-img")
+			result.pokemon_skills = pokemon.pokemon_skills
+			result.image = image_tag(pokemon.pokedex.image_url, class: "pokemon-img-lg") if pokemon.pokedex.image_url.present?
+			result.image_small = image_tag(pokemon.pokedex.image_url, class: "pokemon-img") if pokemon.pokedex.image_url.present?
 			result.link_to_show = link_to_show(pokemon)
 			result.link_to_edit = link_to_edit(pokemon)
 			result.link_to_delete = link_to_delete(pokemon)
+			result.errors = pokemon.errors
 			result
 		end
 

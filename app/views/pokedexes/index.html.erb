@@ -16,9 +16,15 @@
 				</tr>
 			</thead>
 			<tbody>
+				<%	if params[:page].to_i > 0 
+							@current_page = (params[:page].to_i - 1) * 10
+						else
+							@current_page = params[:page].to_i * 10
+						end
+				%>
 				<% @decorated_pokedexes.each_with_index do |pokedex, index| %>
 					<tr>
-						<td><%= index + 1 %></td>
+						<td><%= @current_page + index + 1 %></td>
 						<td><%= pokedex.link_to_show %></td>
 						<td><%= pokedex.base_health_point %></td>
 						<td><%= pokedex.base_attack %></td>
@@ -30,5 +36,8 @@
 				<% end %>
 			</tbody>
 		</table>
+		<div class="text-center">
+			<%= will_paginate @pagination_pokedexes %>
+		</div>
 	</div>
 </div>

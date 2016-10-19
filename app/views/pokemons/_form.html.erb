@@ -2,69 +2,54 @@
 	<div class="col-sm-offset-2 col-sm-8">
 		<%= form_for @pokemon do |f| %>
 			<%= render 'layouts/error_message', error_object: @pokemon.errors %>
-
+			<%= f.hidden_field :pokedex_id, value: @pokemon.pokedex.id %>
+			<div class="form-group">
+				<%= label_tag :pokedex %>
+				<div>
+					<%= label_tag :pokedex_name, "#{@pokemon.pokedex.name}" %>
+				</div>
+			</div>
+			<div class="form-group">
+			</div>
 			<div class="form-group <%= 'has-error' if @pokemon.errors.include?(:name) %>">
 				<%= f.label :name %>
 	    	<%= f.text_field :name, class: 'form-control' %>
-	    	<% if @pokemon.errors.include?(:name) %>
-				  <p class="error-message"><%= 'Name ' + @pokemon.errors.messages[:name].join(' and ') %></p>
-	    	<% end %>
-			</div>
-			<div class="form-group <%= 'has-error' if @pokemon.errors.include?(:pokedex) %>">
-				<%= f.label :pokedex_id %>
-	    	<%= f.select :pokedex_id, options_for_select(Pokedex.all.collect{ |pokedex| [pokedex.name, pokedex.id] }, "-- Select --"), {prompt: "-- Select --"}, {class: 'form-control'} %>
-	    	<% if @pokemon.errors.include?(:pokedex) %>
-	    		<p class="error-message"><%= 'Pokedex ' + @pokemon.errors.messages[:pokedex].join(' and ') %></p>
-	    	<% end %>
+				 <p class="error-message"><%= @pokemon.errors.messages[:name].join(' and ') %></p>
 			</div>
 			<div class="form-group <%= 'has-error' if @pokemon.errors.include?(:level) %>">
 				<%= f.label :level %>
 	    	<%= f.text_field :level, class: 'form-control' %>
-	    	<% if @pokemon.errors.include?(:level) %>
-	    		<p class="error-message"><%= 'Level ' + @pokemon.errors.messages[:level].join(' and ') %></p>
-	    	<% end %>
+	    	<p class="error-message"><%= @pokemon.errors.messages[:level].join(' and ') %></p>
 			</div>
 			<div class="form-group <%= 'has-error' if @pokemon.errors.include?(:current_health_point) %>">
 				<%= f.label :current_health_point %>
 	    	<%= f.text_field :current_health_point, class: 'form-control' %>
-	    	<% if @pokemon.errors.include?(:current_health_point) %>
-	    		<p class="error-message"><%= 'Current health point ' + @pokemon.errors.messages[:current_health_point].join(' and ') %></p>
-	    	<% end %>
+	    	<p class="error-message"><%= @pokemon.errors.messages[:current_health_point].join(' and ') %></p>
 			</div>
 			<div class="form-group <%= 'has-error' if @pokemon.errors.include?(:max_health_point) %>">
 				<%= f.label :max_health_point %>
 	    	<%= f.text_field :max_health_point, class: 'form-control' %>
-	    	<% if @pokemon.errors.include?(:max_health_point) %>
-	    		<p class="error-message"><%= 'Max health point ' + @pokemon.errors.messages[:max_health_point].join(' and ') %></p>
-	    	<% end %>
+	    	<p class="error-message"><%= @pokemon.errors.messages[:max_health_point].join(' and ') %></p>
 			</div>
 			<div class="form-group <%= 'has-error' if @pokemon.errors.include?(:attack) %>">
 				<%= f.label :attack %>
 	    	<%= f.text_field :attack, class: 'form-control' %>
-	    	<% if @pokemon.errors.include?(:attack) %>
-	    		<p class="error-message"><%= 'Attack ' + @pokemon.errors.messages[:attack].join(' and ') %></p>
-	    	<% end %>
+	    	<p class="error-message"><%= @pokemon.errors.messages[:attack].join(' and ') %></p>
 			</div>
 			<div class="form-group <%= 'has-error' if @pokemon.errors.include?(:defence) %>">
 				<%= f.label :defence %>
 	    	<%= f.text_field :defence, class: 'form-control' %>
-	    	<% if @pokemon.errors.include?(:defence) %>
-	    		<p class="error-message"><%= 'Defence ' + @pokemon.errors.messages[:defence].join(' and ') %></p>
-	    	<% end %>
+	    	<p class="error-message"><%= @pokemon.errors.messages[:defence].join(' and ') %></p>
 			</div>
 			<div class="form-group <%= 'has-error' if @pokemon.errors.include?(:speed) %>">
 				<%= f.label :speed %>
 	    	<%= f.text_field :speed, class: 'form-control' %>
-	    	<% if @pokemon.errors.include?(:speed) %>
-	    		<p class="error-message"><%= 'Speed ' + @pokemon.errors.messages[:speed].join(' and ') %></p>
-	    	<% end %>
+	    	<p class="error-message"><%= @pokemon.errors.messages[:speed].join(' and ') %></p>
 			</div>
 			<div class="form-group <%= 'has-error' if @pokemon.errors.include?(:current_experience) %>">
 				<%= f.label :current_experience %>
 	    	<%= f.text_field :current_experience, class: 'form-control' %>
-	    	<% if @pokemon.errors.include?(:current_experience) %>
-	    		<p class="error-message"><%= 'Current experience ' + @pokemon.errors.messages[:pokedex_id].join(' and ') %></p>
-	    	<% end %>
+	    	<p class="error-message"><%= @pokemon.errors.messages[:pokedex_id].join(' and ') %></p>
 			</div>
 			<%= f.submit yield(:submit_text), class: 'btn btn-primary center-block' %>
 		<% end %>
