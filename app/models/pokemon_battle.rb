@@ -17,7 +17,7 @@ class PokemonBattle < ApplicationRecord
 
 	def pokemon1_and_pokemon2_must_not_same
 		if pokemon1_id == pokemon2_id
-			errors.add(:pokemon1_id, "must not be same as Pokemon2")
+			# errors.add(:pokemon1_id, "must not be same as Pokemon2")
 			errors.add(:pokemon2_id, "must not be same as Pokemon1")
 		end
 	end

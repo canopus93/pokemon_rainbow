@@ -74,7 +74,7 @@ class PokemonBattlesController < ApplicationController
 			pokemon_battle = PokemonBattle.find(params[:id])
 			@pokemon_battle_log = PokemonBattleLog.new()
 			@pokemon_battle_log.pokemon_battle = pokemon_battle
-			@pokemon_battle_log.turn = params[:current_turn]
+			@pokemon_battle_log.turn = pokemon_battle.current_turn
 			@pokemon_battle_log.skill = attack_skill
 			@pokemon_battle_log.damage = power
 			@pokemon_battle_log.attacker = Pokemon.find(params[:attacker_id])
@@ -82,7 +82,7 @@ class PokemonBattlesController < ApplicationController
 			@pokemon_battle_log.action_type = action_type
 			if @pokemon_battle_log.valid?
 				ActiveRecord::Base.transaction do
-					pokemon_battle.update(current_turn: params[:current_turn].to_i + 1)
+					pokemon_battle.update(current_turn: pokemon_battle.current_turn + 1)
 					@pokemon_battle_log.save
 				end
 				redirect_to pokemon_battle
@@ -98,16 +98,16 @@ class PokemonBattlesController < ApplicationController
 			pokemon_battle = PokemonBattle.find(params[:id])
 			@pokemon_battle_log = PokemonBattleLog.new()
 			@pokemon_battle_log.pokemon_battle = pokemon_battle
-			@pokemon_battle_log.turn = params[:current_turn]
+			@pokemon_battle_log.turn = pokemon_battle.current_turn
 			@pokemon_battle_log.attacker = Pokemon.find(params[:attacker_id])
 			@pokemon_battle_log.defender = Pokemon.find(params[:defender_id])
 			@pokemon_battle_log.action_type = action_type
 			if @pokemon_battle_log.valid?
 				ActiveRecord::Base.transaction do
-					pokemon_battle.update(state: 'finish', current_turn: params[:current_turn].to_i + 1)
+					pokemon_battle.update(state: 'finish')
 					@pokemon_battle_log.save
 				end
-				redirect_to pokemon_battle
+				redirect_to pokemon_battles_path
 			else
 				decorator = PokemonBattlesDecorator.new(self)
 				@decorated_pokemon_battle = decorator.decorate_for_show(PokemonBattle.find(params[:id]))
