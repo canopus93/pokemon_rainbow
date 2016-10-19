@@ -1,0 +1,100 @@
+<div class="panel panel-primary">
+	<div class="panel-heading">Pokedex</div>
+	<div class="panel-body">
+		<div class="col-xs-12">
+			<div class="col-sm-5">
+				<div class="col-sm-12 img-container">
+					<%= @decorated_pokemon_battle.pokemon1.image %>	
+				</div>
+				
+				<div class="col-sm-6 col-xs-12 pokemon-details">
+					<table align="center">
+						<tr>
+							<td>Name</td>
+							<td>&nbsp;:&nbsp;</td>
+							<td><%= @decorated_pokemon_battle.pokemon1.link_to_show %></td>
+						</tr>
+						<tr>
+							<td>Level</td>
+							<td>&nbsp;:&nbsp;</td>
+							<td><%= @decorated_pokemon_battle.pokemon1.level %></td>
+						</tr>
+						<tr>
+							<td>Health point</td>
+							<td>&nbsp;:&nbsp;</td>
+							<td><%= @decorated_pokemon_battle.pokemon1.current_health_point %></td>
+						</tr>
+						<tr>
+							<td>Attack</td>
+							<td>&nbsp;:&nbsp;</td>
+							<td><%= @decorated_pokemon_battle.pokemon1.attack %></td>
+						</tr>
+						<tr>
+							<td>Defence</td>
+							<td>&nbsp;:&nbsp;</td>
+							<td><%= @decorated_pokemon_battle.pokemon1.defence %></td>
+						</tr>
+						<tr>
+							<td>Speed</td>
+							<td>&nbsp;:&nbsp;</td>
+							<td><%= @decorated_pokemon_battle.pokemon1.speed %></td>
+						</tr>
+						<tr>
+							<td>Current experience</td>
+							<td>&nbsp;:&nbsp;</td>
+							<td><%= @decorated_pokemon_battle.pokemon1.current_experience %></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<h3 class="text-center">VS</h3>
+			</div>
+			<div class="col-sm-5">
+				<div class="col-sm-12 img-container">
+					<%= @decorated_pokemon_battle.pokemon2.image %>	
+				</div>
+				
+				<div class="col-sm-6 col-xs-12 pokemon-details">
+					<table align="center">
+						<tr>
+							<td>Name</td>
+							<td>&nbsp;:&nbsp;</td>
+							<td><%= @decorated_pokemon_battle.pokemon2.link_to_show %></td>
+						</tr>
+						<tr>
+							<td>Level</td>
+							<td>&nbsp;:&nbsp;</td>
+							<td><%= @decorated_pokemon_battle.pokemon2.level %></td>
+						</tr>
+						<tr>
+							<td>Health point</td>
+							<td>&nbsp;:&nbsp;</td>
+							<td><%= @decorated_pokemon_battle.pokemon2.current_health_point %></td>
+						</tr>
+						<tr>
+							<td>Attack</td>
+							<td>&nbsp;:&nbsp;</td>
+							<td><%= @decorated_pokemon_battle.pokemon2.attack %></td>
+						</tr>
+						<tr>
+							<td>Defence</td>
+							<td>&nbsp;:&nbsp;</td>
+							<td><%= @decorated_pokemon_battle.pokemon2.defence %></td>
+						</tr>
+						<tr>
+							<td>Speed</td>
+							<td>&nbsp;:&nbsp;</td>
+							<td><%= @decorated_pokemon_battle.pokemon2.speed %></td>
+						</tr>
+						<tr>
+							<td>Current experience</td>
+							<td>&nbsp;:&nbsp;</td>
+							<td><%= @decorated_pokemon_battle.pokemon2.current_experience %></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

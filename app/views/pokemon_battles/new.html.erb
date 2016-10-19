@@ -1,0 +1,24 @@
+<% provide(:submit_text, 'Battle!') %>
+<div class="col-sm-offset-1 col-sm-10">
+	<div class="panel panel-primary">
+		<div class="panel-heading">Pokemon Battle</div>
+		<div class="panel-body">
+		<%= form_for @pokemon_battle do |f| %>
+			<%= render 'layouts/error_message', error_object: @pokemon_battle.errors %>
+			<div class="form-group col-sm-5">
+				<%= f.label :pokemon1_id %>
+				<%= f.select :pokemon1_id, options_for_select(Pokemon.all.collect{ |pokemon| [pokemon.name, pokemon.id] }), {prompt: "-- Select --"}, {class: 'form-control'} %>
+			</div>
+			<div class="form-group col-sm-2 text-center">
+				<%= label_tag :vs, 'VS' %>
+			</div>
+			<div class="form-group col-sm-5">
+				<%= f.label :pokemon2_id %>
+				<%= f.select :pokemon2_id, options_for_select(Pokemon.all.collect{ |pokemon| [pokemon.name, pokemon.id] }), {prompt: "-- Select --"}, {class: 'form-control'} %>
+			</div>
+			<%= f.hidden_field :state, value: 'ongoing' %>
+			<%= f.submit yield(:submit_text), class: 'btn btn-primary center-block' %>
+		<% end %>
+		</div>
+	</div>
+</div>
