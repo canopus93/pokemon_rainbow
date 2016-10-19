@@ -9,7 +9,8 @@ class ApplicationController < ActionController::Base
   	# 		base_attack: rand(100) +1,
   	# 		base_defence: rand(100) +1,
   	# 		base_speed: rand(100) +1,
-  	# 		element_type: Pokedex::ELEMENT_TYPE_LIST.sample
+  	# 		element_type: Pokedex::ELEMENT_TYPE_LIST.sample,
+   #      image_url: 'https://img.pokemondb.net/artwork/snorlax.jpg'
   	# 	)
   	# 	pokedex.save!
   	# end

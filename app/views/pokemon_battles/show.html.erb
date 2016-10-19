@@ -3,17 +3,27 @@
 	<div class="panel-body">
 		<div class="col-xs-12">
 			<div class="col-sm-5">
-				<div class="col-sm-12 img-container">
+				<h3 class="text-center"><%= @decorated_pokemon_battle.pokemon1.link_to_show %></h3>
+			</div>
+
+			<div class="col-sm-2">
+				<h3 class="text-center">VS</h3>
+				<h5 class="text-center"><%= @decorated_pokemon_battle.state %></h5>
+			</div>
+
+			<div class="col-sm-5">
+				<h3 class="text-center"><%= @decorated_pokemon_battle.pokemon2.link_to_show %></h3>	
+			</div>
+		</div>
+
+		<div class="col-xs-12">
+			<div class="col-sm-5">
+				<div class="col-xs-12 img-container">
 					<%= @decorated_pokemon_battle.pokemon1.image %>	
 				</div>
 				
-				<div class="col-sm-6 col-xs-12 pokemon-details">
+				<div class="col-xs-12 pokemon-details">
 					<table align="center">
-						<tr>
-							<td>Name</td>
-							<td>&nbsp;:&nbsp;</td>
-							<td><%= @decorated_pokemon_battle.pokemon1.link_to_show %></td>
-						</tr>
 						<tr>
 							<td>Level</td>
 							<td>&nbsp;:&nbsp;</td>
@@ -46,22 +56,33 @@
 						</tr>
 					</table>
 				</div>
+
+				<div class="col-xs-12 action">
+					<%= form_tag(pokemons_battle_action_path(@decorated_pokemon_battle.id), enforce_utf8: false) do %>
+						<%= render 'layouts/error_message', error_object: @pokemon_battle_log.errors %>
+						<div class="form-group">
+							<%= label_tag :attack_skill %>
+							<%= select_tag :attack_skill, options_for_select(PokemonSkill.where(pokemon_id: @decorated_pokemon_battle.pokemon1.id).collect{ |pokemon_skill| [pokemon_skill.skill.name, pokemon_skill.skill.id] }, "-- Select --"), { prompt: '-- Select --', class: 'form-control'} %>
+						</div>
+						<%= hidden_field_tag :current_turn, @decorated_pokemon_battle.current_turn %>
+						<%= hidden_field_tag :attacker_id, @decorated_pokemon_battle.pokemon1.id %>
+						<%= hidden_field_tag :defender_id, @decorated_pokemon_battle.pokemon2.id %>
+						<%= submit_tag :Attack, class: 'btn btn-primary' %>
+						<%= submit_tag :Surrender, class: 'btn btn-primary' %>
+					<% end %>
+				</div>
 			</div>
+
 			<div class="col-sm-2">
-				<h3 class="text-center">VS</h3>
 			</div>
+
 			<div class="col-sm-5">
-				<div class="col-sm-12 img-container">
+				<div class="col-xs-12 img-container">
 					<%= @decorated_pokemon_battle.pokemon2.image %>	
 				</div>
 				
-				<div class="col-sm-6 col-xs-12 pokemon-details">
+				<div class="col-xs-12 pokemon-details">
 					<table align="center">
-						<tr>
-							<td>Name</td>
-							<td>&nbsp;:&nbsp;</td>
-							<td><%= @decorated_pokemon_battle.pokemon2.link_to_show %></td>
-						</tr>
 						<tr>
 							<td>Level</td>
 							<td>&nbsp;:&nbsp;</td>
@@ -93,6 +114,20 @@
 							<td><%= @decorated_pokemon_battle.pokemon2.current_experience %></td>
 						</tr>
 					</table>
+				</div>
+
+				<div class="col-xs-12 action">
+					<%= form_tag(pokemons_battle_action_path(@decorated_pokemon_battle.id), enforce_utf8: false) do %>
+						<%= render 'layouts/error_message', error_object: @pokemon_battle_log.errors %>
+						<div class="form-group">
+							<%= label_tag :attack_skill %>
+							<%= select_tag :attack_skill, options_for_select(PokemonSkill.where(pokemon_id: @decorated_pokemon_battle.pokemon2.id).collect{ |pokemon_skill| [pokemon_skill.skill.name, pokemon_skill.skill.id] }, "-- Select --"), { prompt: '-- Select --', class: 'form-control'} %>
+						</div>
+						<%= hidden_field_tag :attacker_id, @decorated_pokemon_battle.pokemon2.id %>
+						<%= hidden_field_tag :defender_id, @decorated_pokemon_battle.pokemon1.id %>
+						<%= submit_tag :Attack, class: 'btn btn-primary' %>
+						<%= submit_tag :Surrender, class: 'btn btn-primary' %>
+					<% end %>
 				</div>
 			</div>
 		</div>
