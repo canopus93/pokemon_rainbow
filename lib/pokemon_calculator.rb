@@ -1,6 +1,5 @@
 class PokemonCalculator
-	# DAMAGE_RATIO
-	RESISTANCE_CHART = {
+	DAMAGE_RATIO = {
 		normal: {
 			normal: 1,
 			fighting: 1,
@@ -372,10 +371,10 @@ class PokemonCalculator
 
 	def self.calculate_damage(attacker:, defender:, skill:)
 		stab = (attacker.pokedex.element_type == skill.element_type) ? 1.5 : 1
-		resistance = RESISTANCE_CHART[skill.element_type.to_sym][defender.pokedex.element_type.to_sym]
+		damage_ratio = DAMAGE_RATIO[skill.element_type.to_sym][defender.pokedex.element_type.to_sym]
 		random_number = rand(85..100).to_d
 
-		result = ((((2 * attacker.level / 5 + 2) * attacker.attack * skill.power / defender.defence) / 50) + 2) * stab * resistance * (random_number / 100)
+		result = ((((2 * attacker.level / 5 + 2) * attacker.attack * skill.power / defender.defence) / 50) + 2) * stab * damage_ratio * (random_number / 100)
 		result.round
 	end
 
