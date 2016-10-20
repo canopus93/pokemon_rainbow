@@ -376,7 +376,7 @@ class PokemonCalculator
 		random_number = rand(85..100).to_d
 
 		result = ((((2 * attacker.level / 5 + 2) * attacker.attack * skill.power / defender.defence) / 50) + 2) * stab * resistance * (random_number / 100)
-		result.to_i
+		result.round
 	end
 
 	def self.calculate_experience(enemy_level:)

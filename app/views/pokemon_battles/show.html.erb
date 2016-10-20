@@ -34,9 +34,9 @@
 									<%= select_tag :pokemon_skill_id, options_for_select(@decorated_pokemon_battle.pokemon1_available_skills.collect{ |pokemon_skill| [pokemon_skill.skill.name, pokemon_skill.id] }, "-- Select --"), { prompt: '-- Select --', class: 'form-control'} %>
 									<p class="error-message"><%= @pokemon_battle_log.errors.messages[:skill_id].join(' and ') %></p>
 								</div>
-								<%= submit_tag :attack, { name: 'action_type', class: 'btn btn-primary'} %>
+								<%= submit_tag :attack, { name: 'action_type', class: 'btn btn-primary' } %>
 							<% end %>
-							<%= submit_tag :surrender, { name: 'action_type', class: 'btn btn-primary'} %>
+							<%= submit_tag :surrender, { name: 'action_type', class: 'btn btn-primary' } %>
 							<%= hidden_field_tag :attacker_id, @decorated_pokemon_battle.pokemon1.id %>
 							<%= hidden_field_tag :defender_id, @decorated_pokemon_battle.pokemon2.id %>
 						<% end %>
@@ -62,9 +62,9 @@
 									<%= select_tag :pokemon_skill_id, options_for_select(@decorated_pokemon_battle.pokemon2_available_skills.collect{ |pokemon_skill| [pokemon_skill.skill.name, pokemon_skill.id] }, "-- Select --"), { prompt: '-- Select --', class: 'form-control'} %>
 									<p class="error-message"><%= @pokemon_battle_log.errors.messages[:skill_id].join(' and ') %></p>
 								</div>
-								<%= submit_tag :attack, { name: 'action_type', class: 'btn btn-primary'} %>
+								<%= submit_tag :attack, { name: 'action_type', class: 'btn btn-primary' } %>
 							<% end %>
-							<%= submit_tag :surrender, { name: 'action_type', class: 'btn btn-primary'} %>
+							<%= submit_tag :surrender, { name: 'action_type', class: 'btn btn-primary' } %>
 							<%= hidden_field_tag :attacker_id, @decorated_pokemon_battle.pokemon2.id %>
 							<%= hidden_field_tag :defender_id, @decorated_pokemon_battle.pokemon1.id %>
 						<% end %>

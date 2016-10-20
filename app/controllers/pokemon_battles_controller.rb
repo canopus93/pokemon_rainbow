@@ -81,7 +81,11 @@ class PokemonBattlesController < ApplicationController
 
 			if @pokemon_battle_log.valid?
 				ActiveRecord::Base.transaction do
-					pokemon_battle.update(current_turn: pokemon_battle.current_turn + 1)
+					if defender_last_health_point == 0
+						pokemon_battle.update(state: 'finish', pokemon_winner: pokemon_attacker, pokemon_loser: pokemon_defender)
+					else
+						pokemon_battle.update(current_turn: pokemon_battle.current_turn + 1)
+					end
 					pokemon_defender.update(current_health_point: defender_last_health_point)
 					pokemon_skill.update(current_pp: pokemon_skill.current_pp - 1)
 					@pokemon_battle_log.save
