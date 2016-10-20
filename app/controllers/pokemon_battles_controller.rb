@@ -15,12 +15,8 @@ class PokemonBattlesController < ApplicationController
 		@pokemon_battle = PokemonBattle.new
 	end
 
-	# def edit
-	# 	@pokemon_battle = PokemonBattle.find(params[:id])
-	# end
-
 	def action
-		action_type = params[:commit].downcase
+		action_type = params[:action_type].downcase
 		if action_type == 'surrender'
 			surrender
 		elsif action_type == 'attack'
@@ -32,6 +28,8 @@ class PokemonBattlesController < ApplicationController
 
 	def create
 		@pokemon_battle = PokemonBattle.new(pokemon_battle_params)
+		@pokemon_battle.pokemon1_max_health_point = Pokemon.find(params[:pokemon_battle][:pokemon1_id]).max_health_point if params[:pokemon_battle][:pokemon1_id].present?
+		@pokemon_battle.pokemon2_max_health_point = Pokemon.find(params[:pokemon_battle][:pokemon2_id]).max_health_point if params[:pokemon_battle][:pokemon2_id].present?
 
 		if @pokemon_battle.save
 			redirect_to @pokemon_battle
@@ -39,16 +37,6 @@ class PokemonBattlesController < ApplicationController
 			render 'new'
 		end
 	end
-
-	# def update
-	# 	@pokemon_battle = PokemonBattle.find(params[:id])
-
-	# 	if @pokemon_battle.update(pokemon_battle_params)
-	# 		redirect_to @pokemon_battle
-	# 	else
-	# 		render 'edit'
-	# 	end
-	# end
 
 	def destroy
 		@pokemon_battle = PokemonBattle.find(params[:id])
@@ -59,30 +47,43 @@ class PokemonBattlesController < ApplicationController
 
 	private
 		def pokemon_battle_params
-			params.require(:pokemon_battle).permit(:pokemon1_id, :pokemon2_id, :current_turn, :state, :pokemon_winner_id, :pokemon_loser_id, :experience_gain, :pokemon1_max_health_point, :pokemon2_max_health_point)
+			params.require(:pokemon_battle).permit(:pokemon1_id, :pokemon2_id, :state, :current_turn)
 		end
 
 		def attack
-			action_type = params[:commit].downcase
-			if params[:attack_skill].empty?
-				attack_skill = nil
-				power = nil
-			else
-				attack_skill = Skill.find(params[:attack_skill])
-				power = attack_skill.power
-			end
+			action_type = params[:action_type].downcase
 			pokemon_battle = PokemonBattle.find(params[:id])
-			@pokemon_battle_log = PokemonBattleLog.new()
-			@pokemon_battle_log.pokemon_battle = pokemon_battle
-			@pokemon_battle_log.turn = pokemon_battle.current_turn
-			@pokemon_battle_log.skill = attack_skill
-			@pokemon_battle_log.damage = power
-			@pokemon_battle_log.attacker = Pokemon.find(params[:attacker_id])
-			@pokemon_battle_log.defender = Pokemon.find(params[:defender_id])
-			@pokemon_battle_log.action_type = action_type
+			pokemon_attacker = Pokemon.find(params[:attacker_id])
+			pokemon_defender = Pokemon.find(params[:defender_id])
+
+			if params[:pokemon_skill_id].empty?
+				pokemon_skill = PokemonSkill.new
+				attack_damage = 0
+			else
+				pokemon_skill = PokemonSkill.find(params[:pokemon_skill_id])
+				attack_damage = PokemonCalculator.calculate_damage(attacker: pokemon_attacker, defender: pokemon_defender, skill: pokemon_skill.skill)
+			end
+
+			last_health_point = pokemon_defender.current_health_point - attack_damage
+			defender_last_health_point = (last_health_point < 0) ? 0 : last_health_point
+
+			@pokemon_battle_log = PokemonBattleLog.new(
+				pokemon_battle: pokemon_battle,
+				turn: pokemon_battle.current_turn,
+				skill: pokemon_skill.skill,
+				damage: attack_damage,
+				attacker: pokemon_attacker,
+				defender: pokemon_defender,
+				attacker_current_health_point: pokemon_attacker.current_health_point,
+				defender_current_health_point: defender_last_health_point,
+				action_type: action_type
+			)
+
 			if @pokemon_battle_log.valid?
 				ActiveRecord::Base.transaction do
 					pokemon_battle.update(current_turn: pokemon_battle.current_turn + 1)
+					pokemon_defender.update(current_health_point: defender_last_health_point)
+					pokemon_skill.update(current_pp: pokemon_skill.current_pp - 1)
 					@pokemon_battle_log.save
 				end
 				redirect_to pokemon_battle
@@ -94,17 +95,25 @@ class PokemonBattlesController < ApplicationController
 		end
 
 		def surrender
-			action_type = params[:commit].downcase
+			action_type = params[:action_type].downcase
+			pokemon_attacker = Pokemon.find(params[:attacker_id])
+			pokemon_defender = Pokemon.find(params[:defender_id])
 			pokemon_battle = PokemonBattle.find(params[:id])
-			@pokemon_battle_log = PokemonBattleLog.new()
-			@pokemon_battle_log.pokemon_battle = pokemon_battle
-			@pokemon_battle_log.turn = pokemon_battle.current_turn
-			@pokemon_battle_log.attacker = Pokemon.find(params[:attacker_id])
-			@pokemon_battle_log.defender = Pokemon.find(params[:defender_id])
-			@pokemon_battle_log.action_type = action_type
+			
+			@pokemon_battle_log = PokemonBattleLog.new(
+				pokemon_battle: pokemon_battle,
+				damage: 0,
+				turn: pokemon_battle.current_turn,
+				attacker: pokemon_attacker,
+				defender: pokemon_defender,
+				attacker_current_health_point: pokemon_attacker.current_health_point,
+				defender_current_health_point: pokemon_defender.current_health_point,
+				action_type: action_type
+			)
+
 			if @pokemon_battle_log.valid?
 				ActiveRecord::Base.transaction do
-					pokemon_battle.update(state: 'finish')
+					pokemon_battle.update(state: 'finish', pokemon_winner: pokemon_defender, pokemon_loser: pokemon_attacker)
 					@pokemon_battle_log.save
 				end
 				redirect_to pokemon_battles_path

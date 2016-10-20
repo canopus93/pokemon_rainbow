@@ -4,6 +4,7 @@
 		<div class="col-xs-12">
 			<div class="col-sm-5">
 				<h3 class="text-center"><%= @decorated_pokemon_battle.pokemon1.link_to_show %></h3>
+				<h4 class="text-center">HP : <%= @decorated_pokemon_battle.pokemon1_current_health_point %></h4>
 			</div>
 
 			<div class="col-sm-2">
@@ -12,7 +13,8 @@
 			</div>
 
 			<div class="col-sm-5">
-				<h3 class="text-center"><%= @decorated_pokemon_battle.pokemon2.link_to_show %></h3>	
+				<h3 class="text-center"><%= @decorated_pokemon_battle.pokemon2.link_to_show %></h3>
+				<h4 class="text-center">HP : <%= @decorated_pokemon_battle.pokemon2_current_health_point %></h4>
 			</div>
 		</div>
 
@@ -22,54 +24,21 @@
 					<%= @decorated_pokemon_battle.pokemon1.image %>	
 				</div>
 				
-				<div class="col-xs-12 pokemon-details">
-					<table align="center">
-						<tr>
-							<td>Level</td>
-							<td>&nbsp;:&nbsp;</td>
-							<td><%= @decorated_pokemon_battle.pokemon1.level %></td>
-						</tr>
-						<tr>
-							<td>Health point</td>
-							<td>&nbsp;:&nbsp;</td>
-							<td><%= @decorated_pokemon_battle.pokemon1.current_health_point %></td>
-						</tr>
-						<tr>
-							<td>Attack</td>
-							<td>&nbsp;:&nbsp;</td>
-							<td><%= @decorated_pokemon_battle.pokemon1.attack %></td>
-						</tr>
-						<tr>
-							<td>Defence</td>
-							<td>&nbsp;:&nbsp;</td>
-							<td><%= @decorated_pokemon_battle.pokemon1.defence %></td>
-						</tr>
-						<tr>
-							<td>Speed</td>
-							<td>&nbsp;:&nbsp;</td>
-							<td><%= @decorated_pokemon_battle.pokemon1.speed %></td>
-						</tr>
-						<tr>
-							<td>Current experience</td>
-							<td>&nbsp;:&nbsp;</td>
-							<td><%= @decorated_pokemon_battle.pokemon1.current_experience %></td>
-						</tr>
-					</table>
-				</div>
-
 				<% if @decorated_pokemon_battle.state == 'ongoing' && @decorated_pokemon_battle.current_turn.odd? %>
 					<div class="col-xs-12 action">
 						<%= form_tag(pokemons_battle_action_path(@decorated_pokemon_battle.id), enforce_utf8: false) do %>
 							<%= render 'layouts/error_message', error_object: @pokemon_battle_log.errors %>
-							<div class="form-group <%= 'has-error' if @pokemon_battle_log.errors.include?(:skill_id) %>">
-								<%= label_tag :attack_skill %>
-								<%= select_tag :attack_skill, options_for_select(PokemonSkill.where(pokemon_id: @decorated_pokemon_battle.pokemon1.id).collect{ |pokemon_skill| [pokemon_skill.skill.name, pokemon_skill.skill.id] }, "-- Select --"), { prompt: '-- Select --', class: 'form-control'} %>
-								<p class="error-message"><%= @pokemon_battle_log.errors.messages[:skill_id].join(' and ') %></p>
-							</div>
+							<% if @decorated_pokemon_battle.pokemon1_available_skills.count > 0 %>
+								<div class="form-group <%= 'has-error' if @pokemon_battle_log.errors.include?(:skill_id) %>">
+									<%= label_tag :pokemon_skill_id, 'Attack skill' %>
+									<%= select_tag :pokemon_skill_id, options_for_select(@decorated_pokemon_battle.pokemon1_available_skills.collect{ |pokemon_skill| [pokemon_skill.skill.name, pokemon_skill.id] }, "-- Select --"), { prompt: '-- Select --', class: 'form-control'} %>
+									<p class="error-message"><%= @pokemon_battle_log.errors.messages[:skill_id].join(' and ') %></p>
+								</div>
+								<%= submit_tag :attack, { name: 'action_type', class: 'btn btn-primary'} %>
+							<% end %>
+							<%= submit_tag :surrender, { name: 'action_type', class: 'btn btn-primary'} %>
 							<%= hidden_field_tag :attacker_id, @decorated_pokemon_battle.pokemon1.id %>
 							<%= hidden_field_tag :defender_id, @decorated_pokemon_battle.pokemon2.id %>
-							<%= submit_tag :Attack, class: 'btn btn-primary' %>
-							<%= submit_tag :Surrender, class: 'btn btn-primary' %>
 						<% end %>
 					</div>
 				<% end %>
@@ -83,54 +52,21 @@
 					<%= @decorated_pokemon_battle.pokemon2.image %>	
 				</div>
 				
-				<div class="col-xs-12 pokemon-details">
-					<table align="center">
-						<tr>
-							<td>Level</td>
-							<td>&nbsp;:&nbsp;</td>
-							<td><%= @decorated_pokemon_battle.pokemon2.level %></td>
-						</tr>
-						<tr>
-							<td>Health point</td>
-							<td>&nbsp;:&nbsp;</td>
-							<td><%= @decorated_pokemon_battle.pokemon2.current_health_point %></td>
-						</tr>
-						<tr>
-							<td>Attack</td>
-							<td>&nbsp;:&nbsp;</td>
-							<td><%= @decorated_pokemon_battle.pokemon2.attack %></td>
-						</tr>
-						<tr>
-							<td>Defence</td>
-							<td>&nbsp;:&nbsp;</td>
-							<td><%= @decorated_pokemon_battle.pokemon2.defence %></td>
-						</tr>
-						<tr>
-							<td>Speed</td>
-							<td>&nbsp;:&nbsp;</td>
-							<td><%= @decorated_pokemon_battle.pokemon2.speed %></td>
-						</tr>
-						<tr>
-							<td>Current experience</td>
-							<td>&nbsp;:&nbsp;</td>
-							<td><%= @decorated_pokemon_battle.pokemon2.current_experience %></td>
-						</tr>
-					</table>
-				</div>
-
 				<% if @decorated_pokemon_battle.state == 'ongoing' && !@decorated_pokemon_battle.current_turn.odd? %>
 					<div class="col-xs-12 action">
 						<%= form_tag(pokemons_battle_action_path(@decorated_pokemon_battle.id), enforce_utf8: false) do %>
 							<%= render 'layouts/error_message', error_object: @pokemon_battle_log.errors %>
-							<div class="form-group <%= 'has-error' if @pokemon_battle_log.errors.include?(:skill_id) %>">
-								<%= label_tag :attack_skill %>
-								<%= select_tag :attack_skill, options_for_select(PokemonSkill.where(pokemon_id: @decorated_pokemon_battle.pokemon2.id).collect{ |pokemon_skill| [pokemon_skill.skill.name, pokemon_skill.skill.id] }, "-- Select --"), { prompt: '-- Select --', class: 'form-control'} %>
-								<p class="error-message"><%= @pokemon_battle_log.errors.messages[:skill_id].join(' and ') %></p>
-							</div>
+							<% if @decorated_pokemon_battle.pokemon2_available_skills.count > 0 %>
+								<div class="form-group <%= 'has-error' if @pokemon_battle_log.errors.include?(:skill_id) %>">
+									<%= label_tag :pokemon_skill_id, 'Attack skill' %>
+									<%= select_tag :pokemon_skill_id, options_for_select(@decorated_pokemon_battle.pokemon2_available_skills.collect{ |pokemon_skill| [pokemon_skill.skill.name, pokemon_skill.id] }, "-- Select --"), { prompt: '-- Select --', class: 'form-control'} %>
+									<p class="error-message"><%= @pokemon_battle_log.errors.messages[:skill_id].join(' and ') %></p>
+								</div>
+								<%= submit_tag :attack, { name: 'action_type', class: 'btn btn-primary'} %>
+							<% end %>
+							<%= submit_tag :surrender, { name: 'action_type', class: 'btn btn-primary'} %>
 							<%= hidden_field_tag :attacker_id, @decorated_pokemon_battle.pokemon2.id %>
 							<%= hidden_field_tag :defender_id, @decorated_pokemon_battle.pokemon1.id %>
-							<%= submit_tag :Attack, class: 'btn btn-primary' %>
-							<%= submit_tag :Surrender, class: 'btn btn-primary' %>
 						<% end %>
 					</div>
 				<% end %>

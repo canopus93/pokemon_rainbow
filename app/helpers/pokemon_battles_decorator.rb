@@ -10,11 +10,14 @@ class PokemonBattlesDecorator
 		:pokemon2,
 		:current_turn,
 		:state,
-		:pokemon_winner_id,
-		:pokemon_loser_id,
+		:pokemon_winner,
+		:pokemon_loser,
 		:experience_gain,
-		:pokemon1_max_health_point,
-		:pokemon2_max_health_point
+		:pokemon1_current_health_point,
+		:pokemon2_current_health_point,
+		:link_to_log,
+		:pokemon1_available_skills,
+		:pokemon2_available_skills
 	)
 
 	def initialize(context)
@@ -31,12 +34,29 @@ class PokemonBattlesDecorator
 	end
 
 	def decorate_for_show(pokemon_battle)
-		generate_decorator_result(pokemon_battle: pokemon_battle)
+		result = generate_decorator_result(pokemon_battle: pokemon_battle)
+		result.pokemon1_available_skills = pokemon_battle.pokemon1.pokemon_skills.where('current_pp > 0')
+		result.pokemon2_available_skills = pokemon_battle.pokemon2.pokemon_skills.where('current_pp > 0')
+		
+		result
 	end
 
 	private
 		def generate_decorator_result(pokemon_battle:)
 			pokemon_decorator = PokemonsDecorator.new(@context)
+
+			pokemon_battle_log = PokemonBattleLog.where(pokemon_battle: pokemon_battle)
+
+			if pokemon_battle_log.count == 0
+				pokemon1_current_hp = pokemon_battle.pokemon1_max_health_point
+				pokemon2_current_hp = pokemon_battle.pokemon2_max_health_point
+			elsif pokemon_battle_log.count.odd?
+				pokemon1_current_hp = pokemon_battle_log.last.attacker_current_health_point
+				pokemon2_current_hp = pokemon_battle_log.last.defender_current_health_point
+			elsif !pokemon_battle_log.count.odd?
+				pokemon1_current_hp = pokemon_battle_log.last.defender_current_health_point
+				pokemon2_current_hp = pokemon_battle_log.last.attacker_current_health_point
+			end
 
 			result = PokemonBattlesDecoratorResult.new
 			result.id = pokemon_battle.id
@@ -46,16 +66,21 @@ class PokemonBattlesDecorator
 			result.pokemon2 = pokemon_decorator.decorate_for_show(pokemon_battle.pokemon2)
 			result.current_turn = pokemon_battle.current_turn
 			result.state = pokemon_battle.state
-			result.pokemon_winner_id = pokemon_battle.pokemon_winner_id
-			result.pokemon_loser_id = pokemon_battle.pokemon_loser_id
+			result.pokemon_winner = pokemon_battle.pokemon_winner.name if pokemon_battle.pokemon_winner.present?
+			result.pokemon_loser = pokemon_battle.pokemon_loser.name if pokemon_battle.pokemon_winner.present?
 			result.experience_gain = pokemon_battle.experience_gain
-			result.pokemon1_max_health_point = pokemon_battle.pokemon1_max_health_point
-			result.pokemon2_max_health_point = pokemon_battle.pokemon2_max_health_point
+			result.pokemon1_current_health_point = "#{pokemon1_current_hp} / #{pokemon_battle.pokemon1_max_health_point}"
+			result.pokemon2_current_health_point = "#{pokemon2_current_hp} / #{pokemon_battle.pokemon2_max_health_point}"
+			result.link_to_log = link_to_log(pokemon_battle_id: pokemon_battle.id)
 
 			result
 		end
 
 		def link_to_show(pokemon_battle:, pokemon_name:)
 			@context.helpers.link_to pokemon_name, pokemon_battle_path(pokemon_battle.id)
+		end
+
+		def link_to_log(pokemon_battle_id:)
+			@context.helpers.link_to 'Log', pokemon_battle_pokemon_battle_logs_path(pokemon_battle_id), class: 'btn btn-primary'
 		end
 end

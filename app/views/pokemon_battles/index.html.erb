@@ -13,8 +13,7 @@
 					<td>Winner</td>
 					<td>Loser</td>
 					<td>Experience Gain</td>
-					<td>Pokemon 1 Max Health Point</td>
-					<td>Pokemon 2 Max Health Point</td>
+					<td>Action</td>
 				</tr>
 			</thead>
 			<tbody>
@@ -31,11 +30,10 @@
 						<td><%= pokemon_battle.link_to_show_with_pokemon2_name %></td>
 						<td><%= pokemon_battle.current_turn %></td>
 						<td><%= pokemon_battle.state %></td>
-						<td><%= pokemon_battle.pokemon_winner_id %></td>
-						<td><%= pokemon_battle.pokemon_loser_id %></td>
+						<td><%= pokemon_battle.pokemon_winner %></td>
+						<td><%= pokemon_battle.pokemon_loser %></td>
 						<td><%= pokemon_battle.experience_gain %></td>
-						<td><%= pokemon_battle.pokemon1_max_health_point %></td>
-						<td><%= pokemon_battle.pokemon2_max_health_point %></td>
+						<td><%= pokemon_battle.link_to_log %></td>
 					</tr>
 				<% end %>
 			</tbody>

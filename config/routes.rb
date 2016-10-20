@@ -10,5 +10,7 @@ Rails.application.routes.draw do
   resources :pokedexes
   resources :pokemons
   resources :skills
-  resources :pokemon_battles
+  resources :pokemon_battles do
+    resources :pokemon_battle_logs, only: :index
+  end
 end
