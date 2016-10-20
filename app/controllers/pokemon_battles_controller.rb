@@ -16,7 +16,14 @@ class PokemonBattlesController < ApplicationController
 	end
 
 	def action
-		@pokemon_battle_log = BattleEngine.new(pokemon_battle_id: params[:id], attacker_id: params[:attacker_id], defender_id: params[:defender_id], action_type: params[:action_type], pokemon_skill_id: params[:pokemon_skill_id]).execute_action
+		pokemon_battle = PokemonBattle.find(params[:id])
+		pokemon_skill = (params[:pokemon_skill_id].present?) ? PokemonSkill.find(params[:pokemon_skill_id]) : PokemonSkill.new
+
+		@pokemon_battle_log = BattleEngine.new(
+			pokemon_battle: pokemon_battle,
+			pokemon_skill: pokemon_skill,
+			action_type: params[:action_type]
+		).execute_action
 
 		if @pokemon_battle_log == true
 			redirect_to pokemon_battle_path(params[:id])

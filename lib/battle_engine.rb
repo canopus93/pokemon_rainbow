@@ -1,11 +1,11 @@
 class BattleEngine
-	def initialize(pokemon_battle_id:, attacker_id:, defender_id:, action_type:, pokemon_skill_id:)
-		@pokemon_battle = PokemonBattle.find(pokemon_battle_id)
-		@pokemon_attacker = Pokemon.find(attacker_id)
-		@pokemon_defender = Pokemon.find(defender_id)
+	def initialize(pokemon_battle:, pokemon_skill:, action_type:)
+		@pokemon_battle = pokemon_battle
+		@pokemon_attacker = (@pokemon_battle.current_turn.odd?) ? @pokemon_battle.pokemon1 : @pokemon_battle.pokemon2
+		@pokemon_defender = (@pokemon_battle.current_turn.odd?) ? @pokemon_battle.pokemon2 : @pokemon_battle.pokemon1
 		@action_type = action_type
-		@pokemon_skill = (pokemon_skill_id.empty?) ? PokemonSkill.new : PokemonSkill.find(pokemon_skill_id)
-		@attack_damage = (pokemon_skill_id.empty?) ? 0 : PokemonCalculator.calculate_damage(attacker: @pokemon_attacker, defender: @pokemon_defender, skill: @pokemon_skill.skill)
+		@pokemon_skill = pokemon_skill
+		@attack_damage = (pokemon_skill.skill.present?) ? PokemonCalculator.calculate_damage(attacker: @pokemon_attacker, defender: @pokemon_defender, skill: @pokemon_skill.skill) : 0
 		last_health_point = @pokemon_defender.current_health_point - @attack_damage
 		@defender_last_health_point = (last_health_point < 0) ? 0 : last_health_point
 	end
