@@ -1,43 +1,54 @@
+<div class="row">
+	<ol class="breadcrumb">
+	  <li><a href="<%= root_path %>">Home</a></li>
+	  <li class="active">Pokedexes</li>
+	</ol>
+</div>
+
 <div class="panel panel-primary">
 	<div class="panel-heading">Pokedexes</div>
 	<div class="panel-body">
-		<a href="<%= new_pokedex_path %>" class="btn btn-primary">New</a>
-		<table class="table table-hover">
-			<thead>
-				<tr>
-					<td>#</td>
-					<td>Name</td>
-					<td>Base Health Point</td>
-					<td>Base Attack</td>
-					<td>Base Defence</td>
-					<td>Base Speed</td>
-					<td>Element Type</td>
-					<td>Image</td>
-				</tr>
-			</thead>
-			<tbody>
-				<%	if params[:page].to_i > 0 
-							@current_page = (params[:page].to_i - 1) * 10
-						else
-							@current_page = params[:page].to_i * 10
-						end
-				%>
-				<% @decorated_pokedexes.each_with_index do |pokedex, index| %>
+		<div class="action-container">
+			<a href="<%= new_pokedex_path %>" class="btn btn-primary">New</a>
+		</div>
+		<div class="col-xs-12">
+			<table class="table table-hover">
+				<thead>
 					<tr>
-						<td><%= @current_page + index + 1 %></td>
-						<td><%= pokedex.link_to_show %></td>
-						<td><%= pokedex.base_health_point %></td>
-						<td><%= pokedex.base_attack %></td>
-						<td><%= pokedex.base_defence %></td>
-						<td><%= pokedex.base_speed %></td>
-						<td><%= pokedex.element_type %></td>
-						<td><%= pokedex.image_small %></td>
+						<td>#</td>
+						<td>Name</td>
+						<td>Base Health Point</td>
+						<td>Base Attack</td>
+						<td>Base Defence</td>
+						<td>Base Speed</td>
+						<td>Element Type</td>
+						<td>Image</td>
 					</tr>
-				<% end %>
-			</tbody>
-		</table>
-		<div class="text-center">
-			<%= will_paginate @pagination_pokedexes %>
+				</thead>
+				<tbody>
+					<%	if params[:page].to_i > 0 
+								@current_page = (params[:page].to_i - 1) * 10
+							else
+								@current_page = params[:page].to_i * 10
+							end
+					%>
+					<% @decorated_pokedexes.each_with_index do |pokedex, index| %>
+						<tr>
+							<td><%= @current_page + index + 1 %></td>
+							<td><%= pokedex.link_to_show %></td>
+							<td><%= pokedex.base_health_point %></td>
+							<td><%= pokedex.base_attack %></td>
+							<td><%= pokedex.base_defence %></td>
+							<td><%= pokedex.base_speed %></td>
+							<td><%= pokedex.element_type %></td>
+							<td><%= pokedex.image_small %></td>
+						</tr>
+					<% end %>
+				</tbody>
+			</table>
+			<div class="text-center">
+				<%= will_paginate @pagination_pokedexes %>
+			</div>
 		</div>
 	</div>
 </div>

@@ -1,7 +1,15 @@
+<div class="row">
+	<ol class="breadcrumb">
+	  <li><a href="<%= root_path %>">Home</a></li>
+	  <li><a href="<%= pokedexes_path %>">Pokedexes</a></li>
+	  <li class="active"><%= @decorated_pokedex.name %></li>
+	</ol>
+</div>
+
 <div class="panel panel-primary">
 	<div class="panel-heading">Pokedex</div>
 	<div class="panel-body">
-		<div class="col-sm-12">
+		<div class="col-sm-12 action-container">
 			<a href="<%= new_pokedex_path %>" class="btn btn-primary">New</a>
 			<%= @decorated_pokedex.link_to_edit %>
 			<%= @decorated_pokedex.link_to_delete %>

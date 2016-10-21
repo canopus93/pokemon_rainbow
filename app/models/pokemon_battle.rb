@@ -17,8 +17,8 @@ class PokemonBattle < ApplicationRecord
 
 	enumerize :state, in: STATE_LIST
 
-	validate :pokemon1_and_pokemon2_must_not_same, if: :different_pokemon_1_and_pokemon_2?
-	validate :pokemon_still_on_batlle, unless: :different_pokemon_1_and_pokemon_2?
+	validate :pokemon1_and_pokemon2_must_not_same, if: :different_pokemon_1_and_pokemon_2?, on: :create
+	validate :pokemon_still_on_batlle, unless: :different_pokemon_1_and_pokemon_2?, on: :create
 
 	def pokemon1_and_pokemon2_must_not_same		
 		errors.add(:pokemon2, "must not be same as Pokemon1")

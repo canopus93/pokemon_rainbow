@@ -39,3 +39,7 @@
 .error-message {
 	color: red;
 }
+
+.action-container {
+	margin-bottom: 15px;
+}

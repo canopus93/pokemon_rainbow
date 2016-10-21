@@ -1,45 +1,56 @@
+<div class="row">
+	<ol class="breadcrumb">
+	  <li><a href="<%= root_path %>">Home</a></li>
+	  <li class="active">Pokemon Battles</li>
+	</ol>
+</div>
+
 <div class="panel panel-primary">
 	<div class="panel-heading">Pokemon Battles</div>
 	<div class="panel-body">
-		<a href="<%= new_pokemon_battle_path %>" class="btn btn-primary">New</a>
-		<table class="table table-hover">
-			<thead>
-				<tr>
-					<td>#</td>
-					<td>Pokemon 1</td>
-					<td>Pokemon 2</td>
-					<td>Current Turn</td>
-					<td>State</td>
-					<td>Winner</td>
-					<td>Loser</td>
-					<td>Experience Gain</td>
-					<td>Action</td>
-				</tr>
-			</thead>
-			<tbody>
-				<% @decorated_pokemon_battles.each_with_index do |pokemon_battle, index| %>
-					<%	if params[:page].to_i > 0 
-								@current_page = (params[:page].to_i - 1) * 10 + index + 1
-							else
-								@current_page = params[:page].to_i * 10 + index + 1
-							end
-					%>
+		<div class="action-container">
+			<a href="<%= new_pokemon_battle_path %>" class="btn btn-primary">New</a>
+		</div>
+		<div class="col-xs-12">
+			<table class="table table-hover">
+				<thead>
 					<tr>
-						<td><%= @current_page %></td>
-						<td><%= pokemon_battle.link_to_show_with_pokemon1_name %></td>
-						<td><%= pokemon_battle.link_to_show_with_pokemon2_name %></td>
-						<td><%= pokemon_battle.current_turn %></td>
-						<td><%= pokemon_battle.state %></td>
-						<td><%= pokemon_battle.pokemon_winner %></td>
-						<td><%= pokemon_battle.pokemon_loser %></td>
-						<td><%= pokemon_battle.experience_gain %></td>
-						<td><%= pokemon_battle.link_to_log %></td>
+						<td>#</td>
+						<td>Pokemon 1</td>
+						<td>Pokemon 2</td>
+						<td>Current Turn</td>
+						<td>State</td>
+						<td>Winner</td>
+						<td>Loser</td>
+						<td>Experience Gain</td>
+						<td>Action</td>
 					</tr>
-				<% end %>
-			</tbody>
-		</table>
-		<div class="text-center">
-			<%= will_paginate @pagination_pokemon_battles %>
+				</thead>
+				<tbody>
+					<% @decorated_pokemon_battles.each_with_index do |pokemon_battle, index| %>
+						<%	if params[:page].to_i > 0 
+									@current_page = (params[:page].to_i - 1) * 10 + index + 1
+								else
+									@current_page = params[:page].to_i * 10 + index + 1
+								end
+						%>
+						<tr>
+							<td><%= @current_page %></td>
+							<td><%= pokemon_battle.link_to_show_with_pokemon1_name %></td>
+							<td><%= pokemon_battle.link_to_show_with_pokemon2_name %></td>
+							<td><%= pokemon_battle.current_turn %></td>
+							<td><%= pokemon_battle.state %></td>
+							<td><%= pokemon_battle.pokemon_winner %></td>
+							<td><%= pokemon_battle.pokemon_loser %></td>
+							<td><%= pokemon_battle.experience_gain %></td>
+							<td><%= pokemon_battle.link_to_log %></td>
+						</tr>
+					<% end %>
+				</tbody>
+			</table>
+			<div class="text-center">
+				<%= will_paginate @pagination_pokemon_battles %>
+			</div>
 		</div>
 	</div>
 </div>

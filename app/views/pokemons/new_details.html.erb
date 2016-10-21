@@ -1,4 +1,14 @@
 <% provide(:submit_text, 'Create') %>
+
+<div class="row">
+	<ol class="breadcrumb">
+	  <li><a href="<%= root_path %>">Home</a></li>
+	  <li><a href="<%= pokemons_path %>">Pokemons</a></li>
+	  <li><a href="<%= new_pokemon_path %>">New</a></li>
+	  <li class="active">Details</li>
+	</ol>
+</div>
+
 <div class="panel panel-primary">
 	<div class="panel-heading">New Pokemon Details</div>
 	<%= render 'pokemons/form' %>

@@ -1,37 +1,48 @@
+<div class="row">
+	<ol class="breadcrumb">
+	  <li><a href="<%= root_path %>">Home</a></li>
+	  <li class="active">Skills</li>
+	</ol>
+</div>
+
 <div class="panel panel-primary">
 	<div class="panel-heading">Skills</div>
 	<div class="panel-body">
-		<a href="<%= new_skill_path %>" class="btn btn-primary">New</a>
-		<table class="table table-hover">
-			<thead>
-				<tr>
-					<td>#</td>
-					<td>Name</td>
-					<td>Power</td>
-					<td>Max PP</td>
-					<td>Element Type</td>
-				</tr>
-			</thead>
-			<tbody>
-				<%	if params[:page].to_i > 0 
-							@current_page = (params[:page].to_i - 1) * 10
-						else
-							@current_page = params[:page].to_i * 10
-						end
-				%>
-				<% @decorated_skills.each_with_index do |skill, index| %>
+		<div class="action-container">
+			<a href="<%= new_skill_path %>" class="btn btn-primary">New</a>
+		</div>
+		<div class="col-xs-12">
+			<table class="table table-hover">
+				<thead>
 					<tr>
-						<td><%= @current_page + index + 1 %></td>
-						<td><%= skill.link_to_show %></td>
-						<td><%= skill.power %></td>
-						<td><%= skill.max_pp %></td>
-						<td><%= skill.element_type %></td>
+						<td>#</td>
+						<td>Name</td>
+						<td>Power</td>
+						<td>Max PP</td>
+						<td>Element Type</td>
 					</tr>
-				<% end %>
-			</tbody>
-		</table>
-		<div class="text-center">
-			<%= will_paginate @pagination_skills %>
+				</thead>
+				<tbody>
+					<%	if params[:page].to_i > 0 
+								@current_page = (params[:page].to_i - 1) * 10
+							else
+								@current_page = params[:page].to_i * 10
+							end
+					%>
+					<% @decorated_skills.each_with_index do |skill, index| %>
+						<tr>
+							<td><%= @current_page + index + 1 %></td>
+							<td><%= skill.link_to_show %></td>
+							<td><%= skill.power %></td>
+							<td><%= skill.max_pp %></td>
+							<td><%= skill.element_type %></td>
+						</tr>
+					<% end %>
+				</tbody>
+			</table>
+			<div class="text-center">
+				<%= will_paginate @pagination_skills %>
+			</div>
 		</div>
 	</div>
 </div>
