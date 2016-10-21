@@ -1,4 +1,6 @@
 class BattleEngine	
+	attr_reader :pokemon_battle_log
+
 	def initialize(pokemon_battle:, pokemon_skill:, action_type:)
 		@pokemon_battle = pokemon_battle
 		if (@pokemon_battle.current_turn.odd?)
@@ -24,9 +26,9 @@ class BattleEngine
 		(@action_type == 'attack') ? attack : surrender
 	end
 
-	def pokemon_battle_log
-		@pokemon_battle_log
-	end
+	# def pokemon_battle_log
+	# 	@pokemon_battle_log
+	# end
 
 	private
 		def attack
@@ -45,16 +47,36 @@ class BattleEngine
 			end
 		end
 
-		def update_pokemon_battle!(attacker:, defender:, defender_last_health_point: nil)			
+		def update_pokemon_battle!(attacker:, defender:, defender_last_health_point: nil)
 			if defender_last_health_point.present?
 				if defender_last_health_point == 0
-					@pokemon_battle.update(state: 'finish', pokemon_winner: attacker, pokemon_loser: defender)
+					experience_gain = PokemonCalculator.calculate_experience(level: defender.level)
+
+					update_pokemon_winner!(pokemon_winner: attacker, experience_gain: experience_gain)
+					@pokemon_battle.update(
+						state: 'finish', 
+						pokemon_winner: attacker, 
+						pokemon_loser: defender, 
+						experience_gain: experience_gain
+					)
 				else
 					@pokemon_battle.update(current_turn: @pokemon_battle.current_turn + 1)
 				end
 			else
-				@pokemon_battle.update(state: 'finish', pokemon_winner: defender, pokemon_loser: attacker)
+				experience_gain = PokemonCalculator.calculate_experience(level: attacker.level)
+
+				update_pokemon_winner!(pokemon_winner: defender, experience_gain: experience_gain)
+				@pokemon_battle.update(
+					state: 'finish', 
+					pokemon_winner: defender, 
+					pokemon_loser: attacker,
+					experience_gain: experience_gain
+				)
 			end
+		end
+
+		def update_pokemon_winner!(pokemon_winner:, experience_gain:)
+			pokemon_winner.update(current_experience: pokemon_winner.current_experience + experience_gain)
 		end
 
 		def update_pokemon_defender!

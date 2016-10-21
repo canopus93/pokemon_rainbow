@@ -378,8 +378,8 @@ class PokemonCalculator
 		result.round
 	end
 
-	def self.calculate_experience(enemy_level:)
-		rand(20..150) * enemy_level
+	def self.calculate_experience(level:)
+		rand(20..150) * level
 	end
 
 	def level_up?(level:, total_experience:)
