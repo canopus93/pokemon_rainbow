@@ -17,7 +17,7 @@ class PokemonsController < ApplicationController
 
 	def new_details
 		pokedex = Pokedex.find(params[:q])
-		@pokemon = Pokemon.new(pokedex: pokedex, name: pokedex.name, level: 0, current_health_point: pokedex.base_health_point, max_health_point: pokedex.base_health_point, attack: pokedex.base_attack, defence: pokedex.base_defence, speed: pokedex.base_speed, current_experience: 0)
+		@pokemon = Pokemon.new(pokedex: pokedex, name: pokedex.name, level: 1, current_health_point: pokedex.base_health_point, max_health_point: pokedex.base_health_point, attack: pokedex.base_attack, defence: pokedex.base_defence, speed: pokedex.base_speed, current_experience: 0)
 	end
 
 	def add_skill

@@ -382,7 +382,7 @@ class PokemonCalculator
 		rand(20..150) * level
 	end
 
-	def level_up?(level:, total_experience:)
+	def self.level_up?(level:, total_experience:)
 		experience_limit = 2**level * 100
 		(total_experience >= experience_limit) ? true : false
 	end

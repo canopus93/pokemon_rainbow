@@ -23,28 +23,22 @@ class BattleEngine
 	end
 
 	def execute
-		(@action_type == 'attack') ? attack : surrender
+		ActiveRecord::Base.transaction do
+			(@action_type == 'attack') ? attack : surrender
+		end
 	end
-
-	# def pokemon_battle_log
-	# 	@pokemon_battle_log
-	# end
 
 	private
 		def attack
-			ActiveRecord::Base.transaction do
-				update_pokemon_battle!(attacker: @pokemon_attacker, defender: @pokemon_defender, defender_last_health_point: @defender_last_health_point)
-				update_pokemon_defender!
-				update_pokemon_skill!
-				@pokemon_battle_log.save
-			end
+			update_pokemon_battle!(attacker: @pokemon_attacker, defender: @pokemon_defender, defender_last_health_point: @defender_last_health_point)
+			update_pokemon_defender!
+			update_pokemon_skill!
+			@pokemon_battle_log.save
 		end
 
 		def surrender
-			ActiveRecord::Base.transaction do
-				update_pokemon_battle!(attacker: @pokemon_attacker, defender: @pokemon_defender)
-				@pokemon_battle_log.save
-			end
+			update_pokemon_battle!(attacker: @pokemon_attacker, defender: @pokemon_defender)
+			@pokemon_battle_log.save
 		end
 
 		def update_pokemon_battle!(attacker:, defender:, defender_last_health_point: nil)
@@ -76,7 +70,18 @@ class BattleEngine
 		end
 
 		def update_pokemon_winner!(pokemon_winner:, experience_gain:)
-			pokemon_winner.update(current_experience: pokemon_winner.current_experience + experience_gain)
+			pokemon_winner.current_experience += experience_gain
+
+			while PokemonCalculator.level_up?(level: pokemon_winner.level, total_experience: pokemon_winner.current_experience)
+				extra_stats = PokemonCalculator.calculate_level_up_extra_stats
+				pokemon_winner.max_health_point += extra_stats.health_point
+				pokemon_winner.attack += extra_stats.attack
+				pokemon_winner.defence += extra_stats.defence
+				pokemon_winner.speed += extra_stats.speed
+				pokemon_winner.level += 1
+			end
+
+			pokemon_winner.save
 		end
 
 		def update_pokemon_defender!
