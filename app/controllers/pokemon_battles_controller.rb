@@ -8,7 +8,7 @@ class PokemonBattlesController < ApplicationController
 	def show
 		decorator = PokemonBattlesDecorator.new(self)
 		@decorated_pokemon_battle = decorator.decorate_for_show(PokemonBattle.find(params[:id]))
-		@pokemon_battle_log = PokemonBattleLog.new
+		@erros = ''
 	end
 
 	def new
@@ -21,15 +21,21 @@ class PokemonBattlesController < ApplicationController
 
 		battle_engine = BattleEngine.new(
 			pokemon_battle: pokemon_battle,
-			pokemon_skill: pokemon_skill,
 			action_type: params[:action_type]
 		)
 
-		if battle_engine.valid?
-			battle_engine.execute
-			redirect_to pokemon_battle_path(params[:id])
+		if battle_engine.valid_next_turn?(pokemon_skill)
+			ActiveRecord::Base.transaction do
+				battle_engine.next_turn!(pokemon_skill)
+				battle_engine.pokemon_battle.save!
+				battle_engine.pokemons.each { |pokemon| pokemon.save! }
+				battle_engine.pokemon_skill.save! if battle_engine.is_attack?
+				battle_engine.pokemon_battle_log.save!
+			end
+
+			redirect_to pokemon_battle
 		else
-			@pokemon_battle_log = battle_engine.pokemon_battle_log
+			@errors = battle_engine.errors
 			decorator = PokemonBattlesDecorator.new(self)
 			@decorated_pokemon_battle = decorator.decorate_for_show(pokemon_battle)
 			render 'show'

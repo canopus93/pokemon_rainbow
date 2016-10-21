@@ -66,7 +66,7 @@ class PokemonBattlesDecorator
 			result.pokemon2 = pokemon_decorator.decorate_for_show(pokemon_battle.pokemon2)
 			result.current_turn = pokemon_battle.current_turn
 			result.state = pokemon_battle.state
-			result.pokemon_winner = pokemon_battle.pokemon_winner.name if pokemon_battle.pokemon_winner.present?
+			result.pokemon_winner = link_to_pokemon_winner(pokemon_winner: pokemon_battle.pokemon_winner) if pokemon_battle.pokemon_winner.present?
 			result.pokemon_loser = pokemon_battle.pokemon_loser.name if pokemon_battle.pokemon_winner.present?
 			result.experience_gain = pokemon_battle.experience_gain
 			result.pokemon1_current_health_point = "#{pokemon1_current_hp} / #{pokemon_battle.pokemon1_max_health_point}"
@@ -74,6 +74,10 @@ class PokemonBattlesDecorator
 			result.link_to_log = link_to_log(pokemon_battle_id: pokemon_battle.id)
 
 			result
+		end
+
+		def link_to_pokemon_winner(pokemon_winner:)
+			@context.helpers.link_to pokemon_winner.name, pokemon_path(pokemon_winner.id)
 		end
 
 		def link_to_show(pokemon_battle:, pokemon_name:)
