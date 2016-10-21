@@ -1,7 +1,15 @@
+<div class="row">
+	<ol class="breadcrumb">
+	  <li><a href="<%= root_path %>">Home</a></li>
+	  <li><a href="<%= skills_path %>">Skills</a></li>
+	  <li class="active"><%= @decorated_skill.name %></li>
+	</ol>
+</div>
+
 <div class="panel panel-primary">
 	<div class="panel-heading">Skill</div>
 	<div class="panel-body">
-		<div class="col-sm-12">
+		<div class="col-sm-12 action-container">
 			<a href="<%= new_skill_path %>" class="btn btn-primary">New</a>
 			<%= @decorated_skill.link_to_edit %>
 			<%= @decorated_skill.link_to_delete %>

@@ -1,7 +1,8 @@
 class SkillsController < ApplicationController
 	def index
 		decorator = SkillsDecorator.new(self)
-		@decorated_skills = decorator.decorate_for_index(Skill.order(id: :ASC))
+		@decorated_skills = decorator.decorate_for_index(Skill.paginate(page: params[:page], per_page: 10).order(id: :ASC))
+		@pagination_skills = Skill.paginate(page: params[:page], per_page: 10).order(id: :ASC)
 	end
 
 	def show

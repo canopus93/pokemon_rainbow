@@ -1,0 +1,53 @@
+<div class="row">
+	<ol class="breadcrumb">
+	  <li><a href="<%= root_path %>">Home</a></li>
+	  <li><a href="<%= pokemon_battles_path %>">Pokemon Battles</a></li>
+	  <li><a href="<%= pokemon_battle_path(@pokemon_battle) %>"><%= "#{@pokemon_battle.pokemon1.name} vs #{@pokemon_battle.pokemon2.name}" %></a></li>
+	  <li class="active">Log</li>
+	</ol>
+</div>
+
+<div class="panel panel-primary">
+	<div class="panel-heading">Pokemon Battle Logs</div>
+	<div class="panel-body">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<td>#</td>
+					<td>Turn</td>
+					<td>Skill</td>
+					<td>Damage</td>
+					<td>Attacker</td>
+					<td>Attacker Current HP</td>
+					<td>Defender</td>
+					<td>Defender Current HP</td>
+					<td>Action Type</td>
+				</tr>
+			</thead>
+			<tbody>
+				<% @decorated_pokemon_battle_logs.each_with_index do |pokemon_battle_log, index| %>
+					<%	if params[:page].to_i > 0 
+								@current_page = (params[:page].to_i - 1) * 10 + index + 1
+							else
+								@current_page = params[:page].to_i * 10 + index + 1
+							end
+					%>
+					<tr>
+						<td><%= @current_page %></td>
+						<td><%= pokemon_battle_log.turn %></td>
+						<td><%= pokemon_battle_log.link_to_skill %></td>
+						<td><%= pokemon_battle_log.damage %></td>
+						<td><%= pokemon_battle_log.link_to_attacker %></td>
+						<td><%= pokemon_battle_log.attacker_current_hp %></td>
+						<td><%= pokemon_battle_log.link_to_defender %></td>
+						<td><%= pokemon_battle_log.defender_current_hp %></td>
+						<td><%= pokemon_battle_log.action_type %></td>
+					</tr>
+				<% end %>
+			</tbody>
+		</table>
+		<div class="text-center">
+			<%= will_paginate @pagination_pokemon_battle_logs %>
+		</div>
+	</div>
+</div>

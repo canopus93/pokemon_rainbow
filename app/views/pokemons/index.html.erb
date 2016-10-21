@@ -1,36 +1,57 @@
+<div class="row">
+	<ol class="breadcrumb">
+	  <li><a href="<%= root_path %>">Home</a></li>
+	  <li class="active">Pokemons</li>
+	</ol>
+</div>
+
 <div class="panel panel-primary">
 	<div class="panel-heading">Pokemons</div>
 	<div class="panel-body">
-		<a href="<%= new_pokemon_path %>" class="btn btn-primary">New</a>
-		<table class="table table-hover">
-			<thead>
-				<tr>
-					<td>#</td>
-					<td>Name</td>
-					<td>Level</td>
-					<td>Health Point</td>
-					<td>Attack</td>
-					<td>Defence</td>
-					<td>Speed</td>
-					<td>Current Experience</td>
-					<td>Image</td>
-				</tr>
-			</thead>
-			<tbody>
-				<% @decorated_pokemons.each_with_index do |pokemon, index| %>
+		<div class="action-container">
+			<a href="<%= new_pokemon_path %>" class="btn btn-primary">New</a>
+		</div>
+		
+		<div class="col-xs-12">
+			<table class="table table-hover">
+				<thead>
 					<tr>
-						<td><%= index + 1 %></td>
-						<td><%= pokemon.link_to_show %></td>
-						<td><%= pokemon.level %></td>
-						<td><%= pokemon.current_health_point %></td>
-						<td><%= pokemon.attack %></td>
-						<td><%= pokemon.defence %></td>
-						<td><%= pokemon.speed %></td>
-						<td><%= pokemon.current_experience %></td>
-						<td><%= pokemon.image_small %></td>
+						<td>#</td>
+						<td>Name</td>
+						<td>Level</td>
+						<td>Health Point</td>
+						<td>Attack</td>
+						<td>Defence</td>
+						<td>Speed</td>
+						<td>Current Experience</td>
+						<td>Image</td>
 					</tr>
-				<% end %>
-			</tbody>
-		</table>
+				</thead>
+				<tbody>
+					<%	if params[:page].to_i > 0 
+								@current_page = (params[:page].to_i - 1) * 10
+							else
+								@current_page = params[:page].to_i * 10
+							end
+					%>
+					<% @decorated_pokemons.each_with_index do |pokemon, index| %>
+						<tr>
+							<td><%= @current_page + index + 1 %></td>
+							<td><%= pokemon.link_to_show %></td>
+							<td><%= pokemon.level %></td>
+							<td><%= pokemon.current_health_point %></td>
+							<td><%= pokemon.attack %></td>
+							<td><%= pokemon.defence %></td>
+							<td><%= pokemon.speed %></td>
+							<td><%= pokemon.current_experience %></td>
+							<td><%= pokemon.image_small %></td>
+						</tr>
+					<% end %>
+				</tbody>
+			</table>
+			<div class="text-center">
+				<%= will_paginate @pagination_pokemons %>
+			</div>
+		</div>
 	</div>
 </div>

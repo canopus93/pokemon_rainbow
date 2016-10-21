@@ -1,21 +1,28 @@
+<div class="row">
+	<ol class="breadcrumb">
+	  <li><a href="<%= root_path %>">Home</a></li>
+	  <li><a href="<%= pokemons_path %>">Pokemons</a></li>
+	  <li class="active"><%= @decorated_pokemon.name %></li>
+	</ol>
+</div>
+
 <div class="panel panel-primary">
 	<div class="panel-heading">Pokemon</div>
 	<div class="panel-body">
-		<div class="col-sm-12">
+		<div class="col-sm-12 action-container">
 			<a href="<%= new_pokemon_path %>" class="btn btn-primary">New</a>
 			<%= @decorated_pokemon.link_to_edit %>
 			<%= @decorated_pokemon.link_to_delete %>
 		</div>
 
-		<div class="col-sm-offset-2 col-sm-8">
+		<div class="col-sm-offset-1 col-sm-10 col-xs-12 col-md-offset-2 col-md-8">
 			<div class="row center-block">
-				<div class="col-sm-6">
+				<div class="col-sm-6 col-xs-12">
 					<%= @decorated_pokemon.image %>	
 				</div>
 
-				<div class="col-sm-6">
+				<div class="col-sm-6 col-xs-12">
 					<table align="center">
-						<br><br><br><br>
 						<tr>
 							<td>Name</td>
 							<td>&nbsp;:&nbsp;</td>
@@ -54,6 +61,55 @@
 					</table>
 				</div>
 			</div>
+		</div>
+
+
+		<div class="container col-sm-12">
+			<div class="row">
+				<h4>Skills</h4>
+			</div>
+			<div class="row">
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<td>Name</td>
+							<td>Current PP</td>
+							<td align="right">Action</td>
+						</tr>
+					</thead>
+					<tbody>
+						<% @decorated_pokemon.pokemon_skills.each do |pokemon_skill| %>
+							<tr>
+								<td><%= pokemon_skill.skill.name %></td>
+								<td><%= pokemon_skill.current_pp %></td>
+								<td align="right"><%= link_to 'Remove', pokemons_remove_skill_path(@decorated_pokemon.id, pokemon_skill.id),
+										method: :post, 
+										data: { confirm: "Are you sure to remove #{pokemon_skill.skill.name}?"}, class: 'btn btn-danger' %></td>
+							</tr>
+						<% end %>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<div class="container col-sm-12">
+			<h4>Add New Skill</h4>
+			<%= form_for @pokemon_skill, url: pokemons_add_skill_path do |f| %>
+				<%= render 'layouts/error_message', error_object: @pokemon_skill.errors %>
+				<div class="col-sm-6 form-group <%= 'has-error' if @pokemon_skill.errors.include?(:skill_id) %>">
+					<%= f.label :skill_id %>
+					<%= f.select :skill_id, options_for_select(Skill.all.collect{ |skill| [skill.name, skill.id] }), { prompt: '-- Select --'}, {class: 'form-control'} %>
+		    	<p class="error-message"><%= @pokemon_skill.errors.messages[:skill_id].join(' and ') %></p>
+				</div>
+				<div class="col-sm-6 form-group <%= 'has-error' if @pokemon_skill.errors.include?(:current_pp) %>">
+					<%= f.label :current_pp %>
+					<%= f.text_field :current_pp, class: 'form-control' %>
+		    	<p class="error-message"><%= @pokemon_skill.errors.messages[:current_pp].join(' and ') %></p>
+				</div>
+				<div class="col-sm-12 form-group">
+					<%= f.submit :submit, class: 'btn btn-primary' %>
+				</div>
+			<% end %>
 		</div>
 	</div>
 </div>

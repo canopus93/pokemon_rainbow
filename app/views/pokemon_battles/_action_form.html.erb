@@ -1,0 +1,12 @@
+<div class="col-xs-12 action">
+	<%= form_tag(pokemons_battle_action_path(@decorated_pokemon_battle.id), enforce_utf8: false) do %>
+		<div class="form-group">
+			<%= label_tag :attack_skill %>
+			<%= select_tag :attack_skill, options_for_select(PokemonSkill.where(pokemon_id: @decorated_pokemon_battle.pokemon1.id).collect{ |pokemon| [pokemon.name, pokemon.id] }, "-- Select --"), { prompt: '-- Select --', class: 'form-control'} %>
+		</div>
+		<%= hidden_field_tag :attacker_id, @decorated_pokemon_battle.pokemon1.id %>
+		<%= hidden_field_tag :defender_id, @decorated_pokemon_battle.pokemon2.id %>
+		<%= submit_tag :Attack, class: 'btn btn-primary' %>
+		<%= submit_tag :Surrender, class: 'btn btn-primary' %>
+	<% end %>
+</div>

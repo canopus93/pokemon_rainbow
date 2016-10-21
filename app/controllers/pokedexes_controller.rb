@@ -1,7 +1,8 @@
 class PokedexesController < ApplicationController
 	def index
 		decorator = PokedexesDecorator.new(self)
-		@decorated_pokedexes = decorator.decorate_for_index(Pokedex.order(id: :ASC))
+		@decorated_pokedexes = decorator.decorate_for_index(Pokedex.paginate(page: params[:page], per_page: 10).order(id: :ASC))
+		@pagination_pokedexes = Pokedex.paginate(page: params[:page], per_page: 10).order(id: :ASC)
 	end
 
 	def show

@@ -1,0 +1,88 @@
+<div class="row">
+	<ol class="breadcrumb">
+	  <li><a href="<%= root_path %>">Home</a></li>
+	  <li><a href="<%= pokemon_battles_path %>">Pokemon Battles</a></li>
+	  <li class="active"><%= "#{@decorated_pokemon_battle.pokemon1.name} vs #{@decorated_pokemon_battle.pokemon2.name}" %></li>
+	</ol>
+</div>
+
+<div class="panel panel-primary">
+	<div class="panel-heading">Pokemon Battle</div>
+	<div class="panel-body">
+		<div class="col-xs-12 action-container">
+			<%= @decorated_pokemon_battle.link_to_log %>
+		</div>
+
+		<div class="col-xs-12">
+			<div class="col-sm-5">
+				<h3 class="text-center"><%= @decorated_pokemon_battle.pokemon1.link_to_show %></h3>
+				<h4 class="text-center">HP : <%= @decorated_pokemon_battle.pokemon1_current_health_point %></h4>
+			</div>
+
+			<div class="col-sm-2">
+				<h3 class="text-center">VS</h3>
+				<h5 class="text-center"><%= @decorated_pokemon_battle.state %></h5>
+			</div>
+
+			<div class="col-sm-5">
+				<h3 class="text-center"><%= @decorated_pokemon_battle.pokemon2.link_to_show %></h3>
+				<h4 class="text-center">HP : <%= @decorated_pokemon_battle.pokemon2_current_health_point %></h4>
+			</div>
+		</div>
+
+		<div class="col-xs-12">
+			<div class="col-sm-5">
+				<div class="col-xs-12 img-container">
+					<%= @decorated_pokemon_battle.pokemon1.image %>	
+				</div>
+				
+				<% if @decorated_pokemon_battle.state == 'ongoing' && @decorated_pokemon_battle.current_turn.odd? %>
+					<div class="col-xs-12 action">
+						<%= form_tag(pokemons_battle_action_path(@decorated_pokemon_battle.id), enforce_utf8: false) do %>
+							<%= render 'layouts/error_message', error_object: @pokemon_battle_log.errors %>
+							<% if @decorated_pokemon_battle.pokemon1_available_skills.count > 0 %>
+								<div class="form-group <%= 'has-error' if @pokemon_battle_log.errors.include?(:skill_id) %>">
+									<%= label_tag :pokemon_skill_id, 'Attack skill' %>
+									<%= select_tag :pokemon_skill_id, options_for_select(@decorated_pokemon_battle.pokemon1_available_skills.collect{ |pokemon_skill| [pokemon_skill.skill.name, pokemon_skill.id] }, "-- Select --"), { prompt: '-- Select --', class: 'form-control'} %>
+									<p class="error-message"><%= @pokemon_battle_log.errors.messages[:skill_id].join(' and ') %></p>
+								</div>
+								<%= submit_tag :attack, { name: 'action_type', class: 'btn btn-primary' } %>
+							<% end %>
+							<%= submit_tag :surrender, { name: 'action_type', class: 'btn btn-primary' } %>
+							<%= hidden_field_tag :attacker_id, @decorated_pokemon_battle.pokemon1.id %>
+							<%= hidden_field_tag :defender_id, @decorated_pokemon_battle.pokemon2.id %>
+						<% end %>
+					</div>
+				<% end %>
+			</div>
+
+			<div class="col-sm-2">
+			</div>
+
+			<div class="col-sm-5">
+				<div class="col-xs-12 img-container">
+					<%= @decorated_pokemon_battle.pokemon2.image %>	
+				</div>
+				
+				<% if @decorated_pokemon_battle.state == 'ongoing' && !@decorated_pokemon_battle.current_turn.odd? %>
+					<div class="col-xs-12 action">
+						<%= form_tag(pokemons_battle_action_path(@decorated_pokemon_battle.id), enforce_utf8: false) do %>
+							<%= render 'layouts/error_message', error_object: @pokemon_battle_log.errors %>
+							<% if @decorated_pokemon_battle.pokemon2_available_skills.count > 0 %>
+								<div class="form-group <%= 'has-error' if @pokemon_battle_log.errors.include?(:skill_id) %>">
+									<%= label_tag :pokemon_skill_id, 'Attack skill' %>
+									<%= select_tag :pokemon_skill_id, options_for_select(@decorated_pokemon_battle.pokemon2_available_skills.collect{ |pokemon_skill| [pokemon_skill.skill.name, pokemon_skill.id] }, "-- Select --"), { prompt: '-- Select --', class: 'form-control'} %>
+									<p class="error-message"><%= @pokemon_battle_log.errors.messages[:skill_id].join(' and ') %></p>
+								</div>
+								<%= submit_tag :attack, { name: 'action_type', class: 'btn btn-primary' } %>
+							<% end %>
+							<%= submit_tag :surrender, { name: 'action_type', class: 'btn btn-primary' } %>
+							<%= hidden_field_tag :attacker_id, @decorated_pokemon_battle.pokemon2.id %>
+							<%= hidden_field_tag :defender_id, @decorated_pokemon_battle.pokemon1.id %>
+						<% end %>
+					</div>
+				<% end %>
+			</div>
+		</div>
+	</div>
+</div>

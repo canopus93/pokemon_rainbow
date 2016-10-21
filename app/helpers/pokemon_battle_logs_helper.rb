@@ -1,0 +1,2 @@
+module PokemonBattleLogsHelper
+end
