@@ -18,19 +18,21 @@ class PokemonBattlesController < ApplicationController
 	def action
 		pokemon_battle = PokemonBattle.find(params[:id])
 		pokemon_skill = (params[:pokemon_skill_id].present?) ? PokemonSkill.find(params[:pokemon_skill_id]) : PokemonSkill.new
-
-		@pokemon_battle_log = BattleEngine.new(
+		
+		battle_engine = BattleEngine.new(
 			pokemon_battle: pokemon_battle,
 			pokemon_skill: pokemon_skill,
 			action_type: params[:action_type]
-		).execute_action
+		)
 
-		if @pokemon_battle_log == true
+		if battle_engine.valid?
+			battle_engine.execute
 			redirect_to pokemon_battle_path(params[:id])
 		else
+			@pokemon_battle_log = battle_engine.pokemon_battle_log
 			decorator = PokemonBattlesDecorator.new(self)
 			@decorated_pokemon_battle = decorator.decorate_for_show(PokemonBattle.find(params[:id]))
-			render 'show'
+			render 'show'			
 		end
 	end
 

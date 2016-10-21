@@ -48,8 +48,8 @@ class PokemonBattlesDecorator
 			pokemon_battle_log = PokemonBattleLog.where(pokemon_battle: pokemon_battle)
 
 			if pokemon_battle_log.count == 0
-				pokemon1_current_hp = pokemon_battle.pokemon1_max_health_point
-				pokemon2_current_hp = pokemon_battle.pokemon2_max_health_point
+				pokemon1_current_hp = pokemon_battle.pokemon1.current_health_point
+				pokemon2_current_hp = pokemon_battle.pokemon2.current_health_point
 			elsif pokemon_battle_log.count.odd?
 				pokemon1_current_hp = pokemon_battle_log.last.attacker_current_health_point
 				pokemon2_current_hp = pokemon_battle_log.last.defender_current_health_point
