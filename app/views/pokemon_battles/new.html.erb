@@ -16,7 +16,7 @@
 			<%= render 'layouts/error_message', error_object: @pokemon_battle.errors %>
 			<div class="form-group col-sm-5 <%= 'has-error' if @pokemon_battle.errors.include?(:pokemon1) %>">
 				<%= f.label :pokemon1_id %>
-				<%= f.select :pokemon1_id, options_for_select(Pokemon.order(id: :ASC).collect{ |pokemon| [pokemon.name, pokemon.id] }), {prompt: "-- Select --"}, {class: 'form-control'} %>
+				<%= f.select :pokemon1_id, options_for_select(Pokemon.where('current_health_point > 0').order(id: :ASC).collect{ |pokemon| [pokemon.name, pokemon.id] }), {prompt: "-- Select --"}, {class: 'form-control'} %>
 				<p class="error-message"><%= @pokemon_battle.errors.messages[:pokemon1].join(' and ') %></p>
 			</div>
 			<div class="form-group col-sm-2 text-center">

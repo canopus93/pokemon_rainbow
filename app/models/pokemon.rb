@@ -4,6 +4,8 @@ class Pokemon < ApplicationRecord
 	has_many :pokemon_skills, dependent: :destroy
 	has_many :skills, through: :pokemon_skills
 	has_many :pokemon_battle_logs, dependent: :destroy
+	has_one :trainer_pokemon
+	has_one :trainer, through: :trainer_pokemon
 
 	validates :name, presence: true, uniqueness: true,
 					 								length: { maximum: 45 }

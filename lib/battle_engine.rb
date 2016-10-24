@@ -3,7 +3,8 @@ class BattleEngine
 	attr_reader :errors
 
 	def initialize(pokemon_battle)
-		@errors = 'must exist'
+		@errors = {skill: '', action_type: ''}
+		# @errors = 'must exist'
 		@pokemon_battle = pokemon_battle
 		@pokemons = [@pokemon_battle.pokemon1, @pokemon_battle.pokemon2]
 	end
@@ -13,16 +14,21 @@ class BattleEngine
 		if @action_type == PokemonBattleLog::ATTACK_ACTION
 			if pokemon_skill.skill.present?
 				valid_attacker_pokemon = @pokemon_battle.current_turn.odd? ? @pokemon_battle.pokemon1 : @pokemon_battle.pokemon2
-				pokemon_skill.pokemon == valid_attacker_pokemon
+				if pokemon_skill.pokemon == valid_attacker_pokemon
+					true
+				else
+					@errors[:skill] = 'Invalid Pokemon Skill'
+					false
+				end
 			else
+				@errors[:skill] = 'Skill Must Exist'
 				false
-				# skill cant be blank
 			end
 		elsif @action_type == PokemonBattleLog::SURRENDER_ACTION
 			true
 		else
+			@errors[:action_type] = 'Invalid Action Type'
 			false
-			# invalid action_type
 		end
 	end
 

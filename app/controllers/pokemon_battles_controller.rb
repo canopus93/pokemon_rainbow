@@ -8,7 +8,7 @@ class PokemonBattlesController < ApplicationController
 	def show
 		decorator = PokemonBattlesDecorator.new(self)
 		@decorated_pokemon_battle = decorator.decorate_for_show(PokemonBattle.find(params[:id]))
-		@erros = ''
+		@errors = {skill: '', action_type: ''}
 	end
 
 	def new

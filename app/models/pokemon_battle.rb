@@ -21,6 +21,7 @@ class PokemonBattle < ApplicationRecord
 
 	validate :pokemon1_and_pokemon2_must_not_same, if: :different_pokemon_1_and_pokemon_2?, on: :create
 	validate :pokemon_still_on_batlle, unless: :different_pokemon_1_and_pokemon_2?, on: :create
+	validate :pokemon_must_not_fainted, on: :create
 
 	def pokemon1_and_pokemon2_must_not_same		
 		errors.add(:pokemon2, "must not be same as Pokemon1")
@@ -38,5 +39,10 @@ class PokemonBattle < ApplicationRecord
 
 	def different_pokemon_1_and_pokemon_2?
 		pokemon1_id == pokemon2_id
+	end
+
+	def pokemon_must_not_fainted
+		errors.add(:pokemon1, "must not fainted") if pokemon1.current_health_point == 0
+		errors.add(:pokemon2, "must not fainted") if pokemon2.current_health_point == 0
 	end
 end

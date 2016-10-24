@@ -11,6 +11,7 @@
 	<div class="panel-body">
 		<div class="col-sm-12 action-container">
 			<a href="<%= new_pokemon_path %>" class="btn btn-primary">New</a>
+			<%= @decorated_pokemon.link_to_heal if @decorated_pokemon.not_in_battle %>
 			<%= @decorated_pokemon.link_to_edit %>
 			<%= @decorated_pokemon.link_to_delete %>
 		</div>
