@@ -16,7 +16,7 @@ class PokemonBattlesController < ApplicationController
 	end
 
 	def action
-		pokemon_battle = PokemonBattle.find(params[:id])
+		pokemon_battle = PokemonBattle.find(params[:pokemon_battle_id])
 		pokemon_skill = (params[:pokemon_skill_id].present?) ? PokemonSkill.find(params[:pokemon_skill_id]) : PokemonSkill.new
 
 		battle_engine = BattleEngine.new(
@@ -52,13 +52,6 @@ class PokemonBattlesController < ApplicationController
 		else
 			render 'new'
 		end
-	end
-
-	def destroy
-		@pokemon_battle = PokemonBattle.find(params[:id])
-		@pokemon_battle.destroy
-
-		redirect_to pokemon_battles_path
 	end
 
 	private

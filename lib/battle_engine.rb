@@ -18,7 +18,7 @@ class BattleEngine
 
 	def valid_next_turn?(pokemon_skill)
 		if @action_type == 'attack'
-			if @pokemon_skill.skill.present?
+			if pokemon_skill.skill.present?
 				valid_attacker_pokemon = @pokemon_battle.current_turn.odd? ? @pokemon_battle.pokemon1 : @pokemon_battle.pokemon2
 				pokemon_skill.pokemon == valid_attacker_pokemon
 			else

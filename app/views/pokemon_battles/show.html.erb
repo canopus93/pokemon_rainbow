@@ -13,9 +13,11 @@
 			<%= @decorated_pokemon_battle.link_to_log %>
 		</div>
 
-		<div class="col-xs-12">
-			<h3 class="text-center">Winner : <%= @decorated_pokemon_battle.pokemon_winner %></h3>
-		</div>
+		<% if @decorated_pokemon_battle.pokemon_winner.present? %>
+			<div class="col-xs-12">
+				<h3 class="text-center">Winner : <%= @decorated_pokemon_battle.pokemon_winner %></h3>
+			</div>
+		<% end %>
 
 		<div class="col-xs-12">
 			<div class="col-sm-5">
@@ -42,7 +44,7 @@
 				
 				<% if @decorated_pokemon_battle.state == 'ongoing' && @decorated_pokemon_battle.current_turn.odd? %>
 					<div class="col-xs-12 action">
-						<%= form_tag(pokemons_battle_action_path(@decorated_pokemon_battle.id), enforce_utf8: false) do %>
+						<%= form_tag(pokemon_battle_action_path(@decorated_pokemon_battle.id), enforce_utf8: false) do %>
 							<% if @decorated_pokemon_battle.pokemon1_available_skills.count > 0 %>
 								<div class="form-group <%= 'has-error' if @errors.present? %>">
 									<%= label_tag :pokemon_skill_id, 'Attack skill' %>
@@ -69,7 +71,7 @@
 				
 				<% if @decorated_pokemon_battle.state == 'ongoing' && !@decorated_pokemon_battle.current_turn.odd? %>
 					<div class="col-xs-12 action">
-						<%= form_tag(pokemons_battle_action_path(@decorated_pokemon_battle.id), enforce_utf8: false) do %>
+						<%= form_tag(pokemon_battle_action_path(@decorated_pokemon_battle.id), enforce_utf8: false) do %>
 							<% if @decorated_pokemon_battle.pokemon2_available_skills.count > 0 %>
 								<div class="form-group <%= 'has-error' if @errors.present? %>">
 									<%= label_tag :pokemon_skill_id, 'Attack skill' %>

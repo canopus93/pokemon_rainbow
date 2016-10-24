@@ -82,7 +82,7 @@
 							<tr>
 								<td><%= pokemon_skill.skill.name %></td>
 								<td><%= pokemon_skill.current_pp %></td>
-								<td align="right"><%= link_to 'Remove', pokemons_remove_skill_path(@decorated_pokemon.id, pokemon_skill.id),
+								<td align="right"><%= link_to 'Remove', pokemon_remove_skill_path(@decorated_pokemon.id, pokemon_skill.id),
 										method: :post, 
 										data: { confirm: "Are you sure to remove #{pokemon_skill.skill.name}?"}, class: 'btn btn-danger' %></td>
 							</tr>
@@ -94,7 +94,7 @@
 
 		<div class="container col-sm-12">
 			<h4>Add New Skill</h4>
-			<%= form_for @pokemon_skill, url: pokemons_add_skill_path do |f| %>
+			<%= form_for @pokemon_skill, url: pokemon_add_skill_path(@decorated_pokemon.id) do |f| %>
 				<%= render 'layouts/error_message', error_object: @pokemon_skill.errors %>
 				<div class="col-sm-6 form-group <%= 'has-error' if @pokemon_skill.errors.include?(:skill_id) %>">
 					<%= f.label :skill_id %>
