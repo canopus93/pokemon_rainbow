@@ -27,7 +27,7 @@
 				<%= f.select :pokemon2_id, options_for_select(Pokemon.order(id: :ASC).collect{ |pokemon| [pokemon.name, pokemon.id] }), {prompt: "-- Select --"}, {class: 'form-control'} %>
 				<p class="error-message"><%= @pokemon_battle.errors.messages[:pokemon2].join(' and ') %></p>
 			</div>
-			<%= f.hidden_field :state, value: 'ongoing' %>
+			<%= f.hidden_field :state, value: PokemonBattle::ONGOING_STATE %>
 			<%= f.hidden_field :current_turn, value: 1 %>
 			<%= f.submit yield(:submit_text), class: 'btn btn-primary center-block' %>
 		<% end %>

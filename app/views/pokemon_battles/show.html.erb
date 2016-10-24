@@ -11,6 +11,13 @@
 	<div class="panel-body">
 		<div class="col-xs-12 action-container">
 			<%= @decorated_pokemon_battle.link_to_log %>
+			<%=
+				if @decorated_pokemon_battle.state == PokemonBattle::ONGOING_STATE
+					if @decorated_pokemon_battle.pokemon1_available_skills.present? && @decorated_pokemon_battle.pokemon2_available_skills.present?
+						@decorated_pokemon_battle.link_to_auto_battle
+					end
+				end
+			%>
 		</div>
 
 		<% if @decorated_pokemon_battle.pokemon_winner.present? %>
@@ -42,7 +49,7 @@
 					<%= @decorated_pokemon_battle.pokemon1.image %>	
 				</div>
 				
-				<% if @decorated_pokemon_battle.state == 'ongoing' && @decorated_pokemon_battle.current_turn.odd? %>
+				<% if @decorated_pokemon_battle.state == PokemonBattle::ONGOING_STATE && @decorated_pokemon_battle.current_turn.odd? %>
 					<div class="col-xs-12 action">
 						<%= form_tag(pokemon_battle_action_path(@decorated_pokemon_battle.id), enforce_utf8: false) do %>
 							<% if @decorated_pokemon_battle.pokemon1_available_skills.count > 0 %>
@@ -51,11 +58,9 @@
 									<%= select_tag :pokemon_skill_id, options_for_select(@decorated_pokemon_battle.pokemon1_available_skills.collect{ |pokemon_skill| [pokemon_skill.skill.name, pokemon_skill.id] }, "-- Select --"), { prompt: '-- Select --', class: 'form-control'} %>
 									<p class="error-message"><%= @errors %></p>
 								</div>
-								<%= submit_tag :attack, { name: 'action_type', class: 'btn btn-primary' } %>
+								<%= submit_tag PokemonBattleLog::ATTACK_ACTION, { name: 'action_type', class: 'btn btn-primary' } %>
 							<% end %>
-							<%= submit_tag :surrender, { name: 'action_type', class: 'btn btn-primary' } %>
-							<%= hidden_field_tag :attacker_id, @decorated_pokemon_battle.pokemon1.id %>
-							<%= hidden_field_tag :defender_id, @decorated_pokemon_battle.pokemon2.id %>
+							<%= submit_tag PokemonBattleLog::SURRENDER_ACTION, { name: 'action_type', class: 'btn btn-primary' } %>
 						<% end %>
 					</div>
 				<% end %>
@@ -69,7 +74,7 @@
 					<%= @decorated_pokemon_battle.pokemon2.image %>	
 				</div>
 				
-				<% if @decorated_pokemon_battle.state == 'ongoing' && !@decorated_pokemon_battle.current_turn.odd? %>
+				<% if @decorated_pokemon_battle.state == PokemonBattle::ONGOING_STATE && !@decorated_pokemon_battle.current_turn.odd? %>
 					<div class="col-xs-12 action">
 						<%= form_tag(pokemon_battle_action_path(@decorated_pokemon_battle.id), enforce_utf8: false) do %>
 							<% if @decorated_pokemon_battle.pokemon2_available_skills.count > 0 %>
@@ -78,11 +83,9 @@
 									<%= select_tag :pokemon_skill_id, options_for_select(@decorated_pokemon_battle.pokemon2_available_skills.collect{ |pokemon_skill| [pokemon_skill.skill.name, pokemon_skill.id] }, "-- Select --"), { prompt: '-- Select --', class: 'form-control'} %>
 									<p class="error-message"><%= @errors %></p>
 								</div>
-								<%= submit_tag :attack, { name: 'action_type', class: 'btn btn-primary' } %>
+								<%= submit_tag PokemonBattleLog::ATTACK_ACTION, { name: 'action_type', class: 'btn btn-primary' } %>
 							<% end %>
-							<%= submit_tag :surrender, { name: 'action_type', class: 'btn btn-primary' } %>
-							<%= hidden_field_tag :attacker_id, @decorated_pokemon_battle.pokemon2.id %>
-							<%= hidden_field_tag :defender_id, @decorated_pokemon_battle.pokemon1.id %>
+							<%= submit_tag PokemonBattleLog::SURRENDER_ACTION, { name: 'action_type', class: 'btn btn-primary' } %>
 						<% end %>
 					</div>
 				<% end %>

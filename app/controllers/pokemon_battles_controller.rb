@@ -19,18 +19,12 @@ class PokemonBattlesController < ApplicationController
 		pokemon_battle = PokemonBattle.find(params[:pokemon_battle_id])
 		pokemon_skill = (params[:pokemon_skill_id].present?) ? PokemonSkill.find(params[:pokemon_skill_id]) : PokemonSkill.new
 
-		battle_engine = BattleEngine.new(
-			pokemon_battle: pokemon_battle,
-			action_type: params[:action_type]
-		)
+		battle_engine = BattleEngine.new(pokemon_battle)
 
-		if battle_engine.valid_next_turn?(pokemon_skill)
+		if battle_engine.valid_next_turn?(pokemon_skill: pokemon_skill, action_type: params[:action_type])
 			ActiveRecord::Base.transaction do
 				battle_engine.next_turn!(pokemon_skill)
-				battle_engine.pokemon_battle.save!
-				battle_engine.pokemons.each { |pokemon| pokemon.save! }
-				battle_engine.pokemon_skill.save! if battle_engine.is_attack?
-				battle_engine.pokemon_battle_log.save!
+				battle_engine.save!
 			end
 
 			redirect_to pokemon_battle
@@ -40,6 +34,14 @@ class PokemonBattlesController < ApplicationController
 			@decorated_pokemon_battle = decorator.decorate_for_show(pokemon_battle)
 			render 'show'
 		end
+	end
+
+	def auto_battle
+		pokemon_battle = PokemonBattle.find(params[:pokemon_battle_id])
+		auto_battle_engine = AutoBattleEngine.new(pokemon_battle: pokemon_battle)
+		auto_battle_engine.execute
+
+		redirect_to pokemon_battle
 	end
 
 	def create

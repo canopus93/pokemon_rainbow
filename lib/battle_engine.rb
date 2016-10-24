@@ -2,22 +2,15 @@ class BattleEngine
 	attr_accessor :pokemon_battle, :pokemons, :pokemon_skill, :pokemon_battle_log
 	attr_reader :errors
 
-	def initialize(pokemon_battle:, action_type:)
+	def initialize(pokemon_battle)
 		@errors = 'must exist'
 		@pokemon_battle = pokemon_battle
-		if (@pokemon_battle.current_turn.odd?)
-			@pokemon_attacker = @pokemon_battle.pokemon1
-			@pokemon_defender = @pokemon_battle.pokemon2
-		else
-			@pokemon_attacker = @pokemon_battle.pokemon2
-			@pokemon_defender = @pokemon_battle.pokemon1
-		end
-		@pokemons = [@pokemon_attacker, @pokemon_defender]
-		@action_type = action_type
+		@pokemons = [@pokemon_battle.pokemon1, @pokemon_battle.pokemon2]
 	end
 
-	def valid_next_turn?(pokemon_skill)
-		if @action_type == 'attack'
+	def valid_next_turn?(pokemon_skill:, action_type:)
+		@action_type = action_type
+		if @action_type == PokemonBattleLog::ATTACK_ACTION
 			if pokemon_skill.skill.present?
 				valid_attacker_pokemon = @pokemon_battle.current_turn.odd? ? @pokemon_battle.pokemon1 : @pokemon_battle.pokemon2
 				pokemon_skill.pokemon == valid_attacker_pokemon
@@ -25,7 +18,7 @@ class BattleEngine
 				false
 				# skill cant be blank
 			end
-		elsif @action_type == 'surrender'
+		elsif @action_type == PokemonBattleLog::SURRENDER_ACTION
 			true
 		else
 			false
@@ -34,17 +27,31 @@ class BattleEngine
 	end
 
 	def next_turn!(pokemon_skill)
+		if (@pokemon_battle.current_turn.odd?)
+			@pokemon_attacker = @pokemon_battle.pokemon1
+			@pokemon_defender = @pokemon_battle.pokemon2
+		else
+			@pokemon_attacker = @pokemon_battle.pokemon2
+			@pokemon_defender = @pokemon_battle.pokemon1
+		end
 		@pokemon_skill = pokemon_skill
 		@attack_damage = (@pokemon_skill.skill.present?) ? PokemonCalculator.calculate_damage(attacker: @pokemon_attacker, defender: @pokemon_defender, skill: @pokemon_skill.skill) : 0
 		last_health_point = @pokemon_defender.current_health_point - @attack_damage
 		@defender_last_health_point = (last_health_point < 0) ? 0 : last_health_point
 		initialize_pokemon_battle_log
 
-		(@action_type == 'attack') ? attack : surrender
+		(@action_type == PokemonBattleLog::ATTACK_ACTION) ? attack : surrender
 	end
 
 	def is_attack?
-		@action_type == 'attack'
+		@action_type == PokemonBattleLog::ATTACK_ACTION
+	end
+
+	def save!
+		pokemon_battle.save!
+		pokemons.each { |pokemon| pokemon.save! }
+		pokemon_skill.save! if is_attack?
+		pokemon_battle_log.save!
 	end
 
 	private
@@ -66,7 +73,7 @@ class BattleEngine
 
 				update_pokemon_winner!(pokemon_winner: attacker, experience_gain: experience_gain)
 
-				@pokemon_battle.state = 'finish'
+				@pokemon_battle.state = PokemonBattle::FINISH_STATE
 				@pokemon_battle.pokemon_winner = attacker
 				@pokemon_battle.pokemon_loser = defender
 				@pokemon_battle.experience_gain = experience_gain
@@ -78,7 +85,7 @@ class BattleEngine
 
 			update_pokemon_winner!(pokemon_winner: defender, experience_gain: experience_gain)
 			
-			@pokemon_battle.state = 'finish'
+			@pokemon_battle.state = PokemonBattle::FINISH_STATE
 			@pokemon_battle.pokemon_winner = defender
 			@pokemon_battle.pokemon_loser = attacker
 			@pokemon_battle.experience_gain = experience_gain

@@ -10,7 +10,7 @@
 	<div class="panel panel-primary">
 		<div class="panel-heading">New Pokemon</div>
 		<div class="panel-body">
-			<%= form_tag(details_new_pokemon_path, method: 'get', enforce_utf8: false) do %>
+			<%= form_tag(new_details_new_pokemon_path, method: 'get', enforce_utf8: false) do %>
 				<div class="form-group">
 					<%= label_tag :Pokedex %>
 					<%= select_tag :q, options_for_select(Pokedex.all.collect{ |pokedex| [pokedex.name, pokedex.id] }, "-- Select --"), { prompt: '-- Select --', class: 'form-control', required: true} %>

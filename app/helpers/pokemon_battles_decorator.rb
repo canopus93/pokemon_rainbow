@@ -17,7 +17,8 @@ class PokemonBattlesDecorator
 		:pokemon2_current_health_point,
 		:link_to_log,
 		:pokemon1_available_skills,
-		:pokemon2_available_skills
+		:pokemon2_available_skills,
+		:link_to_auto_battle
 	)
 
 	def initialize(context)
@@ -37,6 +38,7 @@ class PokemonBattlesDecorator
 		result = generate_decorator_result(pokemon_battle: pokemon_battle)
 		result.pokemon1_available_skills = pokemon_battle.pokemon1.pokemon_skills.where('current_pp > 0')
 		result.pokemon2_available_skills = pokemon_battle.pokemon2.pokemon_skills.where('current_pp > 0')
+		result.link_to_auto_battle = link_to_auto_battle(pokemon_battle_id: pokemon_battle.id)
 		
 		result
 	end
@@ -86,5 +88,9 @@ class PokemonBattlesDecorator
 
 		def link_to_log(pokemon_battle_id:)
 			@context.helpers.link_to 'Log', pokemon_battle_pokemon_battle_logs_path(pokemon_battle_id), class: 'btn btn-primary'
+		end
+
+		def link_to_auto_battle(pokemon_battle_id:)
+			@context.helpers.link_to 'Auto Battle', pokemon_battle_auto_battle_path(pokemon_battle_id), class: 'btn btn-primary'
 		end
 end

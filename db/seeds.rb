@@ -5,40 +5,57 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-(0..100).each do |x|
-	pokedex = Pokedex.new(
-		name: "Pokedex #{x}",
-		base_health_point: rand(100)+1,
-		base_attack: rand(100) +1,
-		base_defence: rand(100) +1,
-		base_speed: rand(100) +1,
-		element_type: Pokedex::ELEMENT_TYPE_LIST.sample,
-    image_url: 'https://img.pokemondb.net/artwork/snorlax.jpg'
+
+require 'csv'
+
+puts 'Seeding Skills...'
+skills = CSV.read("#{Rails.root}/lib/tasks/pokemon_rainbow/skills.csv", {headers: true, return_headers: false})
+skills.each do |skill|
+	skill_data = Skill.new(
+		name: skill['name'],
+		power: skill['power'],
+		max_pp: skill['max_pp'],
+		element_type: skill['element_type']
 	)
-	pokedex.save!
+	skill_data.save
 end
 
-(0..100).each do |x|
+puts 'Seeding Pokedexes and Pokemons...'
+pokedexes = CSV.read("#{Rails.root}/lib/tasks/pokemon_rainbow/pokedexes.csv", {headers: true, return_headers: false})
+pokedexes.each do |pokedex|
+	pokedex_data = Pokedex.new(
+		name: pokedex['name'],
+		base_health_point: pokedex['base_health_point'],
+		base_attack: pokedex['base_attack'],
+		base_defence: pokedex['base_defence'],
+		base_speed: pokedex['base_speed'],
+		element_type: pokedex['element_type'],
+		image_url: pokedex['image_url']
+	)
+	pokedex_data.save
+
 	pokemon = Pokemon.new(
-		name: "Pokemon #{x}",
+		pokedex: pokedex_data,
+		name: pokedex_data.name,
 		level: 1,
-		pokedex: Pokedex.find(x+1),
-		current_health_point: 100,
-		max_health_point: 100,
-		attack: rand(100) +1,
-		defence: rand(100) +1,
-		speed: rand(100) +1,
+		max_health_point: pokedex_data.base_health_point,
+		current_health_point: pokedex_data.base_health_point,
+		attack: pokedex_data.base_attack,
+		defence: pokedex_data.base_defence,
+		speed: pokedex_data.base_speed,
 		current_experience: 0
 	)
-	pokemon.save!
+	pokemon.save
+
+	skill_count = rand(2..4)
+	skills = Skill.where(element_type: pokedex_data.element_type).sample(skill_count)
+	skills.each do |skill|
+		skill_data = PokemonSkill.new(
+			pokemon: pokemon,
+			skill: skill,
+			current_pp: skill.max_pp
+		)
+		skill_data.save
+	end
 end
 
-(0..100).each do |x|
-	skill = Skill.new(
-		name: "Skill #{x}",
-		power: rand(100)+1,
-		max_pp: rand(100)+1,
-		element_type: Pokedex::ELEMENT_TYPE_LIST.sample
-	)
-	skill.save!
-end
