@@ -3,7 +3,7 @@ class PokemonBattle < ApplicationRecord
 
 	ONGOING_STATE = 'ongoing'.freeze
 	FINISH_STATE = 'finish'.freeze
-	STATE_LIST = [ ONGOING_STATE, FINISH_STATE]
+	STATE_LIST = [ ONGOING_STATE, FINISH_STATE ]
 	
 	belongs_to :pokemon1, class_name: 'Pokemon',
 												foreign_key: 'pokemon1_id'
