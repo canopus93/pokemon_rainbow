@@ -15,6 +15,19 @@ class PokemonBattleLog < ApplicationRecord
 
 	enumerize :action_type, in: ACTION_TYPE_LIST
 
+	validates :pokemon_battle_id, presence: true
+	validates :turn, presence: true,
+										numericality: { greater_than: 0 }
+	validates :damage, presence: true,
+										numericality: { greater_than_or_equal_to: 0 }
+	validates :attacker_id, presence: true
+	validates :attacker_current_health_point, presence: true,
+										numericality: { greater_than_or_equal_to: 0 }
+	validates :defender_id, presence: true
+	validates :defender_current_health_point, presence: true,
+										numericality: { greater_than_or_equal_to: 0 }
+	validates :action_type, presence: true,
+										length: { maximum: 45 }
 	validate :attack_must_use_skill
 
 	def attack_must_use_skill

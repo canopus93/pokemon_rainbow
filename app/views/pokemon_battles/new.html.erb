@@ -1,5 +1,3 @@
-<% provide(:submit_text, 'Battle!') %>
-
 <div class="row">
 	<ol class="breadcrumb">
 	  <li><a href="<%= root_path %>">Home</a></li>
@@ -29,7 +27,12 @@
 			</div>
 			<%= f.hidden_field :state, value: PokemonBattle::ONGOING_STATE %>
 			<%= f.hidden_field :current_turn, value: 1 %>
-			<%= f.submit yield(:submit_text), class: 'btn btn-primary center-block' %>
+			<div class="form-group col-sm-12 text-center">
+				<p>Start Battle!</p>
+				<%= f.submit PokemonBattle::AUTO_BATTLE_TYPE, { name: 'battle_type', class: 'btn btn-primary' } %>
+				<%= f.submit PokemonBattle::MANUAL_BATTLE_TYPE, { name: 'battle_type', class: 'btn btn-primary' } %>
+				<%= f.submit PokemonBattle::VERSUS_AI_BATTLE_TYPE, { name: 'battle_type', class: 'btn btn-primary' } %>
+			</div>
 		<% end %>
 		</div>
 	</div>

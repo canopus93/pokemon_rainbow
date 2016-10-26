@@ -25,6 +25,10 @@ class PokemonBattlesController < ApplicationController
 			ActiveRecord::Base.transaction do
 				battle_engine.next_turn!(pokemon_skill)
 				battle_engine.save!
+				if(pokemon_battle.battle_type == PokemonBattle::VERSUS_AI_BATTLE_TYPE)
+					auto_battle_engine = AutoBattleEngine.new(pokemon_battle: pokemon_battle)
+					auto_battle_engine.execute_enemy_ai(battle_engine)
+				end
 			end
 
 			redirect_to pokemon_battle
@@ -38,6 +42,9 @@ class PokemonBattlesController < ApplicationController
 
 	def auto_battle
 		pokemon_battle = PokemonBattle.find(params[:pokemon_battle_id])
+		pokemon_battle.battle_type = PokemonBattle::AUTO_BATTLE_TYPE
+		pokemon_battle.save
+		
 		auto_battle_engine = AutoBattleEngine.new(pokemon_battle: pokemon_battle)
 		auto_battle_engine.execute
 
@@ -46,11 +53,19 @@ class PokemonBattlesController < ApplicationController
 
 	def create
 		@pokemon_battle = PokemonBattle.new(pokemon_battle_params)
+		@pokemon_battle.state = PokemonBattle::ONGOING_STATE
+		@pokemon_battle.current_turn = 1
+		@pokemon_battle.battle_type = params[:battle_type]
+
 		@pokemon_battle.pokemon1_max_health_point = Pokemon.find(params[:pokemon_battle][:pokemon1_id]).max_health_point if params[:pokemon_battle][:pokemon1_id].present?
 		@pokemon_battle.pokemon2_max_health_point = Pokemon.find(params[:pokemon_battle][:pokemon2_id]).max_health_point if params[:pokemon_battle][:pokemon2_id].present?
 
 		if @pokemon_battle.save
-			redirect_to @pokemon_battle
+			if @pokemon_battle.battle_type == PokemonBattle::AUTO_BATTLE_TYPE
+				redirect_to pokemon_battle_auto_battle_path(@pokemon_battle.id)
+			else
+				redirect_to @pokemon_battle
+			end
 		else
 			render 'new'
 		end
@@ -58,6 +73,6 @@ class PokemonBattlesController < ApplicationController
 
 	private
 		def pokemon_battle_params
-			params.require(:pokemon_battle).permit(:pokemon1_id, :pokemon2_id, :state, :current_turn)
+			params.require(:pokemon_battle).permit(:pokemon1_id, :pokemon2_id)
 		end
 end

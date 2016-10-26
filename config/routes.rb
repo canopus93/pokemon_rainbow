@@ -12,8 +12,11 @@ Rails.application.routes.draw do
     post :add_skill
     get :heal
     post '/remove_skill/:pokemon_skill_id', to: 'pokemons#remove_skill', as: 'remove_skill'
+    collection do
+      get :heal_all
+    end
   end
-  get '/pokemons/heal_all', to: 'pokemons#heal_all'
+  
   resources :skills
   resources :pokemon_battles, only: [:index, :show, :new, :create] do
     get :auto_battle

@@ -2,17 +2,13 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   def index
-  # 	pk1 = Pokemon.find(9)
-		# pb = PokemonBattle.find(6)
-		# p_skill = pk1.pokemon_skills.last
+  	top_ten_pokemon_winner = execute_sql("")
+  end
 
-		# engine = BattleEngine.new(pokemon_battle: pb, action_type: 'attack')
+  private
 
-		# if engine.valid_next_turn?(pokemon_skill: p_skill)
-		# 	raise 'a'
-		# else
-		# 	raise 'a'
-		# end
-  # 	raise 'a'
+  def execute_sql(sql)
+  	results = ActiveRecord::Base.connection.execute(sql)
+  	results
   end
 end
