@@ -5,8 +5,82 @@
 </div>
 
 <div>
-	<br><br><br><br><br><br>
 	<img src="https://img.pokemondb.net/artwork/jirachi.jpg" class="center-block">
 	<h2 class="text-center">Welcome to Pokemon Rainbow</h2>
-	<br><br><br><br><br><br>
+</div>
+	
+<div class="panel panel-primary">
+	<div class="panel-heading">Top Ten Pokemon Winner</div>
+	<div class="panel-body">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<td>#</td>
+					<td>Name</td>
+					<td>Level</td>
+					<td>Win Count</td>
+				</tr>
+			</thead>
+			<tbody>
+				<% @top_ten_pokemon_winner.each_with_index do |pokemon, index| %>
+					<tr>
+						<td><%= index + 1 %></td>
+						<td><%= link_to pokemon.name, pokemon_path(pokemon.id) %></td>
+						<td><%= pokemon.level %></td>
+						<td><%= pokemon.count %></td>
+					</tr>
+				<% end %>	
+			</tbody>
+		</table>	
+	</div>
+</div>
+<div class="panel panel-primary">
+	<div class="panel-heading">Top Ten Pokemon Loser</div>
+	<div class="panel-body">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<td>#</td>
+					<td>Name</td>
+					<td>Level</td>
+					<td>Lose Count</td>
+				</tr>
+			</thead>
+			<tbody>
+				<% @top_ten_pokemon_loser.each_with_index do |pokemon, index| %>
+					<tr>
+						<td><%= index + 1 %></td>
+						<td><%= link_to pokemon.name, pokemon_path(pokemon.id) %></td>
+						<td><%= pokemon.level %></td>
+						<td><%= pokemon.count %></td>
+					</tr>
+				<% end %>	
+			</tbody>
+		</table>	
+	</div>
+</div>
+<div class="panel panel-primary">
+	<div class="panel-heading">Top Ten Pokemon Surrender</div>
+	<div class="panel-body">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<td>#</td>
+					<td>Name</td>
+					<td>Level</td>
+					<td>Surrender Count</td>
+				</tr>
+			</thead>
+			<tbody>
+				<% @top_ten_pokemon_surrender.each_with_index do |pokemon, index| %>
+					<tr>
+						<td><%= index + 1 %></td>
+						<td><%= link_to pokemon.name, pokemon_path(pokemon.id) %></td>
+						<td><%= pokemon.level %></td>
+						<td><%= pokemon.count %></td>
+					</tr>
+				<% end %>	
+			</tbody>
+		</table>	
+	</div>
 </div>
