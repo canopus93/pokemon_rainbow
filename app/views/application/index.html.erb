@@ -34,6 +34,7 @@
 		</table>	
 	</div>
 </div>
+
 <div class="panel panel-primary">
 	<div class="panel-heading">Top Ten Pokemon Loser</div>
 	<div class="panel-body">
@@ -59,6 +60,7 @@
 		</table>	
 	</div>
 </div>
+
 <div class="panel panel-primary">
 	<div class="panel-heading">Top Ten Pokemon Surrender</div>
 	<div class="panel-body">
@@ -78,6 +80,172 @@
 						<td><%= link_to pokemon.name, pokemon_path(pokemon.id) %></td>
 						<td><%= pokemon.level %></td>
 						<td><%= pokemon.count %></td>
+					</tr>
+				<% end %>	
+			</tbody>
+		</table>	
+	</div>
+</div>
+
+<div class="panel panel-primary">
+	<div class="panel-heading">Top Ten Pokemon Win Rate</div>
+	<div class="panel-body">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<td>#</td>
+					<td>Name</td>
+					<td>Level</td>
+					<td>Battle Count</td>
+					<td>Win Count</td>
+					<td>Win Rate</td>
+				</tr>
+			</thead>
+			<tbody>
+				<% @top_ten_pokemon_win_rate.each_with_index do |pokemon, index| %>
+					<tr>
+						<td><%= index + 1 %></td>
+						<td><%= link_to pokemon.name, pokemon_path(pokemon.id) %></td>
+						<td><%= pokemon.level %></td>
+						<td><%= pokemon.battle_count %></td>
+						<td><%= pokemon.win_count %></td>
+						<td><%= pokemon.rate %></td>
+					</tr>
+				<% end %>	
+			</tbody>
+		</table>	
+	</div>
+</div>
+
+<div class="panel panel-primary">
+	<div class="panel-heading">Top Ten Pokemon Lose Rate</div>
+	<div class="panel-body">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<td>#</td>
+					<td>Name</td>
+					<td>Level</td>
+					<td>Battle Count</td>
+					<td>Lose Count</td>
+					<td>Lose Rate</td>
+				</tr>
+			</thead>
+			<tbody>
+				<% @top_ten_pokemon_lose_rate.each_with_index do |pokemon, index| %>
+					<tr>
+						<td><%= index + 1 %></td>
+						<td><%= link_to pokemon.name, pokemon_path(pokemon.id) %></td>
+						<td><%= pokemon.level %></td>
+						<td><%= pokemon.battle_count %></td>
+						<td><%= pokemon.lose_count %></td>
+						<td><%= pokemon.rate %></td>
+					</tr>
+				<% end %>	
+			</tbody>
+		</table>	
+	</div>
+</div>
+
+<div class="panel panel-primary">
+	<div class="panel-heading">Top Ten Pokemon Used in Battle</div>
+	<div class="panel-body">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<td>#</td>
+					<td>Name</td>
+					<td>Level</td>
+					<td>Battle Count</td>
+				</tr>
+			</thead>
+			<tbody>
+				<% @top_ten_pokemon_used_in_battle.each_with_index do |pokemon, index| %>
+					<tr>
+						<td><%= index + 1 %></td>
+						<td><%= link_to pokemon.name, pokemon_path(pokemon.id) %></td>
+						<td><%= pokemon.level %></td>
+						<td><%= pokemon.count %></td>
+					</tr>
+				<% end %>	
+			</tbody>
+		</table>	
+	</div>
+</div>
+
+<div class="panel panel-primary">
+	<div class="panel-heading">Top Ten Skill Used in Battle</div>
+	<div class="panel-body">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<td>#</td>
+					<td>Name</td>
+					<td>Power</td>
+					<td>Element Type</td>
+					<td>Use Count</td>
+				</tr>
+			</thead>
+			<tbody>
+				<% @top_ten_skill_used_in_battle.each_with_index do |skill, index| %>
+					<tr>
+						<td><%= index + 1 %></td>
+						<td><%= link_to skill.name, skill_path(skill.id) %></td>
+						<td><%= skill.power %></td>
+						<td><%= skill.element_type %></td>
+						<td><%= skill.count %></td>
+					</tr>
+				<% end %>	
+			</tbody>
+		</table>	
+	</div>
+</div>
+
+<div class="panel panel-primary">
+	<div class="panel-heading">Top Ten Pokemon With Biggest Total Damage</div>
+	<div class="panel-body">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<td>#</td>
+					<td>Name</td>
+					<td>Level</td>
+					<td>Total Damage</td>
+				</tr>
+			</thead>
+			<tbody>
+				<% @top_ten_pokemon_with_biggest_total_damage.each_with_index do |pokemon, index| %>
+					<tr>
+						<td><%= index + 1 %></td>
+						<td><%= link_to pokemon.name, pokemon_path(pokemon.id) %></td>
+						<td><%= pokemon.level %></td>
+						<td><%= pokemon.count %></td>
+					</tr>
+				<% end %>	
+			</tbody>
+		</table>	
+	</div>
+</div>
+
+<div class="panel panel-primary">
+	<div class="panel-heading">Top Ten Pokedex Average Level</div>
+	<div class="panel-body">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<td>#</td>
+					<td>Name</td>
+					<td>Pokemon Count</td>
+					<td>Average Level</td>
+				</tr>
+			</thead>
+			<tbody>
+				<% @top_ten_pokedex_average_level.each_with_index do |pokedex, index| %>
+					<tr>
+						<td><%= index + 1 %></td>
+						<td><%= link_to pokedex.name, pokedex_path(pokedex.id) %></td>
+						<td><%= pokedex.pokemon_count %></td>
+						<td><%= pokedex.average_level.to_digits %></td>
 					</tr>
 				<% end %>	
 			</tbody>

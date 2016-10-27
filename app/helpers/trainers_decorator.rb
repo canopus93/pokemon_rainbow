@@ -29,7 +29,7 @@ class TrainersDecorator
 	def decorate_for_show(trainer)
 		result = generate_decorator_result(trainer: trainer)
 		pokemons_that_have_trainer = TrainerPokemon.pluck(:pokemon_id)
-		result.pokemons_to_add = Pokemon.where.not(id: pokemons_that_have_trainer)
+		result.pokemons_to_add = Pokemon.where.not(id: pokemons_that_have_trainer).order(id: :ASC)
 
 		result
 	end
@@ -40,7 +40,7 @@ class TrainersDecorator
 			result.id = trainer.id
 			result.name = trainer.name
 			result.email = trainer.email
-			result.trainer_pokemons = trainer.trainer_pokemons
+			result.trainer_pokemons = PokemonRainbowStatistic.generate_sorted_trainer_pokemons(trainer.id)
 			result.link_to_show = link_to_show(trainer)
 			result.link_to_edit = link_to_edit(trainer)
 			result.link_to_delete = link_to_delete(trainer)

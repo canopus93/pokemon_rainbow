@@ -41,6 +41,8 @@
 						<tr>
 							<td>#</td>
 							<td>Name</td>
+							<td>Level</td>
+							<td>Battle Count</td>
 							<td align="right">Action</td>
 						</tr>
 					</thead>
@@ -48,10 +50,12 @@
 						<% @decorated_trainer.trainer_pokemons.each_with_index do |trainer_pokemon, index| %>
 							<tr>
 								<td><%= index + 1 %></td>
-								<td><%= trainer_pokemon.pokemon.name %></td>
+								<td><%= link_to trainer_pokemon.name, pokemon_path(trainer_pokemon.id) %></td>
+								<td><%= trainer_pokemon.level %></td>
+								<td><%= trainer_pokemon.count %></td>
 								<td align="right"><%= link_to 'Remove', trainer_remove_pokemon_path(@decorated_trainer.id, trainer_pokemon.id),
 										method: :post, 
-										data: { confirm: "Are you sure to remove #{trainer_pokemon.pokemon.name}?"}, class: 'btn btn-danger' %></td>
+										data: { confirm: "Are you sure to remove #{trainer_pokemon.name}?"}, class: 'btn btn-danger' %></td>
 							</tr>
 						<% end %>
 					</tbody>

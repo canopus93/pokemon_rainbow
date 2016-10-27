@@ -15,7 +15,8 @@ class PokedexesDecorator
 		:image_small,
 		:link_to_show,
 		:link_to_edit,
-		:link_to_delete
+		:link_to_delete,
+		:pokemons
 	)
 
 	def initialize(context)
@@ -32,7 +33,10 @@ class PokedexesDecorator
 	end
 
 	def decorate_for_show(pokedex)
-		generate_decorator_result(pokedex: pokedex)
+		result = generate_decorator_result(pokedex: pokedex)
+		result.pokemons = PokemonRainbowStatistic.generate_pokemons_of_pokedex(pokedex.id)
+
+		result
 	end
 
 	private
