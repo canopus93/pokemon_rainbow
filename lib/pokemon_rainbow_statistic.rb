@@ -140,11 +140,10 @@ class PokemonRainbowStatistic
 	def self.top_ten_skill_used_in_battle
 		results = []
 		skills = base_connection.execute("
-			SELECT skills.name, count(skills.id) as use_count
-			FROM skills
-			INNER JOIN pokemon_battle_logs
-			ON skills.id = pokemon_battle_logs.skill_id
-			GROUP BY skills.id
+			SELECT skill_name, count(skill_name) as use_count
+			FROM pokemon_battle_logs
+			WHERE skill_name != '#{PokemonBattleLog::SURRENDER_ACTION}'
+			GROUP BY skill_name
 			ORDER BY use_count DESC
 			LIMIT 10
 		")
