@@ -1,5 +1,5 @@
 class Trainer < ApplicationRecord
-	has_many :trainer_pokemons
+	has_many :trainer_pokemons, dependent: :destroy
 	has_many :pokemon, through: :trainer_pokemons
 
 	validates :name, presence: true,

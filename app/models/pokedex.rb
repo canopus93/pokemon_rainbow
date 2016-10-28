@@ -1,5 +1,5 @@
 class Pokedex < ApplicationRecord
-	has_many :pokemon, dependent: :destroy
+	has_many :pokemons, dependent: :destroy
 	
 	extend Enumerize
 

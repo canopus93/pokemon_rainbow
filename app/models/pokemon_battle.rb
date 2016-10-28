@@ -20,7 +20,7 @@ class PokemonBattle < ApplicationRecord
 	belongs_to :pokemon_loser, class_name: 'Pokemon',
 												foreign_key: 'pokemon_loser_id',
 												optional: true
-	has_many :pokemon_battle_logs
+	has_many :pokemon_battle_logs, dependent: :destroy
 
 	enumerize :state, in: STATE_LIST
 	enumerize :battle_type, in: BATTLE_TYPE_LIST
