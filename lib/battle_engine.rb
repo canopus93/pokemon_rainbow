@@ -122,7 +122,7 @@ class BattleEngine
 		@pokemon_battle_log = PokemonBattleLog.new(
 			pokemon_battle: @pokemon_battle,
 			turn: @pokemon_battle.current_turn,
-			skill: @pokemon_skill.skill,
+			skill_name: @pokemon_skill.skill.present? ? @pokemon_skill.skill.name : PokemonBattleLog::SURRENDER_ACTION,
 			damage: @attack_damage,
 			attacker: @pokemon_attacker,
 			defender: @pokemon_defender,

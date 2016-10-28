@@ -3,7 +3,7 @@ class CreatePokemonBattleLogs < ActiveRecord::Migration[5.0]
     create_table :pokemon_battle_logs do |t|
     	t.references :pokemon_battle, foreign_key: true
     	t.integer :turn
-    	t.references :skill, foreign_key: true
+    	t.string :skill_name, limit: 45
     	t.integer :damage
     	t.integer :attacker_id, null: false
     	t.integer :attacker_current_health_point

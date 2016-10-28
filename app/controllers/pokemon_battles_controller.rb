@@ -17,7 +17,7 @@ class PokemonBattlesController < ApplicationController
 
 	def action
 		pokemon_battle = PokemonBattle.find(params[:pokemon_battle_id])
-		pokemon_skill = (params[:pokemon_skill_id].present?) ? PokemonSkill.find(params[:pokemon_skill_id]) : PokemonSkill.new
+		pokemon_skill = (params[:pokemon_skill_id].present?) ? PokemonSkill.find(params[:pokemon_skill_id]) : PokemonSkill.new()
 
 		battle_engine = BattleEngine.new(pokemon_battle)
 
