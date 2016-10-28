@@ -1,5 +1,3 @@
-<% provide(:submit_text, 'Battle!') %>
-
 <div class="row">
 	<ol class="breadcrumb">
 	  <li><a href="<%= root_path %>">Home</a></li>
@@ -16,7 +14,7 @@
 			<%= render 'layouts/error_message', error_object: @pokemon_battle.errors %>
 			<div class="form-group col-sm-5 <%= 'has-error' if @pokemon_battle.errors.include?(:pokemon1) %>">
 				<%= f.label :pokemon1_id %>
-				<%= f.select :pokemon1_id, options_for_select(Pokemon.order(id: :ASC).collect{ |pokemon| [pokemon.name, pokemon.id] }), {prompt: "-- Select --"}, {class: 'form-control'} %>
+				<%= f.select :pokemon1_id, options_for_select(Pokemon.where('current_health_point > 0').order(id: :ASC).collect{ |pokemon| [pokemon.name, pokemon.id] }), {prompt: "-- Select --"}, {class: 'form-control'} %>
 				<p class="error-message"><%= @pokemon_battle.errors.messages[:pokemon1].join(' and ') %></p>
 			</div>
 			<div class="form-group col-sm-2 text-center">
@@ -24,12 +22,17 @@
 			</div>
 			<div class="form-group col-sm-5 <%= 'has-error' if @pokemon_battle.errors.include?(:pokemon2) %>">
 				<%= f.label :pokemon2_id %>
-				<%= f.select :pokemon2_id, options_for_select(Pokemon.order(id: :ASC).collect{ |pokemon| [pokemon.name, pokemon.id] }), {prompt: "-- Select --"}, {class: 'form-control'} %>
+				<%= f.select :pokemon2_id, options_for_select(Pokemon.where('current_health_point > 0').order(id: :ASC).collect{ |pokemon| [pokemon.name, pokemon.id] }), {prompt: "-- Select --"}, {class: 'form-control'} %>
 				<p class="error-message"><%= @pokemon_battle.errors.messages[:pokemon2].join(' and ') %></p>
 			</div>
-			<%= f.hidden_field :state, value: 'ongoing' %>
+			<%= f.hidden_field :state, value: PokemonBattle::ONGOING_STATE %>
 			<%= f.hidden_field :current_turn, value: 1 %>
-			<%= f.submit yield(:submit_text), class: 'btn btn-primary center-block' %>
+			<div class="form-group col-sm-12 text-center">
+				<p>Start Battle!</p>
+				<%= f.submit PokemonBattle::AUTO_BATTLE_TYPE, { name: 'battle_type', class: 'btn btn-primary' } %>
+				<%= f.submit PokemonBattle::MANUAL_BATTLE_TYPE, { name: 'battle_type', class: 'btn btn-primary' } %>
+				<%= f.submit PokemonBattle::VERSUS_AI_BATTLE_TYPE, { name: 'battle_type', class: 'btn btn-primary' } %>
+			</div>
 		<% end %>
 		</div>
 	</div>

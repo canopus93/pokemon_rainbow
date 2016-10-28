@@ -10,10 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161019042827) do
+ActiveRecord::Schema.define(version: 20161028035847) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "pokedex_evolutions", force: :cascade do |t|
+    t.integer  "pokedex_from_id", null: false
+    t.integer  "pokedex_to_id",   null: false
+    t.integer  "minimum_level",   null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
 
   create_table "pokedexes", force: :cascade do |t|
     t.string   "name",              limit: 45
@@ -53,6 +61,7 @@ ActiveRecord::Schema.define(version: 20161019042827) do
     t.integer  "experience_gain"
     t.integer  "pokemon1_max_health_point"
     t.integer  "pokemon2_max_health_point"
+    t.string   "battle_type",               limit: 45
     t.datetime "created_at",                           null: false
     t.datetime "updated_at",                           null: false
   end
@@ -91,9 +100,27 @@ ActiveRecord::Schema.define(version: 20161019042827) do
     t.datetime "updated_at",              null: false
   end
 
+  create_table "trainer_pokemons", force: :cascade do |t|
+    t.integer  "trainer_id"
+    t.integer  "pokemon_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["pokemon_id"], name: "index_trainer_pokemons_on_pokemon_id", using: :btree
+    t.index ["trainer_id"], name: "index_trainer_pokemons_on_trainer_id", using: :btree
+  end
+
+  create_table "trainers", force: :cascade do |t|
+    t.string   "name",       limit: 45
+    t.string   "email",      limit: 45
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+  end
+
   add_foreign_key "pokemon_battle_logs", "pokemon_battles"
   add_foreign_key "pokemon_battle_logs", "skills"
   add_foreign_key "pokemon_skills", "pokemons"
   add_foreign_key "pokemon_skills", "skills"
   add_foreign_key "pokemons", "pokedexes"
+  add_foreign_key "trainer_pokemons", "pokemons"
+  add_foreign_key "trainer_pokemons", "trainers"
 end

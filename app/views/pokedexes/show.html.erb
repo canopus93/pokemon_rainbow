@@ -57,5 +57,31 @@
 				</div>
 			</div>
 		</div>
+
+		<div class="container col-sm-12">
+			<div class="row">
+				<h4>Pokemons</h4>
+			</div>
+			<div class="row">
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<td>#</td>
+							<td>Name</td>
+							<td>Level</td>
+						</tr>
+					</thead>
+					<tbody>
+						<% @decorated_pokedex.pokemons.each_with_index do |pokemon, index| %>
+							<tr>
+								<td><%= index + 1 %></td>
+								<td><%= link_to pokemon.name, pokemon_path(pokemon.id) %></td>
+								<td><%= pokemon.level %></td>
+							</tr>
+						<% end %>
+					</tbody>
+				</table>
+			</div>
+		</div>
 	</div>
 </div>

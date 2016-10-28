@@ -1,0 +1,119 @@
+<div class="row">
+	<ol class="breadcrumb">
+	  <li><a href="<%= root_path %>">Home</a></li>
+	  <li><a href="<%= trainers_path %>">Trainers</a></li>
+	  <li class="active"><%= @decorated_trainer.name %></li>
+	</ol>
+</div>
+
+<div class="panel panel-primary">
+	<div class="panel-heading">Trainer</div>
+	<div class="panel-body">
+		<div class="col-sm-12 action-container">
+			<a href="<%= new_trainer_path %>" class="btn btn-primary">New</a>
+			<%= @decorated_trainer.link_to_edit %>
+			<%= @decorated_trainer.link_to_delete %>
+		</div>
+
+		<div class="container action-container">
+			<br><br>
+			<table align="left">
+				<tr>
+					<td>Name</td>
+					<td>&nbsp;:&nbsp;</td>
+					<td><%= @decorated_trainer.name %></td>
+				</tr>
+				<tr>
+					<td>Email</td>
+					<td>&nbsp;:&nbsp;</td>
+					<td><%= @decorated_trainer.email %></td>
+				</tr>
+			</table>
+		</div>
+
+		<div class="container col-sm-12">
+			<div class="row">
+				<h4>Pokemons</h4>
+			</div>
+			<div class="row">
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<td>#</td>
+							<td>Name</td>
+							<td>Level</td>
+							<td>Battle Count</td>
+							<td align="right">Action</td>
+						</tr>
+					</thead>
+					<tbody>
+						<% @decorated_trainer.trainer_pokemons.each_with_index do |trainer_pokemon, index| %>
+							<tr>
+								<td><%= index + 1 %></td>
+								<td><%= link_to trainer_pokemon.name, pokemon_path(trainer_pokemon.pokemon_id) %></td>
+								<td><%= trainer_pokemon.level %></td>
+								<td><%= trainer_pokemon.count %></td>
+								<td align="right"><%= link_to 'Remove', trainer_remove_pokemon_path(@decorated_trainer.id, trainer_pokemon.id),
+										method: :post, 
+										data: { confirm: "Are you sure to remove #{trainer_pokemon.name}?"}, class: 'btn btn-danger' %></td>
+							</tr>
+						<% end %>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<div class="container col-sm-6">
+			<h4>Add New Pokemon</h4>
+			<%= form_for @trainer_pokemon, url: trainer_add_pokemon_path(@decorated_trainer.id) do |f| %>
+				<%= render 'layouts/error_message', error_object: @trainer_pokemon.errors %>
+				<div class="col-sm-12 form-group <%= 'has-error' if @trainer_pokemon.errors.include?(:pokemon) %>">
+					<%= f.label :pokemon_id %>
+					<%= f.select :pokemon_id, options_for_select(@decorated_trainer.pokemons_to_add.collect{ |pokemon| [pokemon.name, pokemon.id] }), { prompt: '-- Select --'}, {class: 'form-control'} %>
+		    	<p class="error-message"><%= @trainer_pokemon.errors.messages[:pokemon].join(' and ') %></p>
+				</div>
+				<div class="col-sm-12 form-group">
+					<%= f.submit :submit, class: 'btn btn-primary' %>
+				</div>
+			<% end %>
+		</div>
+
+		<% if @decorated_trainer.battle_count > 0 %>
+			<div id="pie-chart-container" class="col-sm-6"></div>
+		<% end %>
+	</div>
+</div>
+
+<script type="text/javascript">
+	$(function () {
+    $('#pie-chart-container').highcharts({
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                    style: {
+                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    }
+                }
+            }
+        },
+        series: [{
+            name: 'Battle Usage Percentage',
+            colorByPoint: true,
+            data: <%= raw @decorated_trainer.chart.to_json %>
+        }]
+    });
+	});
+</script>

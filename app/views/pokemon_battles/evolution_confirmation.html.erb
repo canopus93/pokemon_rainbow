@@ -1,0 +1,17 @@
+<% if @pokemon_battle.state == PokemonBattle::FINISH_STATE && PokemonEvolution.able_to_evolve?(@pokemon_battle.pokemon_winner) %>
+
+<div class="col-sm-offset-4 col-sm-4">
+	<div class="panel panel-primary">
+		<div class="panel-heading">Do you want to evolve <%= @pokemon_battle.pokemon_winner.name %>?</div>
+		<div class="panel-body">
+			<div class="col-sm-offset-2 col-sm-8 text-center">
+				<%= form_for @pokemon_battle, url: pokemon_battle_evolve_path(@pokemon_battle.id), method: :post do |f| %>
+					<%= f.submit PokemonEvolution::YES, { name: 'confirmation', class: 'btn btn-primary' } %>
+					<%= f.submit PokemonEvolution::NO, { name: 'confirmation', class: 'btn btn-primary' } %>
+				<% end %>
+			</div>
+		</div>
+	</div>
+</div>
+
+<% end %>

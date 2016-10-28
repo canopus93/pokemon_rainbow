@@ -21,8 +21,8 @@ class PokemonsController < ApplicationController
 	end
 
 	def add_skill
-		pokemon = Pokemon.find(params[:id])
-		skill = Skill.find(params[:pokemon_skill][:skill_id])
+		pokemon = Pokemon.find(params[:pokemon_id])
+		skill = Skill.find_by(id: params[:pokemon_skill][:skill_id])
 		@pokemon_skill = PokemonSkill.new(pokemon: pokemon, skill: skill, current_pp: params[:pokemon_skill][:current_pp])
 
 		decorator = PokemonsDecorator.new(self)
@@ -33,6 +33,41 @@ class PokemonsController < ApplicationController
 		else
 			render 'show'
 		end
+	end
+
+	def heal
+		pokemon = Pokemon.find(params[:pokemon_id])
+
+		ActiveRecord::Base.transaction do
+			pokemon.current_health_point = pokemon.max_health_point
+			pokemon.pokemon_skills.each do |pokemon_skill|
+				pokemon_skill.current_pp = pokemon_skill.skill.max_pp
+				pokemon_skill.save
+			end
+			pokemon.save
+		end
+
+		redirect_to pokemon
+	end
+
+	def heal_all
+		pokemon_id_with_ongoing_battle = PokemonBattle.where(state: PokemonBattle::ONGOING_STATE)
+																			 							.pluck(:pokemon1_id, :pokemon2_id)
+																			 							.flatten
+																			 							.uniq
+
+		pokemons = Pokemon.where.not(id: pokemon_id_with_ongoing_battle)
+		ActiveRecord::Base.transaction do
+			pokemons.each do |pokemon|
+				pokemon.current_health_point = pokemon.max_health_point
+				pokemon.pokemon_skills.each do |pokemon_skill|
+					pokemon_skill.current_pp = pokemon_skill.skill.max_pp
+					pokemon_skill.save
+				end
+				pokemon.save
+			end
+		end
+		redirect_to pokemons_path
 	end
 
 	def edit
@@ -70,7 +105,7 @@ class PokemonsController < ApplicationController
 		PokemonSkill.find(params[:pokemon_skill_id])
 								.destroy
 
-		redirect_to pokemon_path(params[:id])
+		redirect_to pokemon_path(params[:pokemon_id])
 	end
 
 	private

@@ -8,7 +8,7 @@ class PokemonBattlesController < ApplicationController
 	def show
 		decorator = PokemonBattlesDecorator.new(self)
 		@decorated_pokemon_battle = decorator.decorate_for_show(PokemonBattle.find(params[:id]))
-		@pokemon_battle_log = PokemonBattleLog.new
+		@errors = {skill: '', action_type: ''}
 	end
 
 	def new
@@ -16,47 +16,83 @@ class PokemonBattlesController < ApplicationController
 	end
 
 	def action
-		pokemon_battle = PokemonBattle.find(params[:id])
+		pokemon_battle = PokemonBattle.find(params[:pokemon_battle_id])
 		pokemon_skill = (params[:pokemon_skill_id].present?) ? PokemonSkill.find(params[:pokemon_skill_id]) : PokemonSkill.new
 
-		battle_engine = BattleEngine.new(
-			pokemon_battle: pokemon_battle,
-			pokemon_skill: pokemon_skill,
-			action_type: params[:action_type]
-		)
+		battle_engine = BattleEngine.new(pokemon_battle)
 
-		if battle_engine.valid?
-			battle_engine.execute
-			redirect_to pokemon_battle_path(params[:id])
+		if battle_engine.valid_next_turn?(pokemon_skill: pokemon_skill, action_type: params[:action_type])
+			ActiveRecord::Base.transaction do
+				battle_engine.next_turn!(pokemon_skill)
+				battle_engine.save!
+				if(pokemon_battle.battle_type == PokemonBattle::VERSUS_AI_BATTLE_TYPE)
+					auto_battle_engine = AutoBattleEngine.new(pokemon_battle: pokemon_battle)
+					auto_battle_engine.execute_enemy_ai(battle_engine)
+				end
+			end
+
+			if pokemon_battle.state == PokemonBattle::FINISH_STATE && PokemonEvolution.able_to_evolve?(pokemon_battle.pokemon_winner)
+				redirect_to pokemon_battle_evolution_confirmation_path(pokemon_battle.id)
+			else
+				redirect_to pokemon_battle
+			end
 		else
-			@pokemon_battle_log = battle_engine.pokemon_battle_log
+			@errors = battle_engine.errors
 			decorator = PokemonBattlesDecorator.new(self)
 			@decorated_pokemon_battle = decorator.decorate_for_show(pokemon_battle)
 			render 'show'
 		end
 	end
 
+	def evolution_confirmation
+		@pokemon_battle = PokemonBattle.find(params[:pokemon_battle_id])
+	end
+
+	def evolve
+		pokemon_battle = PokemonBattle.find(params[:pokemon_battle_id])
+		PokemonEvolution.evolve!(pokemon_battle.pokemon_winner) if params[:confirmation] == PokemonEvolution::YES
+		redirect_to pokemon_battle
+	end
+
+	def auto_battle
+		pokemon_battle = PokemonBattle.find(params[:pokemon_battle_id])
+		pokemon_battle.battle_type = PokemonBattle::AUTO_BATTLE_TYPE
+		pokemon_battle.save
+			
+		ActiveRecord::Base.transaction do
+			auto_battle_engine = AutoBattleEngine.new(pokemon_battle: pokemon_battle)
+			auto_battle_engine.execute
+		end
+
+		if pokemon_battle.state == PokemonBattle::FINISH_STATE && PokemonEvolution.able_to_evolve?(pokemon_battle.pokemon_winner)
+			redirect_to pokemon_battle_evolution_confirmation_path(pokemon_battle.id)
+		else
+			redirect_to pokemon_battle
+		end
+	end
+
 	def create
 		@pokemon_battle = PokemonBattle.new(pokemon_battle_params)
+		@pokemon_battle.state = PokemonBattle::ONGOING_STATE
+		@pokemon_battle.current_turn = 1
+		@pokemon_battle.battle_type = params[:battle_type]
+
 		@pokemon_battle.pokemon1_max_health_point = Pokemon.find(params[:pokemon_battle][:pokemon1_id]).max_health_point if params[:pokemon_battle][:pokemon1_id].present?
 		@pokemon_battle.pokemon2_max_health_point = Pokemon.find(params[:pokemon_battle][:pokemon2_id]).max_health_point if params[:pokemon_battle][:pokemon2_id].present?
 
 		if @pokemon_battle.save
-			redirect_to @pokemon_battle
+			if @pokemon_battle.battle_type == PokemonBattle::AUTO_BATTLE_TYPE
+				redirect_to pokemon_battle_auto_battle_path(@pokemon_battle.id)
+			else
+				redirect_to @pokemon_battle
+			end
 		else
 			render 'new'
 		end
 	end
 
-	def destroy
-		@pokemon_battle = PokemonBattle.find(params[:id])
-		@pokemon_battle.destroy
-
-		redirect_to pokemon_battles_path
-	end
-
 	private
 		def pokemon_battle_params
-			params.require(:pokemon_battle).permit(:pokemon1_id, :pokemon2_id, :state, :current_turn)
+			params.require(:pokemon_battle).permit(:pokemon1_id, :pokemon2_id)
 		end
 end

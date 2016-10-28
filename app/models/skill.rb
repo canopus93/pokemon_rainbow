@@ -1,7 +1,7 @@
 class Skill < ApplicationRecord
 	has_many :pokemon_skills, dependent: :destroy
 	has_many :pokemons, through: :pokemon_skills
-	has_many :pokemon_battle_logs
+	has_many :pokemon_battle_logs, dependent: :destroy
 
 	extend Enumerize
 

@@ -20,6 +20,8 @@ class PokemonsDecorator
 		:link_to_show,
 		:link_to_edit,
 		:link_to_delete,
+		:link_to_heal,
+		:not_in_battle,
 		:errors
 	)
 
@@ -42,6 +44,11 @@ class PokemonsDecorator
 
 	private
 		def generate_decorator_result(pokemon:)
+			pokemon_id_with_ongoing_battle = PokemonBattle.where(state: PokemonBattle::ONGOING_STATE)
+																			 							.pluck(:pokemon1_id, :pokemon2_id)
+																			 							.flatten
+																			 							.uniq
+
 			result = PokemonsDecoratorResult.new
 			result.id = pokemon.id
 			result.pokedex_id = pokemon.pokedex_id
@@ -59,6 +66,8 @@ class PokemonsDecorator
 			result.link_to_show = link_to_show(pokemon)
 			result.link_to_edit = link_to_edit(pokemon)
 			result.link_to_delete = link_to_delete(pokemon)
+			result.link_to_heal = link_to_heal(pokemon)
+			result.not_in_battle = !pokemon_id_with_ongoing_battle.include?(pokemon.id)
 			result.errors = pokemon.errors
 			result
 		end
@@ -69,6 +78,10 @@ class PokemonsDecorator
 
 		def link_to_edit(pokemon)
 			@context.helpers.link_to 'Edit', edit_pokemon_path(pokemon.id), class: 'btn btn-warning'
+		end
+
+		def link_to_heal(pokemon)
+			@context.helpers.link_to 'Heal', pokemon_heal_path(pokemon.id), class: 'btn btn-primary'
 		end
 
 		def link_to_delete(pokemon)
