@@ -59,3 +59,9 @@ pokedexes.each do |pokedex|
 	end
 end
 
+PokedexEvolution.create(pokedex_from_id: 1, pokedex_to_id: 2, minimum_level: 16)
+PokedexEvolution.create(pokedex_from_id: 2, pokedex_to_id: 3, minimum_level: 32)
+PokedexEvolution.create(pokedex_from_id: 5, pokedex_to_id: 6, minimum_level: 16)
+PokedexEvolution.create(pokedex_from_id: 6, pokedex_to_id: 7, minimum_level: 36)
+PokedexEvolution.create(pokedex_from_id: 10, pokedex_to_id: 11, minimum_level: 16)
+PokedexEvolution.create(pokedex_from_id: 11, pokedex_to_id: 12, minimum_level: 36)

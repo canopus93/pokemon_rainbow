@@ -7,9 +7,6 @@ class Pokemon < ApplicationRecord
 	has_one :trainer_pokemon
 	has_one :trainer, through: :trainer_pokemon
 
-	# validates :pekedex_id
-	# validates :pekedex
-
 	validates :pokedex_id, presence: true
 	validates :name, presence: true, uniqueness: true,
 					 								length: { maximum: 45 }

@@ -10,7 +10,9 @@ class TrainersDecorator
 		:link_to_show,
 		:link_to_edit,
 		:link_to_delete,
-		:pokemons_to_add
+		:pokemons_to_add,
+		:battle_count,
+		:chart
 	)
 
 	def initialize(context)
@@ -30,6 +32,17 @@ class TrainersDecorator
 		result = generate_decorator_result(trainer: trainer)
 		pokemons_that_have_trainer = TrainerPokemon.pluck(:pokemon_id)
 		result.pokemons_to_add = Pokemon.where.not(id: pokemons_that_have_trainer).order(id: :ASC)
+		result.battle_count = 0
+		result.trainer_pokemons.each do |pokemon|
+			result.battle_count += pokemon.count
+		end
+		result.chart = []
+		if result.battle_count > 0
+			result.trainer_pokemons.each do |pokemon|
+				battle_percentage = BigDecimal.new(pokemon.count) / result.battle_count
+				result.chart << { name: pokemon.name, y: battle_percentage.to_f }
+			end
+		end
 
 		result
 	end

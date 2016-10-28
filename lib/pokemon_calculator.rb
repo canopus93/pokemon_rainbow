@@ -383,7 +383,7 @@ class PokemonCalculator
 	end
 
 	def self.level_up?(level:, total_experience:)
-		experience_limit = 2**level * 100
+		experience_limit = level * 200
 		(total_experience >= experience_limit) ? true : false
 	end
 

@@ -4,7 +4,6 @@ class BattleEngine
 
 	def initialize(pokemon_battle)
 		@errors = {skill: '', action_type: ''}
-		# @errors = 'must exist'
 		@pokemon_battle = pokemon_battle
 		@pokemons = [@pokemon_battle.pokemon1, @pokemon_battle.pokemon2]
 	end

@@ -22,7 +22,7 @@ class PokemonsController < ApplicationController
 
 	def add_skill
 		pokemon = Pokemon.find(params[:pokemon_id])
-		skill = Skill.find(params[:pokemon_skill][:skill_id])
+		skill = Skill.find_by(id: params[:pokemon_skill][:skill_id])
 		@pokemon_skill = PokemonSkill.new(pokemon: pokemon, skill: skill, current_pp: params[:pokemon_skill][:current_pp])
 
 		decorator = PokemonsDecorator.new(self)

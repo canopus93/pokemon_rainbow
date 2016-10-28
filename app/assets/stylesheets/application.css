@@ -43,3 +43,11 @@
 .action-container {
 	margin-bottom: 15px;
 }
+
+.highcharts-title {
+	display: none;
+}
+
+.panel-heading a {
+	color: white;
+}

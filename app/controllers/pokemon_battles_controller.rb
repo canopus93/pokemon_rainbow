@@ -31,7 +31,11 @@ class PokemonBattlesController < ApplicationController
 				end
 			end
 
-			redirect_to pokemon_battle
+			if pokemon_battle.state == PokemonBattle::FINISH_STATE && PokemonEvolution.able_to_evolve?(pokemon_battle.pokemon_winner)
+				redirect_to pokemon_battle_evolution_confirmation_path(pokemon_battle.id)
+			else
+				redirect_to pokemon_battle
+			end
 		else
 			@errors = battle_engine.errors
 			decorator = PokemonBattlesDecorator.new(self)
@@ -40,15 +44,31 @@ class PokemonBattlesController < ApplicationController
 		end
 	end
 
+	def evolution_confirmation
+		@pokemon_battle = PokemonBattle.find(params[:pokemon_battle_id])
+	end
+
+	def evolve
+		pokemon_battle = PokemonBattle.find(params[:pokemon_battle_id])
+		PokemonEvolution.evolve!(pokemon_battle.pokemon_winner) if params[:confirmation] == PokemonEvolution::YES
+		redirect_to pokemon_battle
+	end
+
 	def auto_battle
 		pokemon_battle = PokemonBattle.find(params[:pokemon_battle_id])
 		pokemon_battle.battle_type = PokemonBattle::AUTO_BATTLE_TYPE
 		pokemon_battle.save
-		
-		auto_battle_engine = AutoBattleEngine.new(pokemon_battle: pokemon_battle)
-		auto_battle_engine.execute
+			
+		ActiveRecord::Base.transaction do
+			auto_battle_engine = AutoBattleEngine.new(pokemon_battle: pokemon_battle)
+			auto_battle_engine.execute
+		end
 
-		redirect_to pokemon_battle
+		if pokemon_battle.state == PokemonBattle::FINISH_STATE && PokemonEvolution.able_to_evolve?(pokemon_battle.pokemon_winner)
+			redirect_to pokemon_battle_evolution_confirmation_path(pokemon_battle.id)
+		else
+			redirect_to pokemon_battle
+		end
 	end
 
 	def create

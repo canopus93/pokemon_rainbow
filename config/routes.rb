@@ -20,6 +20,8 @@ Rails.application.routes.draw do
   resources :skills
   resources :pokemon_battles, only: [:index, :show, :new, :create] do
     get :auto_battle
+    get :evolution_confirmation
+    post :evolve
     post :action
     resources :pokemon_battle_logs, only: :index
   end

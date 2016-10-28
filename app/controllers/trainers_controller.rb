@@ -48,7 +48,7 @@ class TrainersController < ApplicationController
 
 	def add_pokemon
 		trainer = Trainer.find(params[:trainer_id])
-		pokemon = Pokemon.find(params[:trainer_pokemon][:pokemon_id])
+		pokemon = Pokemon.find_by(id: params[:trainer_pokemon][:pokemon_id])
 		@trainer_pokemon = TrainerPokemon.new(trainer: trainer, pokemon: pokemon)
 
 		decorator = TrainersDecorator.new(self)
