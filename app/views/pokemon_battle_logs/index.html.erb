@@ -13,7 +13,6 @@
 		<table class="table table-hover">
 			<thead>
 				<tr>
-					<td>#</td>
 					<td>Turn</td>
 					<td>Skill</td>
 					<td>Damage</td>
@@ -25,17 +24,10 @@
 				</tr>
 			</thead>
 			<tbody>
-				<% @decorated_pokemon_battle_logs.each_with_index do |pokemon_battle_log, index| %>
-					<%	if params[:page].to_i > 0 
-								@current_page = (params[:page].to_i - 1) * 10 + index + 1
-							else
-								@current_page = params[:page].to_i * 10 + index + 1
-							end
-					%>
+				<% @decorated_pokemon_battle_logs.each do |pokemon_battle_log| %>
 					<tr>
-						<td><%= @current_page %></td>
 						<td><%= pokemon_battle_log.turn %></td>
-						<td><%= pokemon_battle_log.link_to_skill %></td>
+						<td><%= pokemon_battle_log.skill_name %></td>
 						<td><%= pokemon_battle_log.damage %></td>
 						<td><%= pokemon_battle_log.link_to_attacker %></td>
 						<td><%= pokemon_battle_log.attacker_current_hp %></td>

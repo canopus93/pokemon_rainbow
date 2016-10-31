@@ -4,7 +4,7 @@ class PokemonBattleLogsDecorator
 
 	PokemonBattleLogsDecoratorResult = Struct.new(
 		:turn,
-		:link_to_skill,
+		:skill_name,
 		:damage,
 		:link_to_attacker,
 		:attacker_current_hp,
@@ -40,7 +40,7 @@ class PokemonBattleLogsDecorator
 
 			result = PokemonBattleLogsDecoratorResult.new
 			result.turn = pokemon_battle_log.turn
-			result.link_to_skill = link_to_skill(skill: pokemon_battle_log.skill) if !pokemon_battle_log.skill.nil?
+			result.skill_name = pokemon_battle_log.skill_name
 			result.damage = pokemon_battle_log.damage
 			result.link_to_attacker = link_to_attacker(attacker: pokemon_battle_log.attacker)
 			result.attacker_current_hp = "#{pokemon_battle_log.attacker_current_health_point} / #{attacker_max_hp}"
@@ -48,10 +48,6 @@ class PokemonBattleLogsDecorator
 			result.defender_current_hp = "#{pokemon_battle_log.defender_current_health_point} / #{defender_max_hp}"
 			result.action_type = pokemon_battle_log.action_type
 			result
-		end
-
-		def link_to_skill(skill:)
-			@context.helpers.link_to skill.name, skill_path(skill.id)
 		end
 
 		def link_to_attacker(attacker:)
