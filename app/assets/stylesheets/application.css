@@ -51,3 +51,8 @@
 .panel-heading a {
 	color: white;
 }
+
+.navbar-brand img {
+	margin-top: -8px;
+	height: 35px;
+}

@@ -81,7 +81,7 @@ class PokemonsDecorator
 		end
 
 		def link_to_heal(pokemon)
-			@context.helpers.link_to 'Heal', pokemon_heal_path(pokemon.id), class: 'btn btn-primary'
+			@context.helpers.link_to 'Heal', pokemon_heal_path(pokemon.id), class: 'btn btn-success'
 		end
 
 		def link_to_delete(pokemon)
