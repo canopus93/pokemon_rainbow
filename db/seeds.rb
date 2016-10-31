@@ -58,9 +58,38 @@ pokedexes.each do |pokedex|
 	end
 end
 
-PokedexEvolution.create(pokedex_from_id: 1, pokedex_to_id: 2, minimum_level: 16)
-PokedexEvolution.create(pokedex_from_id: 2, pokedex_to_id: 3, minimum_level: 32)
-PokedexEvolution.create(pokedex_from_id: 5, pokedex_to_id: 6, minimum_level: 16)
-PokedexEvolution.create(pokedex_from_id: 6, pokedex_to_id: 7, minimum_level: 36)
-PokedexEvolution.create(pokedex_from_id: 10, pokedex_to_id: 11, minimum_level: 16)
-PokedexEvolution.create(pokedex_from_id: 11, pokedex_to_id: 12, minimum_level: 36)
+puts 'Seeding Evolution Lists...'
+
+pokedexes = Pokedex.all
+
+evolution_lists = CSV.read("#{Rails.root}/lib/tasks/pokemon_rainbow/evolution_lists.csv", {headers: true, return_headers: false})
+evolution_lists.each do |evolution_list|
+	evolution_list_data = PokedexEvolution.new(
+		pokedex_from_id: pokedexes.find{ |pokedex| pokedex.name == evolution_list['pokedex_from_name'] }.id,
+		pokedex_to_id: pokedexes.find{ |pokedex| pokedex.name == evolution_list['pokedex_to_name'] }.id,
+		minimum_level: evolution_list['minimum_level']
+	)
+	evolution_list_data.save
+end
+
+puts 'Seeding Trainers and Trainer Pokemons'
+(1..20).each do |index|
+	trainer_data = Trainer.new(
+		name: "Trainer no. #{index}",
+		email: "trainer#{index}@trainer.trainer"
+	)
+	trainer_data.save
+
+	# pokemons_that_have_trainer = TrainerPokemon.pluck(:pokemon_id)
+	# pokemon_count = rand(1..5)
+	# pokemons = Pokemon.where.not(id: pokemons_that_have_trainer).sample(pokemon_count)
+	
+	pokemons = Pokemon.all.sample(5)	
+	pokemons.each do |pokemon|
+		trainer_pokemon = TrainerPokemon.new(
+			trainer: trainer_data,
+			pokemon: pokemon
+		)
+		trainer_pokemon.save
+	end
+end

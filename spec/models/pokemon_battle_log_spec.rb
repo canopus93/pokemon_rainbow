@@ -48,6 +48,7 @@ RSpec.describe PokemonBattleLog, type: :model do
   		pokemon2_id: @pokemon2.id,
   		current_turn: 1,
   		state: 'ongoing',
+  		battle_type: PokemonBattle::AUTO_BATTLE_TYPE,
   		pokemon1_max_health_point: @pokemon1.max_health_point,
   		pokemon2_max_health_point: @pokemon2.max_health_point
   	)
@@ -58,7 +59,7 @@ RSpec.describe PokemonBattleLog, type: :model do
   	new_pokemon_battle_log = PokemonBattleLog.new(
   		pokemon_battle_id: @pokemon_battle.id,
   		turn: 1,
-  		skill_id: @skill.id,
+  		skill_name: @skill.name,
   		damage: @skill.power,
   		attacker_id: @pokemon1.id,
   		attacker_current_health_point: @pokemon1.current_health_point,
@@ -66,16 +67,15 @@ RSpec.describe PokemonBattleLog, type: :model do
   		defender_current_health_point: @pokemon2.current_health_point,
   		action_type: 'attack'
   	)
-  	new_pokemon_battle_log.save!
 
-  	expect(PokemonBattleLog.last).to eq(new_pokemon_battle_log)
+  	expect(new_pokemon_battle_log.save).to eq(true)
   end
 
   describe "Default validation :" do
 		it "should be false when pokemon_battle_id is blank" do
 	  	new_pokemon_battle_log = PokemonBattleLog.new(
 	  		turn: 1,
-	  		skill_id: @skill.id,
+	  		skill_name: @skill.name,
 	  		damage: @skill.power,
 	  		attacker_id: @pokemon1.id,
 	  		attacker_current_health_point: @pokemon1.current_health_point,
@@ -91,7 +91,7 @@ RSpec.describe PokemonBattleLog, type: :model do
 	  	new_pokemon_battle_log = PokemonBattleLog.new(
 	  		pokemon_battle_id: PokemonBattle.new,
 	  		turn: 1,
-	  		skill_id: @skill.id,
+	  		skill_name: @skill.name,
 	  		damage: @skill.power,
 	  		attacker_id: @pokemon1.id,
 	  		attacker_current_health_point: @pokemon1.current_health_point,
@@ -106,7 +106,7 @@ RSpec.describe PokemonBattleLog, type: :model do
 		it "should be false when turn is blank" do
 	  	new_pokemon_battle_log = PokemonBattleLog.new(
 	  		pokemon_battle_id: @pokemon_battle.id,
-	  		skill_id: @skill.id,
+	  		skill_name: @skill.name,
 	  		damage: @skill.power,
 	  		attacker_id: @pokemon1.id,
 	  		attacker_current_health_point: @pokemon1.current_health_point,
@@ -122,7 +122,7 @@ RSpec.describe PokemonBattleLog, type: :model do
 	  	new_pokemon_battle_log = PokemonBattleLog.new(
 	  		pokemon_battle_id: @pokemon_battle.id,
 	  		turn: 'a',
-	  		skill_id: @skill.id,
+	  		skill_name: @skill.name,
 	  		damage: @skill.power,
 	  		attacker_id: @pokemon1.id,
 	  		attacker_current_health_point: @pokemon1.current_health_point,
@@ -138,7 +138,7 @@ RSpec.describe PokemonBattleLog, type: :model do
 	  	new_pokemon_battle_log = PokemonBattleLog.new(
 	  		pokemon_battle_id: @pokemon_battle.id,
 	  		turn: 0,
-	  		skill_id: @skill.id,
+	  		skill_name: @skill.name,
 	  		damage: @skill.power,
 	  		attacker_id: @pokemon1.id,
 	  		attacker_current_health_point: @pokemon1.current_health_point,
@@ -154,7 +154,7 @@ RSpec.describe PokemonBattleLog, type: :model do
 	  	new_pokemon_battle_log = PokemonBattleLog.new(
 	  		pokemon_battle_id: @pokemon_battle.id,
 	  		turn: 1,
-	  		skill_id: @skill.id,
+	  		skill_name: @skill.name,
 	  		attacker_id: @pokemon1.id,
 	  		attacker_current_health_point: @pokemon1.current_health_point,
 	  		defender_id: @pokemon2.id,
@@ -169,7 +169,7 @@ RSpec.describe PokemonBattleLog, type: :model do
 	  	new_pokemon_battle_log = PokemonBattleLog.new(
 	  		pokemon_battle_id: @pokemon_battle.id,
 	  		turn: 1,
-	  		skill_id: @skill.id,
+	  		skill_name: @skill.name,
 	  		damage: 'a',
 	  		attacker_id: @pokemon1.id,
 	  		attacker_current_health_point: @pokemon1.current_health_point,
@@ -185,7 +185,7 @@ RSpec.describe PokemonBattleLog, type: :model do
 	  	new_pokemon_battle_log = PokemonBattleLog.new(
 	  		pokemon_battle_id: @pokemon_battle.id,
 	  		turn: 1,
-	  		skill_id: @skill.id,
+	  		skill_name: @skill.name,
 	  		damage: -1,
 	  		attacker_id: @pokemon1.id,
 	  		attacker_current_health_point: @pokemon1.current_health_point,
@@ -201,7 +201,7 @@ RSpec.describe PokemonBattleLog, type: :model do
 	  	new_pokemon_battle_log = PokemonBattleLog.new(
 	  		pokemon_battle_id: @pokemon_battle.id,
 	  		turn: 1,
-	  		skill_id: @skill.id,
+	  		skill_name: @skill.name,
 	  		damage: @skill.power,
 	  		attacker_current_health_point: @pokemon1.current_health_point,
 	  		defender_id: @pokemon2.id,
@@ -216,7 +216,7 @@ RSpec.describe PokemonBattleLog, type: :model do
 	  	new_pokemon_battle_log = PokemonBattleLog.new(
 	  		pokemon_battle_id: @pokemon_battle.id,
 	  		turn: 1,
-	  		skill_id: @skill.id,
+	  		skill_name: @skill.name,
 	  		damage: @skill.power,
 	  		attacker_id: Pokemon.new,
 	  		attacker_current_health_point: @pokemon1.current_health_point,
@@ -232,7 +232,7 @@ RSpec.describe PokemonBattleLog, type: :model do
 	  	new_pokemon_battle_log = PokemonBattleLog.new(
 	  		pokemon_battle_id: @pokemon_battle.id,
 	  		turn: 1,
-	  		skill_id: @skill.id,
+	  		skill_name: @skill.name,
 	  		damage: @skill.power,
 	  		attacker_id: @pokemon1.id,
 	  		defender_id: @pokemon2.id,
@@ -247,7 +247,7 @@ RSpec.describe PokemonBattleLog, type: :model do
 	  	new_pokemon_battle_log = PokemonBattleLog.new(
 	  		pokemon_battle_id: @pokemon_battle.id,
 	  		turn: 1,
-	  		skill_id: @skill.id,
+	  		skill_name: @skill.name,
 	  		damage: @skill.power,
 	  		attacker_id: @pokemon1.id,
 	  		attacker_current_health_point: 'a',
@@ -263,7 +263,7 @@ RSpec.describe PokemonBattleLog, type: :model do
 	  	new_pokemon_battle_log = PokemonBattleLog.new(
 	  		pokemon_battle_id: @pokemon_battle.id,
 	  		turn: 1,
-	  		skill_id: @skill.id,
+	  		skill_name: @skill.name,
 	  		damage: @skill.power,
 	  		attacker_id: @pokemon1.id,
 	  		attacker_current_health_point: -1,
@@ -279,7 +279,7 @@ RSpec.describe PokemonBattleLog, type: :model do
 	  	new_pokemon_battle_log = PokemonBattleLog.new(
 	  		pokemon_battle_id: @pokemon_battle.id,
 	  		turn: 1,
-	  		skill_id: @skill.id,
+	  		skill_name: @skill.name,
 	  		damage: @skill.power,
 	  		attacker_id: @pokemon1.id,
 	  		attacker_current_health_point: @pokemon1.current_health_point,
@@ -294,7 +294,7 @@ RSpec.describe PokemonBattleLog, type: :model do
 	  	new_pokemon_battle_log = PokemonBattleLog.new(
 	  		pokemon_battle_id: @pokemon_battle.id,
 	  		turn: 1,
-	  		skill_id: @skill.id,
+	  		skill_name: @skill.name,
 	  		damage: @skill.power,
 	  		attacker_id: @pokemon1.id,
 	  		attacker_current_health_point: @pokemon1.current_health_point,
@@ -310,7 +310,7 @@ RSpec.describe PokemonBattleLog, type: :model do
 	  	new_pokemon_battle_log = PokemonBattleLog.new(
 	  		pokemon_battle_id: @pokemon_battle.id,
 	  		turn: 1,
-	  		skill_id: @skill.id,
+	  		skill_name: @skill.name,
 	  		damage: @skill.power,
 	  		attacker_id: @pokemon1.id,
 	  		attacker_current_health_point: @pokemon1.current_health_point,
@@ -325,7 +325,7 @@ RSpec.describe PokemonBattleLog, type: :model do
 	  	new_pokemon_battle_log = PokemonBattleLog.new(
 	  		pokemon_battle_id: @pokemon_battle.id,
 	  		turn: 1,
-	  		skill_id: @skill.id,
+	  		skill_name: @skill.name,
 	  		damage: @skill.power,
 	  		attacker_id: @pokemon1.id,
 	  		attacker_current_health_point: @pokemon1.current_health_point,
@@ -341,7 +341,7 @@ RSpec.describe PokemonBattleLog, type: :model do
 	  	new_pokemon_battle_log = PokemonBattleLog.new(
 	  		pokemon_battle_id: @pokemon_battle.id,
 	  		turn: 1,
-	  		skill_id: @skill.id,
+	  		skill_name: @skill.name,
 	  		damage: @skill.power,
 	  		attacker_id: @pokemon1.id,
 	  		attacker_current_health_point: @pokemon1.current_health_point,
@@ -357,7 +357,7 @@ RSpec.describe PokemonBattleLog, type: :model do
 	  	new_pokemon_battle_log = PokemonBattleLog.new(
 	  		pokemon_battle_id: @pokemon_battle.id,
 	  		turn: 1,
-	  		skill_id: @skill.id,
+	  		skill_name: @skill.name,
 	  		damage: @skill.power,
 	  		attacker_id: @pokemon1.id,
 	  		attacker_current_health_point: @pokemon1.current_health_point,
@@ -372,7 +372,7 @@ RSpec.describe PokemonBattleLog, type: :model do
 	  	new_pokemon_battle_log = PokemonBattleLog.new(
 	  		pokemon_battle_id: @pokemon_battle.id,
 	  		turn: 1,
-	  		skill_id: @skill.id,
+	  		skill_name: @skill.name,
 	  		damage: @skill.power,
 	  		attacker_id: @pokemon1.id,
 	  		attacker_current_health_point: @pokemon1.current_health_point,
@@ -388,7 +388,7 @@ RSpec.describe PokemonBattleLog, type: :model do
 	  	new_pokemon_battle_log = PokemonBattleLog.new(
 	  		pokemon_battle_id: @pokemon_battle.id,
 	  		turn: 1,
-	  		skill_id: @skill.id,
+	  		skill_name: @skill.name,
 	  		damage: @skill.power,
 	  		attacker_id: @pokemon1.id,
 	  		attacker_current_health_point: @pokemon1.current_health_point,

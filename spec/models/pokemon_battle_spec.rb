@@ -40,6 +40,7 @@ RSpec.describe PokemonBattle, type: :model do
 
 	it "should be true when save new pokemon_battle" do
   	new_pokemon_battle = PokemonBattle.new(
+  		battle_type: PokemonBattle::AUTO_BATTLE_TYPE,
   		pokemon1_id: @pokemon1.id,
   		pokemon2_id: @pokemon2.id,
   		current_turn: 1,
@@ -54,6 +55,7 @@ RSpec.describe PokemonBattle, type: :model do
 	describe "Default validation :" do
 	  it "should be false when state is blank" do
 	  	new_pokemon_battle = PokemonBattle.new(
+	  		battle_type: PokemonBattle::AUTO_BATTLE_TYPE,
 	  		pokemon1_id: @pokemon1.id,
 	  		pokemon2_id: @pokemon2.id,
 	  		current_turn: 1,
@@ -66,6 +68,7 @@ RSpec.describe PokemonBattle, type: :model do
 
 	  it "should be false when state length > 45" do
 	  	new_pokemon_battle = PokemonBattle.new(
+	  		battle_type: PokemonBattle::AUTO_BATTLE_TYPE,
 	  		pokemon1_id: @pokemon1.id,
 	  		pokemon2_id: @pokemon2.id,
 	  		current_turn: 1,
@@ -79,6 +82,7 @@ RSpec.describe PokemonBattle, type: :model do
 
 	  it "should be false when state not in list" do
 	  	new_pokemon_battle = PokemonBattle.new(
+	  		battle_type: PokemonBattle::AUTO_BATTLE_TYPE,
 	  		pokemon1_id: @pokemon1.id,
 	  		pokemon2_id: @pokemon2.id,
 	  		current_turn: 1,
@@ -92,6 +96,7 @@ RSpec.describe PokemonBattle, type: :model do
 
 	  it "should be false when pokemon1 is blank" do
 	  	new_pokemon_battle = PokemonBattle.new(
+	  		battle_type: PokemonBattle::AUTO_BATTLE_TYPE,
 	  		pokemon2_id: @pokemon2.id,
 	  		current_turn: 1,
 	  		state: 'ongoing',
@@ -104,6 +109,7 @@ RSpec.describe PokemonBattle, type: :model do
 
 	  it "should be false when pokemon1 is not exist" do
 	  	new_pokemon_battle = PokemonBattle.new(
+	  		battle_type: PokemonBattle::AUTO_BATTLE_TYPE,
 	  		pokemon1_id: Pokemon.new,
 	  		pokemon2_id: @pokemon2.id,
 	  		current_turn: 1,
@@ -117,6 +123,7 @@ RSpec.describe PokemonBattle, type: :model do
 
 	  it "should be false when pokemon2 is blank" do
 	  	new_pokemon_battle = PokemonBattle.new(
+	  		battle_type: PokemonBattle::AUTO_BATTLE_TYPE,
 	  		pokemon1_id: @pokemon1.id,
 	  		current_turn: 1,
 	  		state: 'ongoing',
@@ -129,6 +136,7 @@ RSpec.describe PokemonBattle, type: :model do
 
 	  it "should be false when pokemon2 is not exist" do
 	  	new_pokemon_battle = PokemonBattle.new(
+	  		battle_type: PokemonBattle::AUTO_BATTLE_TYPE,
 	  		pokemon1_id: @pokemon1.id,
 	  		current_turn: 1,
 	  		state: 'ongoing',
@@ -141,6 +149,7 @@ RSpec.describe PokemonBattle, type: :model do
 
 	  it "should be false when current_turn is blank" do
 	  	new_pokemon_battle = PokemonBattle.new(
+	  		battle_type: PokemonBattle::AUTO_BATTLE_TYPE,
 	  		pokemon1_id: @pokemon1.id,
 	  		pokemon2_id: @pokemon2.id,
 	  		state: 'ongoing',
@@ -153,6 +162,7 @@ RSpec.describe PokemonBattle, type: :model do
 
 	  it "should be false when current_turn is not number" do
 	  	new_pokemon_battle = PokemonBattle.new(
+	  		battle_type: PokemonBattle::AUTO_BATTLE_TYPE,
 	  		pokemon1_id: @pokemon1.id,
 	  		pokemon2_id: @pokemon2.id,
 	  		current_turn: 'a',
@@ -166,6 +176,7 @@ RSpec.describe PokemonBattle, type: :model do
 
 	  it "should be false when current_turn <= 0" do
 	  	new_pokemon_battle = PokemonBattle.new(
+	  		battle_type: PokemonBattle::AUTO_BATTLE_TYPE,
 	  		pokemon1_id: @pokemon1.id,
 	  		pokemon2_id: @pokemon2.id,
 	  		current_turn: 0,
@@ -179,6 +190,7 @@ RSpec.describe PokemonBattle, type: :model do
 
 	  it "should be false when experience_gain is not number" do
 	  	new_pokemon_battle = PokemonBattle.new(
+	  		battle_type: PokemonBattle::AUTO_BATTLE_TYPE,
 	  		pokemon1_id: @pokemon1.id,
 	  		pokemon2_id: @pokemon2.id,
 	  		current_turn: 1,
@@ -193,6 +205,7 @@ RSpec.describe PokemonBattle, type: :model do
 
 	  it "should be false when pokemon1_max_health_point is blank" do
 	  	new_pokemon_battle = PokemonBattle.new(
+	  		battle_type: PokemonBattle::AUTO_BATTLE_TYPE,
 	  		pokemon1_id: @pokemon1.id,
 	  		pokemon2_id: @pokemon2.id,
 	  		current_turn: 1,
@@ -205,6 +218,7 @@ RSpec.describe PokemonBattle, type: :model do
 
 	  it "should be false when pokemon1_max_health_point is not number" do
 	  	new_pokemon_battle = PokemonBattle.new(
+	  		battle_type: PokemonBattle::AUTO_BATTLE_TYPE,
 	  		pokemon1_id: @pokemon1.id,
 	  		pokemon2_id: @pokemon2.id,
 	  		current_turn: 1,
@@ -218,6 +232,7 @@ RSpec.describe PokemonBattle, type: :model do
 
 	  it "should be false when pokemon1_max_health_point <= 0" do
 	  	new_pokemon_battle = PokemonBattle.new(
+	  		battle_type: PokemonBattle::AUTO_BATTLE_TYPE,
 	  		pokemon1_id: @pokemon1.id,
 	  		pokemon2_id: @pokemon2.id,
 	  		current_turn: 1,
@@ -231,6 +246,7 @@ RSpec.describe PokemonBattle, type: :model do
 
 	  it "should be false when pokemon2_max_health_point is blank" do
 	  	new_pokemon_battle = PokemonBattle.new(
+	  		battle_type: PokemonBattle::AUTO_BATTLE_TYPE,
 	  		pokemon1_id: @pokemon1.id,
 	  		pokemon2_id: @pokemon2.id,
 	  		current_turn: 1,
@@ -243,6 +259,7 @@ RSpec.describe PokemonBattle, type: :model do
 
 	  it "should be false when pokemon2_max_health_point is not number" do
 	  	new_pokemon_battle = PokemonBattle.new(
+	  		battle_type: PokemonBattle::AUTO_BATTLE_TYPE,
 	  		pokemon1_id: @pokemon1.id,
 	  		pokemon2_id: @pokemon2.id,
 	  		current_turn: 1,
@@ -256,12 +273,54 @@ RSpec.describe PokemonBattle, type: :model do
 
 	  it "should be false when pokemon2_max_health_point <= 0" do
 	  	new_pokemon_battle = PokemonBattle.new(
+	  		battle_type: PokemonBattle::AUTO_BATTLE_TYPE,
 	  		pokemon1_id: @pokemon1.id,
 	  		pokemon2_id: @pokemon2.id,
 	  		current_turn: 1,
 	  		state: 'ongoing',
 	  		pokemon1_max_health_point: @pokemon1.max_health_point,
 	  		pokemon2_max_health_point: 0
+	  	)
+
+	  	expect(new_pokemon_battle.save).to eq(false)
+	  end
+
+	  it "should be false when battle_type is blank" do
+	  	new_pokemon_battle = PokemonBattle.new(
+	  		pokemon1_id: @pokemon1.id,
+	  		pokemon2_id: @pokemon2.id,
+	  		current_turn: 1,
+	  		state: 'ongoing',
+	  		pokemon1_max_health_point: @pokemon1.max_health_point,
+	  		pokemon2_max_health_point: @pokemon2.max_health_point
+	  	)
+
+	  	expect(new_pokemon_battle.save).to eq(false)
+	  end
+
+	  it "should be false when battle_type length > 45" do
+	  	new_pokemon_battle = PokemonBattle.new(
+	  		battle_type: 'rspec test element_type length greater than 45 char scenario',
+	  		pokemon1_id: @pokemon1.id,
+	  		pokemon2_id: @pokemon2.id,
+	  		current_turn: 1,
+	  		state: 'ongoing',
+	  		pokemon1_max_health_point: @pokemon1.max_health_point,
+	  		pokemon2_max_health_point: @pokemon2.max_health_point
+	  	)
+
+	  	expect(new_pokemon_battle.save).to eq(false)
+	  end
+
+	  it "should be false when battle_type not in list" do
+	  	new_pokemon_battle = PokemonBattle.new(
+	  		battle_type: 'not_in_list',
+	  		pokemon1_id: @pokemon1.id,
+	  		pokemon2_id: @pokemon2.id,
+	  		current_turn: 1,
+	  		state: 'ongoing',
+	  		pokemon1_max_health_point: @pokemon1.max_health_point,
+	  		pokemon2_max_health_point: @pokemon2.max_health_point
 	  	)
 
 	  	expect(new_pokemon_battle.save).to eq(false)
@@ -274,6 +333,7 @@ RSpec.describe PokemonBattle, type: :model do
 			@pokemon1.save
 
 	  	new_pokemon_battle = PokemonBattle.new(
+	  		battle_type: PokemonBattle::AUTO_BATTLE_TYPE,
 	  		pokemon1_id: @pokemon1.id,
 	  		pokemon2_id: @pokemon2.id,
 	  		current_turn: 1,
@@ -300,6 +360,7 @@ RSpec.describe PokemonBattle, type: :model do
 			pokemon3.save
 
 			first_pokemon_battle = PokemonBattle.new(
+				battle_type: PokemonBattle::AUTO_BATTLE_TYPE,
 	  		pokemon1_id: @pokemon1.id,
 	  		pokemon2_id: pokemon3.id,
 	  		current_turn: 1,
@@ -310,6 +371,7 @@ RSpec.describe PokemonBattle, type: :model do
 	  	first_pokemon_battle.save
 
 	  	new_pokemon_battle = PokemonBattle.new(
+	  		battle_type: PokemonBattle::AUTO_BATTLE_TYPE,
 	  		pokemon1_id: @pokemon1.id,
 	  		pokemon2_id: @pokemon2.id,
 	  		current_turn: 1,
@@ -323,6 +385,7 @@ RSpec.describe PokemonBattle, type: :model do
 
 	  it "should be false when pokemon2 same with pokemon1" do
 	  	new_pokemon_battle = PokemonBattle.new(
+	  		battle_type: PokemonBattle::AUTO_BATTLE_TYPE,
 	  		pokemon1_id: @pokemon1.id,
 	  		pokemon2_id: @pokemon1.id,
 	  		current_turn: 1,
@@ -339,6 +402,7 @@ RSpec.describe PokemonBattle, type: :model do
 	  	@pokemon2.save
 
 	  	new_pokemon_battle = PokemonBattle.new(
+	  		battle_type: PokemonBattle::AUTO_BATTLE_TYPE,
 	  		pokemon1_id: @pokemon1.id,
 	  		pokemon2_id: @pokemon2.id,
 	  		current_turn: 1,
@@ -365,6 +429,7 @@ RSpec.describe PokemonBattle, type: :model do
 			pokemon3.save
 
 			first_pokemon_battle = PokemonBattle.new(
+				battle_type: PokemonBattle::AUTO_BATTLE_TYPE,
 	  		pokemon1_id: pokemon3.id,
 	  		pokemon2_id: @pokemon2.id,
 	  		current_turn: 1,
@@ -375,6 +440,7 @@ RSpec.describe PokemonBattle, type: :model do
 	  	first_pokemon_battle.save
 
 	  	new_pokemon_battle = PokemonBattle.new(
+	  		battle_type: PokemonBattle::AUTO_BATTLE_TYPE,
 	  		pokemon1_id: @pokemon1.id,
 	  		pokemon2_id: @pokemon2.id,
 	  		current_turn: 1,

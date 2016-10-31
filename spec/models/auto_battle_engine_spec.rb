@@ -91,6 +91,7 @@ RSpec.describe AutoBattleEngine, type: :model do
   		pokemon2_id: pokemon2.id,
   		current_turn: 1,
   		state: 'ongoing',
+      battle_type: PokemonBattle::AUTO_BATTLE_TYPE,
   		pokemon1_max_health_point: pokemon1.max_health_point,
   		pokemon2_max_health_point: pokemon2.max_health_point
   	)
