@@ -1,4 +1,7 @@
 class PokemonBattlesController < ApplicationController
+
+	add_breadcrumb "Pokemon Battles", :pokemon_battles_path
+
 	def index
 		decorator = PokemonBattlesDecorator.new(self)
 		@decorated_pokemon_battles = decorator.decorate_for_index(PokemonBattle.paginate(page: params[:page], per_page: 10).order(id: :ASC))
@@ -9,10 +12,12 @@ class PokemonBattlesController < ApplicationController
 		decorator = PokemonBattlesDecorator.new(self)
 		@decorated_pokemon_battle = decorator.decorate_for_show(PokemonBattle.find(params[:id]))
 		@errors = {skill: '', action_type: ''}
+		add_breadcrumb "#{@decorated_pokemon_battle.pokemon1.name} vs #{@decorated_pokemon_battle.pokemon2.name}"
 	end
 
 	def new
 		@pokemon_battle = PokemonBattle.new
+		add_breadcrumb 'New'
 	end
 
 	def action

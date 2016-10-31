@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
+  add_breadcrumb "Home", :root_path
+
   def index
   	@top_ten_pokemon_winner = PokemonRainbowStatistic.top_ten_pokemon_winner
   	@top_ten_pokemon_loser = PokemonRainbowStatistic.top_ten_pokemon_loser

@@ -1,4 +1,6 @@
 class PokemonsController < ApplicationController
+	add_breadcrumb "Pokemons", :pokemons_path
+
 	def index
 		decorator = PokemonsDecorator.new(self)
 		@decorated_pokemons = decorator.decorate_for_index(Pokemon.paginate(page: params[:page], per_page: 10).order(id: :ASC))
@@ -9,15 +11,19 @@ class PokemonsController < ApplicationController
 		decorator = PokemonsDecorator.new(self)
 		@decorated_pokemon = decorator.decorate_for_show(Pokemon.find(params[:id]))
 		@pokemon_skill = PokemonSkill.new
+		add_breadcrumb @decorated_pokemon.name
 	end
 
 	def new
 		@pokemon = Pokemon.new
+		add_breadcrumb 'New'
 	end
 
 	def new_details
 		pokedex = Pokedex.find(params[:q])
 		@pokemon = Pokemon.new(pokedex: pokedex, name: pokedex.name, level: 1, current_health_point: pokedex.base_health_point, max_health_point: pokedex.base_health_point, attack: pokedex.base_attack, defence: pokedex.base_defence, speed: pokedex.base_speed, current_experience: 0)
+		add_breadcrumb 'New', :new_pokemon_path
+		add_breadcrumb 'Details'
 	end
 
 	def add_skill
@@ -72,6 +78,8 @@ class PokemonsController < ApplicationController
 
 	def edit
 		@pokemon = Pokemon.find(params[:id])
+		add_breadcrumb @pokemon.name, @pokemon
+		add_breadcrumb 'Edit'
 	end
 
 	def create
