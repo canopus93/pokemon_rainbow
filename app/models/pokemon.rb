@@ -1,9 +1,9 @@
 class Pokemon < ApplicationRecord
 	belongs_to :pokedex
-	has_many :pokemon_battles, foreign_key: 'pokemon1_id', dependent: :destroy
-	has_many :pokemon_battles, foreign_key: 'pokemon2_id', dependent: :destroy
-	has_many :pokemon_battles, foreign_key: 'pokemon_winner_id', dependent: :destroy
-	has_many :pokemon_battles, foreign_key: 'pokemon_loser_id', dependent: :destroy
+	has_many :pokemon_battle_pokemon1, class_name: 'PokemonBattle', foreign_key: 'pokemon1_id', dependent: :destroy
+	has_many :pokemon_battle_pokemon2, class_name: 'PokemonBattle', foreign_key: 'pokemon2_id', dependent: :destroy
+	has_many :pokemon_battle_pokemon_winner, class_name: 'PokemonBattle', foreign_key: 'pokemon_winner_id', dependent: :destroy
+	has_many :pokemon_battle_pokemon_loser, class_name: 'PokemonBattle', foreign_key: 'pokemon_loser_id', dependent: :destroy
 	has_many :pokemon_skills, dependent: :destroy
 	has_many :skills, through: :pokemon_skills
 	has_one :trainer_pokemon, dependent: :destroy

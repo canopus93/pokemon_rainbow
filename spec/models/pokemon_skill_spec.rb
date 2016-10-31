@@ -39,7 +39,6 @@ RSpec.describe PokemonSkill, type: :model do
   		pokemon_id: @pokemon.id,
   		current_pp: 1
   	)
-  	new_pokemon_skill.save!
 
   	expect(new_pokemon_skill.save).to eq(true)
   end
@@ -120,6 +119,63 @@ RSpec.describe PokemonSkill, type: :model do
     	new_pokemon_skill.save
 
     	expect(new_pokemon_skill.errors.messages[:current_pp].first).to eq("must be less than or equal to #{@skill.max_pp}")
+    end
+
+    it "should be false when add more than 4 skill" do
+      (1..4).each do |index|
+        skill = Skill.new(
+          name: "new skill #{index}",
+          power: 22,
+          max_pp: 22,
+          element_type: 'normal'
+        )
+        skill.save
+
+        pokemon_skill = PokemonSkill.new(
+          skill_id: skill.id,
+          pokemon_id: @pokemon.id,
+          current_pp: skill.max_pp
+        )
+        pokemon_skill.save
+      end
+
+      new_pokemon_skill = PokemonSkill.new(
+        skill_id: @skill.id,
+        pokemon_id: @pokemon.id,
+        current_pp: @skill.max_pp
+      )
+
+      expect(new_pokemon_skill.save).to eq(false)
+    end
+
+    it "should be true when add new skill after remove 1 of 4 skills" do
+      (1..4).each do |index|
+        skill = Skill.new(
+          name: "new skill #{index}",
+          power: 22,
+          max_pp: 22,
+          element_type: 'normal'
+        )
+        skill.save
+
+        pokemon_skill = PokemonSkill.new(
+          skill_id: skill.id,
+          pokemon_id: @pokemon.id,
+          current_pp: skill.max_pp
+        )
+        pokemon_skill.save
+      end
+
+      pokemon_skill_to_remove = PokemonSkill.where(pokemon_id: @pokemon.id).sample
+      pokemon_skill_to_remove.destroy
+
+      new_pokemon_skill = PokemonSkill.new(
+        skill_id: @skill.id,
+        pokemon_id: @pokemon.id,
+        current_pp: @skill.max_pp
+      )
+      
+      expect(new_pokemon_skill.save).to eq(true)
     end
   end
 end

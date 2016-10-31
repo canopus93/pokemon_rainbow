@@ -50,8 +50,49 @@ class PokemonBattlesController < ApplicationController
 
 	def evolve
 		pokemon_battle = PokemonBattle.find(params[:pokemon_battle_id])
-		PokemonEvolution.evolve!(pokemon_battle.pokemon_winner) if params[:confirmation] == PokemonEvolution::YES
-		redirect_to pokemon_battle
+		if params[:confirmation] == PokemonEvolution::YES
+			PokemonEvolution.evolve!(pokemon_battle.pokemon_winner)
+			redirect_to pokemon_battle_choose_skill_path(pokemon_battle.id)
+		else
+			redirect_to pokemon_battle
+		end
+	end
+
+	def choose_skill
+		@pokemon_battle = PokemonBattle.find(params[:pokemon_battle_id])
+		@pokemon_skills = PokemonSkill.where(pokemon_id: @pokemon_battle.pokemon_winner.id)
+		@errors = {skill_to_add: '', skill_to_remove: ''}
+	end
+
+	def submit_skill
+		@errors = {skill_to_add: '', skill_to_remove: ''}
+		@pokemon_battle = PokemonBattle.find(params[:pokemon_battle_id])
+		@pokemon_skills = PokemonSkill.where(pokemon_id: @pokemon_battle.pokemon_winner.id)
+		if params[:submit_action] == 'cancel'
+			redirect_to @pokemon_battle
+		else
+			if params[:skill_to_add].present?
+				skill_to_add = Skill.find_by(id: params[:skill_to_add])
+				if params[:skill_to_remove].present? && @pokemon_skills.count == 4
+					skill_to_remove = PokemonSkill.find(params[:skill_to_remove])
+					PokemonEvolution.add_skill_after_evolve(
+						pokemon: @pokemon_battle.pokemon_winner,
+						skill_to_add: skill_to_add,
+						skill_to_remove: skill_to_remove
+					)
+					redirect_to @pokemon_battle
+				elsif !params[:skill_to_remove].present? && @pokemon_skills.count == 4
+					@errors[:skill_to_remove] = 'must be chosen'
+					render 'choose_skill'
+				else
+					PokemonEvolution.add_skill_after_evolve(pokemon: @pokemon_battle.pokemon_winner, skill_to_add: skill_to_add)
+					redirect_to @pokemon_battle
+				end
+			else
+				@errors[:skill_to_add] = 'must be chosen'
+				render 'choose_skill'
+			end
+		end
 	end
 
 	def auto_battle

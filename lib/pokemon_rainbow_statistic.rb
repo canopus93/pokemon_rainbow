@@ -149,7 +149,7 @@ class PokemonRainbowStatistic
 		")
 
 		skills.each do |skill|
-			results << { name: skill['name'], data: [skill['use_count']] }
+			results << { name: skill['skill_name'], data: [skill['use_count']] }
 		end
 		results
 	end
