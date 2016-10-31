@@ -8,6 +8,7 @@ class PokemonSkill < ApplicationRecord
 	validates :current_pp, presence: true,
 										numericality: { greater_than_or_equal_to: 0 }
 	validate :current_pp_should_be_less_than_or_equal_max_pp, if: :skill_id_present?
+	validate :every_pokemon_only_four_skills, on: :create, if: :skill_id_present?
 
 	def current_pp_should_be_less_than_or_equal_max_pp
 		skill = Skill.find_by(id: self.skill_id) 
@@ -18,5 +19,10 @@ class PokemonSkill < ApplicationRecord
 
 	def skill_id_present?
 		skill_id.present?
+	end
+
+	def every_pokemon_only_four_skills
+		pokemon_skill_count = PokemonSkill.where(pokemon_id: pokemon_id).count
+		errors.add(:pokemon, "already have 4 skill") if pokemon_skill_count == 4
 	end
 end

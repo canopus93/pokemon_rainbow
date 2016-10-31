@@ -23,6 +23,16 @@ class PokemonEvolution
 			pokemon.save
 		end
 	end
+	
+	def self.add_skill_after_evolve(pokemon:, skill_to_add:, skill_to_remove: nil)
+		ActiveRecord::Base.transaction do
+			if skill_to_remove.present?
+				skill_to_remove.destroy
+			end
+			pokemon_skill = PokemonSkill.new(pokemon: pokemon, skill: skill_to_add, current_pp: skill_to_add.max_pp)
+			pokemon_skill.save
+		end
+	end
 
 	private
 

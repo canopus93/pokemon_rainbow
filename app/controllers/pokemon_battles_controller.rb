@@ -72,30 +72,25 @@ class PokemonBattlesController < ApplicationController
 			redirect_to @pokemon_battle
 		else
 			if params[:skill_to_add].present?
-				skill = Skill.find_by(id: params[:skill_to_add])
+				skill_to_add = Skill.find_by(id: params[:skill_to_add])
 				if params[:skill_to_remove].present? && @pokemon_skills.count == 4
-					ActiveRecord::Base.transaction do
-						pokemon_skill = PokemonSkill.find(params[:skill_to_remove])
-						pokemon_skill.destroy
-
-						new_pokemon_skill = PokemonSkill.new(pokemon_id: @pokemon_battle.pokemon_winner.id, skill_id: skill.id, current_pp: skill.max_pp)
-						new_pokemon_skill.save
-					end
+					skill_to_remove = PokemonSkill.find(params[:skill_to_remove])
+					PokemonEvolution.add_skill_after_evolve(
+						pokemon: @pokemon_battle.pokemon_winner,
+						skill_to_add: skill_to_add,
+						skill_to_remove: skill_to_remove
+					)
 					redirect_to @pokemon_battle
-					# remove old skill, add new skill
 				elsif !params[:skill_to_remove].present? && @pokemon_skills.count == 4
 					@errors[:skill_to_remove] = 'must be chosen'
 					render 'choose_skill'
 				else
-					new_pokemon_skill = PokemonSkill.new(pokemon_id: @pokemon_battle.pokemon_winner.id, skill_id: skill.id, current_pp: skill.max_pp)
-					new_pokemon_skill.save
-					# skill tidak sampai 4
+					PokemonEvolution.add_skill_after_evolve(pokemon: @pokemon_battle.pokemon_winner, skill_to_add: skill_to_add)
 					redirect_to @pokemon_battle
 				end
 			else
 				@errors[:skill_to_add] = 'must be chosen'
 				render 'choose_skill'
-				# skill yg mau di add tidak ada
 			end
 		end
 	end
