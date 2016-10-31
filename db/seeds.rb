@@ -47,8 +47,7 @@ pokedexes.each do |pokedex|
 	)
 	pokemon.save
 
-	skill_count = rand(2..4)
-	skills = Skill.where(element_type: pokedex_data.element_type).sample(skill_count)
+	skills = Skill.where(element_type: pokedex_data.element_type).sample(4)
 	skills.each do |skill|
 		skill_data = PokemonSkill.new(
 			pokemon: pokemon,

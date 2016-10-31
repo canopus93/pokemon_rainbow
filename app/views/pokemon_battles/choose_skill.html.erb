@@ -1,0 +1,27 @@
+<div class="col-sm-offset-4 col-sm-4">
+	<div class="panel panel-primary">
+		<div class="panel-heading">New skill for <%= @pokemon_battle.pokemon_winner.name %></div>
+		<div class="panel-body">
+			<div class="col-sm-12">
+				<%= form_tag(pokemon_battle_submit_skill_path(@pokemon_battle.id), enforce_utf8: false) do %>
+					<% if @pokemon_skills.count == 4 %>
+						<div class="form-group <%= 'has-error' if @errors[:skill_to_remove].present? %>">
+							<%= label_tag :skill_to_remove %>
+			    		<%= select_tag :skill_to_remove, options_for_select(@pokemon_skills.collect{ |pokemon_skill| [pokemon_skill.skill.name, pokemon_skill.id] }, '-- Select --'), {prompt: '-- Select --', class: 'form-control'} %>
+			    		<p class="error-message"><%= @errors[:skill_to_remove] %></p>
+			    	</div>
+			    <% end %>
+		    	<div class="form-group <%= 'has-error' if @errors[:skill_to_add].present? %>">
+						<%= label_tag :skill_to_add %>
+		    		<%= select_tag :skill_to_add, options_for_select(Skill.all.collect{ |skill| [skill.name, skill.id] }, '-- Select --'), {prompt: '-- Select --', class: 'form-control'} %>
+		    		<p class="error-message"><%= @errors[:skill_to_add] %></p>
+		    	</div>
+		    	<div class="text-center">
+						<%= submit_tag :submit, { name: 'submit_action', class: 'btn btn-primary' } %>
+						<%= submit_tag :cancel, { name: 'submit_action', class: 'btn btn-primary' } %>
+					</div>
+				<% end %>
+			</div>
+		</div>
+	</div>
+</div>

@@ -18,7 +18,7 @@ class PokemonEvolution
 		if able_to_evolve?(pokemon)
 			pokedex_evolution = PokedexEvolution.find_by(pokedex_from_id:  pokemon.pokedex_id)
 			update_status_after_evolve(pokemon: pokemon, pokedex_evolution: pokedex_evolution)
-			generate_random_skill(pokemon)
+			# generate_random_skill(pokemon)
 			pokemon.pokedex_id = pokedex_evolution.pokedex_to_id
 			pokemon.save
 		end
