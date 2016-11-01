@@ -6,7 +6,7 @@
 			<a href="<%= heal_all_pokemons_path %>" class="btn btn-success">Heal All</a>
 		</div>
 		
-		<div class="col-xs-12">
+		<div class="col-xs-12 table-responsive">
 			<table class="table table-hover">
 				<thead>
 					<tr>
@@ -43,7 +43,7 @@
 					<% end %>
 				</tbody>
 			</table>
-			<div class="text-center">
+			<div class="text-center flickr_pagination">
 				<%= will_paginate @pagination_pokemons %>
 			</div>
 		</div>

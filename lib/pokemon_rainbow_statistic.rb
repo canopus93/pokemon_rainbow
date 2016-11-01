@@ -225,6 +225,45 @@ class PokemonRainbowStatistic
 		results
 	end
 
+	def self.top_ten_pokemon_win_streak
+		results = []
+		pokemon_battle_pokemons_id = PokemonBattle.pluck(:pokemon1_id, :pokemon2_id)
+																		 					.flatten
+																		 					.uniq
+
+		pokemon_battle_pokemons_id.each do |pokemon_id|
+			pokemon_win_streak = base_connection.execute("
+				SELECT name, max(win_streak_count) as win_streak
+				FROM
+				(
+					SELECT name, count(*) as win_streak_count
+					FROM
+					(
+						SELECT pokemon_battles.id, pokemon_battles.pokemon_winner_id, pokemons.name,
+							(
+								row_number() over (order by pokemon_battles.id) - 
+								row_number() over (partition by pokemon_battles.pokemon_winner_id order by pokemon_battles.id)
+							) as grp
+						FROM pokemon_battles
+						INNER JOIN pokemons
+						ON pokemon_battles.pokemon_winner_id = pokemons.id
+						WHERE pokemon_battles.pokemon1_id = '#{pokemon_id}' OR pokemon_battles.pokemon2_id = '#{pokemon_id}'
+						ORDER BY pokemon_battles.id
+					) pokemon_battles
+					WHERE pokemon_winner_id = '#{pokemon_id}'
+					GROUP BY grp, name
+				) pokemon_battles
+				GROUP BY name
+			")
+
+			pokemon_win_streak.each do |win_streak|
+				results << { name: win_streak['name'], data: [win_streak['win_streak']] }
+			end
+		end
+		sorted_results = results.sort_by { |result| -result[:data][0] }
+														.first(10)
+	end
+
 	private
 
 	def self.generate_pokemon_rainbow_statistic_pokemon_result(pokemon)

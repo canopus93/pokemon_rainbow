@@ -18,12 +18,12 @@ class SkillsDecorator
 	end
 
 	def decorate_for_index(skills)
-		result = []
+		results = []
 
 		skills.each do |skill|
-			result << generate_decorator_result(skill: skill)
+			results << generate_decorator_result(skill: skill)
 		end
-		result
+		results
 	end
 
 	def decorate_for_show(skill)

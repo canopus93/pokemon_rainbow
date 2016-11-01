@@ -1,35 +1,37 @@
 <div class="panel panel-primary">
 	<div class="panel-heading">Pokemon Battle Logs</div>
 	<div class="panel-body">
-		<table class="table table-hover">
-			<thead>
-				<tr>
-					<td>Turn</td>
-					<td>Skill</td>
-					<td>Damage</td>
-					<td>Attacker</td>
-					<td>Attacker Current HP</td>
-					<td>Defender</td>
-					<td>Defender Current HP</td>
-					<td>Action Type</td>
-				</tr>
-			</thead>
-			<tbody>
-				<% @decorated_pokemon_battle_logs.each do |pokemon_battle_log| %>
+		<div class="col-sm-12 table-responsive">
+			<table class="table table-hover">
+				<thead>
 					<tr>
-						<td><%= pokemon_battle_log.turn %></td>
-						<td><%= pokemon_battle_log.skill_name %></td>
-						<td><%= pokemon_battle_log.damage %></td>
-						<td><%= pokemon_battle_log.link_to_attacker %></td>
-						<td><%= pokemon_battle_log.attacker_current_hp %></td>
-						<td><%= pokemon_battle_log.link_to_defender %></td>
-						<td><%= pokemon_battle_log.defender_current_hp %></td>
-						<td><%= pokemon_battle_log.action_type %></td>
+						<td>Turn</td>
+						<td>Skill</td>
+						<td>Damage</td>
+						<td>Attacker</td>
+						<td>Attacker Current HP</td>
+						<td>Defender</td>
+						<td>Defender Current HP</td>
+						<td>Action Type</td>
 					</tr>
-				<% end %>
-			</tbody>
-		</table>
-		<div class="text-center">
+				</thead>
+				<tbody>
+					<% @decorated_pokemon_battle_logs.each do |pokemon_battle_log| %>
+						<tr>
+							<td><%= pokemon_battle_log.turn %></td>
+							<td><%= pokemon_battle_log.skill_name %></td>
+							<td><%= pokemon_battle_log.damage %></td>
+							<td><%= pokemon_battle_log.link_to_attacker %></td>
+							<td><%= pokemon_battle_log.attacker_current_hp %></td>
+							<td><%= pokemon_battle_log.link_to_defender %></td>
+							<td><%= pokemon_battle_log.defender_current_hp %></td>
+							<td><%= pokemon_battle_log.action_type %></td>
+						</tr>
+					<% end %>
+				</tbody>
+			</table>
+		</div>
+		<div class="text-center flickr_pagination">
 			<%= will_paginate @pagination_pokemon_battle_logs %>
 		</div>
 	</div>
