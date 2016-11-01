@@ -1,4 +1,7 @@
 class TrainersController < ApplicationController
+
+	add_breadcrumb "Trainers", :trainers_path
+
 	def index
 		decorator = TrainersDecorator.new(self)
 		@decorated_trainers = decorator.decorate_for_index(Trainer.paginate(page: params[:page], per_page: 10).order(id: :ASC))
@@ -9,14 +12,18 @@ class TrainersController < ApplicationController
 		decorator = TrainersDecorator.new(self)
 		@decorated_trainer = decorator.decorate_for_show(Trainer.find(params[:id]))
 		@trainer_pokemon = TrainerPokemon.new
+		add_breadcrumb @decorated_trainer.name
 	end
 
 	def new
 		@trainer = Trainer.new
+		add_breadcrumb 'New'
 	end
 
 	def edit
 		@trainer = Trainer.find(params[:id])
+		add_breadcrumb @trainer.name, @trainer
+		add_breadcrumb 'Edit'
 	end
 
 	def create

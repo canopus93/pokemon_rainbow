@@ -1,4 +1,7 @@
 class PokedexesController < ApplicationController
+
+	add_breadcrumb "Pokedexes", :pokedexes_path
+
 	def index
 		decorator = PokedexesDecorator.new(self)
 		@decorated_pokedexes = decorator.decorate_for_index(Pokedex.paginate(page: params[:page], per_page: 10).order(id: :ASC))
@@ -8,14 +11,18 @@ class PokedexesController < ApplicationController
 	def show
 		decorator = PokedexesDecorator.new(self)
 		@decorated_pokedex = decorator.decorate_for_show(Pokedex.find(params[:id]))
+		add_breadcrumb @decorated_pokedex.name
 	end
 
 	def new
 		@pokedex = Pokedex.new
+		add_breadcrumb 'New'
 	end
 
 	def edit
 		@pokedex = Pokedex.find(params[:id])
+		add_breadcrumb @pokedex.name, @pokedex
+		add_breadcrumb 'Edit'
 	end
 
 	def create

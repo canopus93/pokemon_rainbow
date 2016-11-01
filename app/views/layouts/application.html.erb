@@ -11,8 +11,10 @@
     <%= javascript_include_tag 'application' %>
   	<%= render 'layouts/header' %>
     <div class="container">
-  		<%= render 'layouts/flash' %>
   		<div class="row">
+        <div class="breadcrumb">
+          <%= render_breadcrumbs :separator => ' / ' %>
+        </div>
 	  		<%= yield %>
   		</div>
   	</div>
