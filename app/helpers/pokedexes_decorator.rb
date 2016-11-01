@@ -24,12 +24,12 @@ class PokedexesDecorator
 	end
 
 	def decorate_for_index(pokedexes)
-		result = []
+		results = []
 
 		pokedexes.each do |pokedex|
-			result << generate_decorator_result(pokedex: pokedex)
+			results << generate_decorator_result(pokedex: pokedex)
 		end
-		result
+		results
 	end
 
 	def decorate_for_show(pokedex)

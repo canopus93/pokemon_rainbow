@@ -18,12 +18,12 @@ class PokemonBattleLogsDecorator
 	end
 
 	def decorate_for_index(pokemon_battle_logs)
-		result = []
+		results = []
 
 		pokemon_battle_logs.each do |pokemon_battle_log|
-			result << generate_decorator_result(pokemon_battle_log: pokemon_battle_log)
+			results << generate_decorator_result(pokemon_battle_log: pokemon_battle_log)
 		end
-		result
+		results
 	end
 
 	private

@@ -20,12 +20,12 @@ class TrainersDecorator
 	end
 
 	def decorate_for_index(trainers)
-		result = []
+		results = []
 
 		trainers.each do |trainer|
-			result << generate_decorator_result(trainer: trainer)
+			results << generate_decorator_result(trainer: trainer)
 		end
-		result
+		results
 	end
 
 	def decorate_for_show(trainer)

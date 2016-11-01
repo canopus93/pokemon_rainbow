@@ -61,7 +61,7 @@
   <div class="col-sm-6">
     <div class="panel panel-primary">
     	<div class="panel-heading">
-        <a data-toggle="collapse" href="#collapse_top_ten_pokemon_lose_rate">Top Ten Pokemon lose Rate</a>
+        <a data-toggle="collapse" href="#collapse_top_ten_pokemon_lose_rate">Top Ten Pokemon Lose Rate</a>
       </div>
       <div id="collapse_top_ten_pokemon_lose_rate" class="panel-collapse">
         <div class="panel-body">
@@ -124,6 +124,17 @@
           <div id="top_ten_pokedex_average_level"></div>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <a data-toggle="collapse" href="#collapse_top_ten_pokemon_win_streak">Top Ten Pokemon Win Streak</a>
+  </div>
+  <div id="collapse_top_ten_pokemon_win_streak" class="panel-collapse">
+    <div class="panel-body">
+      <div id="top_ten_pokemon_win_streak"></div>
     </div>
   </div>
 </div>
@@ -271,6 +282,22 @@
         }
       },
       series: <%= raw @top_ten_pokedex_average_level.to_json %>
+    });
+  });
+  $(function () { 
+    var myChart = Highcharts.chart('top_ten_pokemon_win_streak', {
+      chart: {
+        type: 'column'
+      },
+      xAxis: {
+        categories: ['Pokemons']
+      },
+      yAxis: {
+        title: {
+          text: 'Win Streak'
+        }
+      },
+      series: <%= raw @top_ten_pokemon_win_streak.to_json %>
     });
   });
 </script>

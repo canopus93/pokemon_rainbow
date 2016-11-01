@@ -63,15 +63,13 @@ class PokemonsController < ApplicationController
 																			 							.uniq
 
 		pokemons = Pokemon.where.not(id: pokemon_id_with_ongoing_battle)
+		pokemon_skills = PokemonSkill.includes(:skill).where.not(pokemon_id: pokemon_id_with_ongoing_battle)
 		ActiveRecord::Base.transaction do
-			pokemons.each do |pokemon|
-				pokemon.current_health_point = pokemon.max_health_point
-				pokemon.pokemon_skills.each do |pokemon_skill|
-					pokemon_skill.current_pp = pokemon_skill.skill.max_pp
-					pokemon_skill.save
-				end
-				pokemon.save
+			pokemons.update_all('current_health_point = max_health_point')
+			pokemon_skills.each do |pokemon_skill|
+				pokemon_skill.current_pp = pokemon_skill.skill.max_pp
 			end
+			pokemon_skills.each(&:save)
 		end
 		redirect_to pokemons_path
 	end

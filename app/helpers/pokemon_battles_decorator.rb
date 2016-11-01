@@ -26,12 +26,12 @@ class PokemonBattlesDecorator
 	end
 
 	def decorate_for_index(pokemon_battles)
-		result = []
+		results = []
 
 		pokemon_battles.each do |pokemon_battle|
-			result << generate_decorator_result(pokemon_battle: pokemon_battle)
+			results << generate_decorator_result(pokemon_battle: pokemon_battle)
 		end
-		result
+		results
 	end
 
 	def decorate_for_show(pokemon_battle)

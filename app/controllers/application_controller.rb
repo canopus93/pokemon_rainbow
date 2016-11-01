@@ -13,5 +13,6 @@ class ApplicationController < ActionController::Base
   	@top_ten_skill_used_in_battle = PokemonRainbowStatistic.top_ten_skill_used_in_battle
   	@top_ten_pokemon_with_biggest_total_damage = PokemonRainbowStatistic.top_ten_pokemon_with_biggest_total_damage
   	@top_ten_pokedex_average_level = PokemonRainbowStatistic.top_ten_pokedex_average_level
+    @top_ten_pokemon_win_streak = PokemonRainbowStatistic.top_ten_pokemon_win_streak
   end
 end
